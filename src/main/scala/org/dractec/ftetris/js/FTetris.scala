@@ -19,12 +19,18 @@ object FTetris {
 
   // TODO: add callback API
 
+  var canStart: Boolean = true
+
   @JSExport
   def startGame(
      canv: html.Canvas,
      onpointchange: js.Function1[Int, Unit],
      ongameend: js.Function0[Unit]
    ): Unit = {
+
+    if (!canStart) return
+    canStart = false
+
     type Ctx2D =
       CanvasRenderingContext2D
     val ctx = canv.getContext("2d")
@@ -105,6 +111,7 @@ object FTetris {
       }
       if (isOver) {
         clearInterval(mainLoop)
+        canStart = true
         ongameend()
       }
       gs -> ()
