@@ -76,13 +76,13 @@ object Game {
       validateGS: Boolean = false
   )
 
-  case class LineClear(row: Int, clearTime: Frame)
+  case class LineClear(row: Int, clearTime: Frame, consecutiveDrops: Int)
   case class Tetromino(tile: Tile, rotation: Rotation, pos: Coord)
   case class GS private (frameCount: Frame,
                          field: GameField,
                          currTet: Option[Tetromino],
                          points: Int,
-                         inDrop: Boolean,
+                         numConsecutiveDrops: Int,
                          lastMove: Move,
                          lastClears: List[LineClear],
                          lastMoveTimes: Map[Move, Frame],
@@ -93,7 +93,7 @@ object Game {
        field = initField(conf),
        currTet = None,
        points = 0,
-       inDrop = false,
+       numConsecutiveDrops = 0,
        lastMove = LeftM, // irrelevant but easier this way
        lastClears = List(),
        lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0),
@@ -112,7 +112,8 @@ object Game {
           (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
           pos = Coord(3, -2)).some, turnsToSpawn = None)
       else if (gs.currTet.isEmpty) gs // waiting for tet, do nothing
-      else if (gs.inDrop)
+//      else if (gs.inDrop)
+      else if (gs.conf.input.softDropDown)
         if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else gs
       else if (gs.frameCount % gs.conf.dropSpeed == 0) moveDown(gs) else gs
     }: GS) |> wrapTurn
@@ -145,10 +146,10 @@ object Game {
       gs.copy(
         turnsToSpawn = calcARE(gs),
         currTet = None,
-        inDrop = false,
+        numConsecutiveDrops = if (gs.conf.input.softDropDown) gs.numConsecutiveDrops + 1 else 0,
         field = mergedField,
         lastClears = gs.lastClears ++
-          allFullLines(gs.conf, mergedField).map(y => LineClear(y, gs.frameCount))
+          allFullLines(gs.conf, mergedField).map(y => LineClear(y, gs.frameCount, gs.numConsecutiveDrops))
       )
     } else mapCurrTetPos(gs, c => Coord(c.x, c.y + 1))
   }
@@ -165,10 +166,10 @@ object Game {
     def tryMoveLeft(d: Move) = if (inp.leftDown) tryMoveSideways(gs, LeftM) else d.asRight
     def tryMoveRight(d: Move) = if (inp.rightDown) tryMoveSideways(gs, RightM) else d.asRight
     def tryRotateWhenBtn = if (inp.rotateDown) tryRotate(gs) else Failure
-    (tryRotateWhenBtn flatMap tryMoveLeft flatMap tryMoveRight match {
+    tryRotateWhenBtn flatMap tryMoveLeft flatMap tryMoveRight match {
       case Left(res) => res
       case Right(dir) => gs.copy(lastMove = dir)
-    }) |> {_.copy(inDrop = gs.inDrop || gs.currTet.isDefined && inp.softDropDown)}
+    } //|> {_.copy(inDrop = gs.inDrop || gs.currTet.isDefined && inp.softDropDown)}
   }
 
   // TODO: if hitting a wall, rotate and push inside instead?
@@ -232,15 +233,15 @@ object Game {
 
   // TODO: handle line clear somehow
   private def handleLineClear(gs: GS): GS = gs.lastClears.collect {
-    case LineClear(row, ct) if gs.frameCount - ct == 20 => row
-  }.sorted |> {l => l.foldLeft(gs){ // smallest row ind first, so we dont have to fit indices while collapsing
-    case (ngs, row) => ngs.copy(field =
+    case LineClear(row, ct, drops) if gs.frameCount - ct == 20 => (row, drops)
+  }.sortBy(_._1) |> {l => l.foldLeft(gs){ // smallest row ind first, so we dont have to fit indices while collapsing
+    case (ngs, (row, drops)) => ngs.copy(field =
       List.tabulate(gs.conf.boardDims.x, gs.conf.boardDims.y) {
         case (x, 0)             => Coord(x, 0) -> false
         case (x, y) if y <= row => Coord(x, y) -> ngs.field(Coord(x, y - 1))
         case (x, y)             => Coord(x, y) -> ngs.field(Coord(x, y))
-      }.flatten.toMap
-    )}.copy(points = gs.points + scoring(l.length))
+      }.flatten.toMap,
+    )}.copy(points = gs.points + scoring(l.length) + l.headOption.map{case (_, drops) => drops}.getOrElse(0))
   }
 
 
@@ -267,8 +268,8 @@ object Game {
     if (gs.currTet.nonEmpty && gs.turnsToSpawn.nonEmpty)
       sys.error("currTet is defined and a new spawn is scheduled.")
     // cant have a tet not defined and be in drop
-    if (gs.currTet.isEmpty && gs.inDrop)
-      sys.error("currTet is not defined but is in drop.")
+//    if (gs.currTet.isEmpty && gs.inDrop)
+//      sys.error("currTet is not defined but is in drop.")
 
 
     gs
