@@ -41,9 +41,9 @@ object Game {
   // TODO: soft drop only when button down
   // TODO:
 
-  implicit val mapMergeSG = new Semigroup[Map[Coord, Boolean]] {
-    override def combine(x: Map[Coord, Boolean], y: Map[Coord, Boolean]) =
-      x.map { case (c, v) => c -> (y.getOrElse(c, false) | v) }
+  implicit val mapMergeSG = new Semigroup[Map[Coord, Option[Tile]]] {
+    override def combine(x: Map[Coord, Option[Tile]], y: Map[Coord, Option[Tile]]) =
+      x.map { case (c, v) => c -> (y.getOrElse(c, None) orElse v) }
   }
 
   type FramesToGo = Int
@@ -76,7 +76,7 @@ object Game {
       validateGS: Boolean = false
   )
 
-  case class LineClear(row: Int, clearTime: Frame, consecutiveDrops: Int)
+  case class LineClear(row: Int, clearTime: Frame)
   case class Tetromino(tile: Tile, rotation: Rotation, pos: Coord)
   case class GS private (frameCount: Frame,
                          field: GameField,
@@ -100,7 +100,7 @@ object Game {
        turnsToSpawn = Some(1),
        conf)
 
-  type GameField = Map[Coord, Boolean]
+  type GameField = Map[Coord, Option[Tile]]
   type GameState[T] = State[GS, T]
   def GameState[T](f: GS => (GS, T)) = State[GS, T](f)
 
@@ -133,7 +133,7 @@ object Game {
     def calcARE(gs: GS): Option[Int] = {
       //    bottom 2 rows: 10 frames
       //    then each 4 rows above 2 frames longer
-      def lowestTetY = globalTetCoverage(gs).map(_.collect{case (c, occ) if occ => c.y}.max)
+      def lowestTetY = globalTetCoverage(gs).map(_.collect{case (c, t) if t.isDefined => c.y}.max)
       lowestTetY.map(mY => (((gs.conf.boardDims.y - mY) - 2) / 4) * 2 + 10)
     }
 
@@ -143,13 +143,15 @@ object Game {
       // TODO: cant move down, end turn
       val mergedField = gs.field |+| globalTetCoverage(gs)
         .getOrElse(sys.error("Can't move a non-existing currTet downwards!"))
+      val newConsDrops = if (gs.conf.input.softDropDown) gs.numConsecutiveDrops + 1 else 0
       gs.copy(
         turnsToSpawn = calcARE(gs),
         currTet = None,
-        numConsecutiveDrops = if (gs.conf.input.softDropDown) gs.numConsecutiveDrops + 1 else 0,
+        numConsecutiveDrops = newConsDrops,
+        points = gs.points + newConsDrops,
         field = mergedField,
         lastClears = gs.lastClears ++
-          allFullLines(gs.conf, mergedField).map(y => LineClear(y, gs.frameCount, gs.numConsecutiveDrops))
+          allFullLines(gs.conf, mergedField).map(y => LineClear(y, gs.frameCount))
       )
     } else mapCurrTetPos(gs, c => Coord(c.x, c.y + 1))
   }
@@ -157,7 +159,7 @@ object Game {
   private def allFullLines(conf: Config, gf: GameField): List[Int] = {
     List.tabulate(conf.boardDims.y)(y => y ->
       (0 until conf.boardDims.x).forall(x =>
-        gf.getOrElse(Coord(x, y), sys.error("Logic error in `allFullLines`"))))
+        gf.getOrElse(Coord(x, y), sys.error("Logic error in `allFullLines`")).isDefined))
       .collect{case (y, true) => y}
   }
 
@@ -176,7 +178,7 @@ object Game {
   private def tryRotate(gs: GS): Either[GS, Move] = {
     if (!tetHasBlock(gs,
       // if coord taken or outside of field, fail check
-      b => gs.field.getOrElse(b, true),
+      b => gs.field.get(b).forall(_.isDefined),
       tet => tet.copy(rotation = nextRotation(tet.rotation))
     ) && gs.frameCount - gs.lastMoveTimes(Rotate) >= gs.conf.rotateDelay) {
       saveMove(gs.copy(currTet = gs.currTet.map(ct =>
@@ -207,15 +209,15 @@ object Game {
   private def hasFieldCollision(gs: GS, f: Tetromino => Tetromino) =
     gs.field.exists(overlapsWithTet(gs, _, f))
 
-  private def overlapsWithTet(gs: GS, v: (Coord, Boolean), f: Tetromino => Tetromino): Boolean = v match {
-    case (c, occ) => occ && globalTetCoverage(gs, f).exists(_.getOrElse(c, false))
+  private def overlapsWithTet(gs: GS, v: (Coord, Option[Tile]), f: Tetromino => Tetromino): Boolean = v match {
+    case (c, t) => t.isDefined && globalTetCoverage(gs, f).exists(_.getOrElse(c, None).isDefined)
   }
 
   private def saveMove(gs: GS, dir: Move): GS = gs.copy(
     lastMove = dir, lastMoveTimes = gs.lastMoveTimes + (dir -> gs.frameCount))
 
   private def tetHasBlock(gs: GS, f: Coord => Boolean, tr: Tetromino => Tetromino = identity) =
-    globalTetCoverage(gs, tr).exists(_.exists{case (c, occ) => occ && f(c)})
+    globalTetCoverage(gs, tr).exists(_.exists{case (c, t) => t.isDefined && f(c)})
 
   private def mapCurrTetPos(gs: GS, f: Coord => Coord): GS =
     gs.copy(currTet = gs.currTet.map(mapTetPos(_, f)))
@@ -233,15 +235,15 @@ object Game {
 
   // TODO: handle line clear somehow
   private def handleLineClear(gs: GS): GS = gs.lastClears.collect {
-    case LineClear(row, ct, drops) if gs.frameCount - ct == 20 => (row, drops)
-  }.sortBy(_._1) |> {l => l.foldLeft(gs){ // smallest row ind first, so we dont have to fit indices while collapsing
-    case (ngs, (row, drops)) => ngs.copy(field =
+    case LineClear(row, ct) if gs.frameCount - ct == 20 => row
+  }.sorted |> {l => l.foldLeft(gs){ // smallest row ind first, so we dont have to fit indices while collapsing
+    case (ngs, row) => ngs.copy(field =
       List.tabulate(gs.conf.boardDims.x, gs.conf.boardDims.y) {
-        case (x, 0)             => Coord(x, 0) -> false
+        case (x, 0)             => Coord(x, 0) -> None
         case (x, y) if y <= row => Coord(x, y) -> ngs.field(Coord(x, y - 1))
         case (x, y)             => Coord(x, y) -> ngs.field(Coord(x, y))
       }.flatten.toMap,
-    )}.copy(points = gs.points + scoring(l.length) + l.headOption.map{case (_, drops) => drops}.getOrElse(0))
+    )}.copy(points = gs.points + scoring(l.length))
   }
 
 
@@ -253,7 +255,7 @@ object Game {
   private def initField(conf: Config): GameField = (for {
     x <- 0 until conf.boardDims.x
     y <- 0 until conf.boardDims.y
-  } yield Coord(x, y) -> false).toMap
+  } yield Coord(x, y) -> None).toMap
 
   private def Failure = Nothing.asRight
 
@@ -262,7 +264,7 @@ object Game {
     // TODO: change to Validated somehow, accumulating errors
     // current tile cant overlap with static field
     globalTetCoverage(gs).foreach(tc =>
-      if (gs.field.exists { case (c, v) => tc(c) && v })
+      if (gs.field.exists { case (c, v) => tc(c).isDefined && v.isDefined })
         sys.error("Current tile exists and is overlapping with static field."))
     // cant have a current tet defined and a new one scheduled for spawn at the same time
     if (gs.currTet.nonEmpty && gs.turnsToSpawn.nonEmpty)

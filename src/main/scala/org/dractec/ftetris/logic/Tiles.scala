@@ -38,11 +38,11 @@ object Tiles {
     override def combine(a: Coord, b: Coord): Coord = Coord(a.x + b.x, a.y + b.y)
   }
 
-  type CoverageBox = Map[Coord, Boolean]
+  type CoverageBox = Map[Coord, Option[Tile]]
   implicit val cbShow = new Show[CoverageBox] {
     def maxC(t: CoverageBox) = t.map{case (k, _) => k.x max k.y}.max + 1
     override def show(t: CoverageBox) = List.tabulate(maxC(t), maxC(t))((a, b) =>
-      if (t(Coord(a, b))) "X" else "0").map(_.mkString).mkString("\n")
+      if (t(Coord(a, b)).isDefined) "X" else "0").map(_.mkString).mkString("\n")
   }
 
   sealed abstract class Tile
@@ -77,7 +77,7 @@ object Tiles {
         |00X0
         |00X0
         |00X0
-      """.stripMargin)
+      """.stripMargin, Straight)
     case _ => rotate3x3BoxTimes(baseCoverage(tile), numRotations(rotation))
   }
 
@@ -86,7 +86,7 @@ object Tiles {
 //    case _ => 3
 //  }
 
-  def baseCoverage(tile: Tile): CoverageBox = string2CB(initBox(tile))
+  def baseCoverage(tile: Tile): CoverageBox = string2CB(initBox(tile), tile)
 
   def rotate3x3CoverageBox(box: CoverageBox): CoverageBox = {
     List.tabulate(3, 3){
@@ -106,9 +106,9 @@ object Tiles {
   def rotate3x3BoxTimes(box: CoverageBox, n: Int): CoverageBox =
     (rotate3x3CoverageBox _ * n)(box)
 
-  private def string2CB(str: String): CoverageBox = str.lines.zipWithIndex.flatMap {
+  private def string2CB(str: String, tileType: Tile): CoverageBox = str.lines.zipWithIndex.flatMap {
     case (s, y) => s.zipWithIndex.map {
-      case (c, x) => Coord(x, y) -> (c == 'X')
+      case (c, x) => Coord(x, y) -> (if (c == 'X') Some(tileType) else None)
   }}.toMap
 
 

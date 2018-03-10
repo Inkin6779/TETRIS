@@ -21,6 +21,16 @@ object FTetris {
 
   var canStart: Boolean = true
 
+  val tileColors = Map[Tile, String](
+    Straight -> "#4AC948",
+    Box      -> "#83F52C",
+    LeftL    -> "#76EE00",
+    RightL   -> "#66CD00",
+    Tee      -> "#49E20E",
+    SnakeL   -> "#83F52C",
+    SnakeR   -> "#4DBD33"
+  )
+
   @JSExport
   def startGame(
      canv: html.Canvas,
@@ -77,12 +87,12 @@ object FTetris {
       ctx.clearRect(0, 0, canv.width, canv.height)
     }
 
-    def drawTile(coord: Coord): Unit = {
+    def drawTile(tile: Tile, coord: Coord): Unit = {
 //      println(s"Drawing tile $coord")
       val widthPerTile = canv.width / gs.conf.boardDims.x
       val heightPerTile = canv.height / gs.conf.boardDims.y
       // TODO print warning if not equal?
-      ctx.fillStyle = "#49fb35" // neon green
+      ctx.fillStyle = tileColors(tile) //"#49fb35" // neon green
       ctx.fillRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
     }
 
@@ -106,7 +116,7 @@ object FTetris {
       if (newField != lastField) {
         drawGradient()
         newField.getOrElse(lastState.field)
-          .foreach { case (c, occ) => if (occ) drawTile(c) }
+          .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
         lastField = newField
       }
       if (isOver) {
