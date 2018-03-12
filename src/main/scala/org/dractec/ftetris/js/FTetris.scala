@@ -22,6 +22,16 @@ object FTetris {
   var canStart: Boolean = true
   var paused: Boolean = false
 
+  /* // TODO: guideline colors
+        Cyan I
+        Yellow O
+        Purple T
+        Green S
+        Red Z
+        Blue J
+        Orange L
+  */
+
   val tileColors = Map[Tile, String](
     Straight -> "#4AC948",
     Box      -> "#83F52C",
@@ -36,40 +46,23 @@ object FTetris {
   def startGame(
      canv: html.Canvas,
      onpointchange: js.Function1[Int, Unit],
+     onlevelchange: js.Function1[Int, Unit],
+     onlineclear: js.Function1[Int, Unit],
      ongameend: js.Function0[Unit],
-     onpausestart: js.Function0[Unit],
-     onpauseend: js.Function0[Unit],
+     onpausestart: js.Function0[Unit] = () => {},
+     onpauseend: js.Function0[Unit] = () => {}
    ): Unit = {
 
     if (!canStart) return
     canStart = false
 
-    var keysDown = Set[Int]()
-    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80)
-
-    dom.window.addEventListener("keydown", (e: dom.KeyboardEvent) => {
-      if (validInput(e.keyCode)) {
-        e.preventDefault()
-        e.stopPropagation()
-        if (e.keyCode == 27 || e.keyCode == 80) {
-          paused = !paused
-          if (paused) onpausestart()
-          else onpauseend()
-        }
-        else keysDown += e.keyCode
-      }}, useCapture = false)
-
-    dom.window.addEventListener("keyup", (e: dom.KeyboardEvent) => {
-      if (validInput(e.keyCode)) {
-        e.preventDefault()
-        e.stopPropagation()
-        keysDown -= e.keyCode
-      }}, useCapture = false)
-
     type Ctx2D =
       CanvasRenderingContext2D
     val ctx = canv.getContext("2d")
       .asInstanceOf[Ctx2D]
+
+    var keysDown = Set[Int]()
+    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80)
 
     val gs = initGS(Config(IO {new Input{
       override def leftDown = keysDown.contains(37) || keysDown.contains(65)
@@ -80,6 +73,46 @@ object FTetris {
 
       override def rotateDown = keysDown.contains(32)
     }}))
+
+    var lastState = gs
+    var lastField: Option[GameField] = None
+
+    def pause(): Unit = {
+      drawGradient()
+      val center = Coord(canv.width / 2, canv.height / 2)
+      val linewidth = canv.width / 10
+      val lineheight = canv.height / 5
+      ctx.fillStyle = "red"
+      ctx.fillRect(center.x - linewidth * 2, center.y - lineheight / 2, linewidth, lineheight)
+      ctx.fillRect(center.x + linewidth,     center.y - lineheight / 2, linewidth, lineheight)
+    } andFinally onpausestart()
+
+    def resume(): Unit = {
+      drawGradient()
+      globalTetCoverage(lastState)
+        .map(tc => lastState.field |+| tc)
+        .getOrElse(lastState.field)
+        .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
+    } andFinally onpauseend()
+
+    dom.window.addEventListener("keydown", (e: dom.KeyboardEvent) => {
+      if (validInput(e.keyCode)) {
+        e.preventDefault()
+        e.stopPropagation()
+        if (e.keyCode == 27 || e.keyCode == 80) {
+          paused = !paused
+          if (paused) pause()
+          else resume()
+        }
+        else keysDown += e.keyCode
+      }}, useCapture = false)
+
+    dom.window.addEventListener("keyup", (e: dom.KeyboardEvent) => {
+      if (validInput(e.keyCode)) {
+        e.preventDefault()
+        e.stopPropagation()
+        keysDown -= e.keyCode
+      }}, useCapture = false)
 
     def drawGradient(): Unit = {
       ctx.fillStyle = {
@@ -107,17 +140,21 @@ object FTetris {
     clearAll()
     drawGradient()
     onpointchange(0)
+    onlevelchange(gs.level)
 
     var mainLoop: SetIntervalHandle = null
-    var lastState = gs
-    var lastField: Option[GameField] = None
 
     mainLoop = setInterval(1000d/60d) {
       if (!paused) {
         // have to run here, since running everything at once fails to draw
         val (newState, isOver) = nextFrame(lastState).unsafeRunSync()
-        if (lastState.points != newState.points) onpointchange (newState.points)
-          lastState = newState
+
+        if (lastState.points != newState.points) onpointchange(newState.points)
+        if (lastState.lastClears.count(_.clearTime >= 20) != newState.lastClears.count(_.clearTime >= 20))
+          onlineclear(newState.lastClears.size)
+        if (lastState.level != newState.level) onlevelchange(newState.level)
+
+        lastState = newState
         val newField = globalTetCoverage(lastState)
           .map(tc => lastState.field |+| tc)
         if (newField != lastField) {

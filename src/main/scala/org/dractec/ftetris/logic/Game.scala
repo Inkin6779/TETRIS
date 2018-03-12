@@ -56,22 +56,49 @@ object Game {
   case object Nothing extends Move
   case object Rotate extends Move
 
-  val scoring = Map(
+  type Level = Int
+
+  val lvl0scoring = Map(
     0 -> 0,
     1 -> 40,
     2 -> 100,
     3 -> 300,
     4 -> 1200
   )
+  def scoring(lvl: Level, lines: Int) =
+    lvl0scoring(lines) * (lvl + 1)
+
+  val dropSpeed = Map(
+    0 -> 48,
+    1 -> 43,
+    2 -> 38,
+    3 -> 33,
+    4 -> 28,
+    5 -> 23,
+    6 -> 18,
+    7 -> 13,
+    8 ->  8,
+    9 ->  6,
+    10 -> 5,
+    11 -> 5,
+    12 -> 5,
+    13 -> 4,
+    14 -> 4,
+    15 -> 4,
+    16 -> 3,
+    17 -> 3,
+    18 -> 3
+    // else 2 for convenience
+  )
 
   type FramesPerDrop = Int
   case class DASDelay(hard: Int, soft: Int)
   case class Config(
       input: IO[Input],
+      startLevel: Int = 0,
       random: Random = util.Random,
       boardDims: Coord = Coord(10, 20),
       DAS: DASDelay = DASDelay(16, 6),
-      dropSpeed: FramesPerDrop = 48,
       softDropSpeed: FramesPerDrop = 2,
       rotateDelay: Int = 10, // delay between first rotation and next rotation
       validateGS: Boolean = false
@@ -84,6 +111,7 @@ object Game {
                          currTet: Option[Tetromino],
                          tetSpawnBag: Set[Tile],
                          points: Int,
+                         level: Level,
                          numConsecutiveDrops: Int,
                          lastMove: Move,
                          lastClears: List[LineClear],
@@ -96,6 +124,7 @@ object Game {
        currTet = None,
        tetSpawnBag = Set(),
        points = 0,
+       level = conf.startLevel,
        numConsecutiveDrops = 0,
        lastMove = LeftM, // irrelevant but easier this way
        lastClears = List(),
@@ -115,12 +144,11 @@ object Game {
       else if (gs.currTet.isEmpty) noChange // waiting for tet, do nothing
       else if (inp.softDropDown)
         if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else noChange
-      else if (gs.frameCount % gs.conf.dropSpeed == 0) moveDown(gs) else noChange
+      else if (gs.frameCount % dropSpeed(gs.level) == 0) moveDown(gs) else noChange
     }) map wrapTurn map checkIfOver
   }
 
-  private def handleSpawn(gs: GS): IO[GS] = pickRandom(allTiles diff gs.tetSpawnBag) map { toSpawn =>
-    println("handling spawn")
+  private def handleSpawn(gs: GS): IO[GS] = pickRandom(allTiles diff gs.tetSpawnBag)(gs.conf.random) map { toSpawn =>
     gs.copy(currTet = Tetromino(
         toSpawn,
         (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
@@ -252,11 +280,19 @@ object Game {
         case (x, 0)             => Coord(x, 0) -> None
         case (x, y) if y <= row => Coord(x, y) -> ngs.field(Coord(x, y - 1))
         case (x, y)             => Coord(x, y) -> ngs.field(Coord(x, y))
-      }.flatten.toMap,
-    )}.copy(points = gs.points + scoring(l.length))
+      }.flatten.toMap
+    )}.copy(points = gs.points + scoring(gs.level, l.length)) |> levelUp
   }
 
-  private def pickRandom[T](s: Set[T])(implicit rand: Random = util.Random): IO[T] = IO {
+  private def levelUp(gs: GS): GS = gs.copy(
+    level = if (gs.lastClears.count(gs.frameCount - _.clearTime >= 20) |> { linesCleared =>
+//      val requiredClears = (gs.conf.startLevel * 10 + 10) min (100 max (gs.conf.startLevel * 10 - 50))
+//      linesCleared > (requiredClears + 10 * (gs.level - gs.conf.startLevel))
+      linesCleared >= (gs.level + 1 - gs.conf.startLevel) * 10
+    }) gs.level + 1 else gs.level
+  )
+
+  private def pickRandom[T](s: Set[T])(rand: Random = util.Random): IO[T] = IO {
     val n = rand.nextInt(s.size)
     s.iterator.drop(n).next
   }
