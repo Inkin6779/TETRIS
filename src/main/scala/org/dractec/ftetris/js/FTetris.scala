@@ -44,34 +44,34 @@ object FTetris {
     if (!canStart) return
     canStart = false
 
+    var keysDown = Set[Int]()
+    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80)
+
+    dom.window.addEventListener("keydown", (e: dom.KeyboardEvent) => {
+      if (validInput(e.keyCode)) {
+        e.preventDefault()
+        e.stopPropagation()
+        if (e.keyCode == 27 || e.keyCode == 80) {
+          paused = !paused
+          if (paused) onpausestart()
+          else onpauseend()
+        }
+        else keysDown += e.keyCode
+      }}, useCapture = false)
+
+    dom.window.addEventListener("keyup", (e: dom.KeyboardEvent) => {
+      if (validInput(e.keyCode)) {
+        e.preventDefault()
+        e.stopPropagation()
+        keysDown -= e.keyCode
+      }}, useCapture = false)
+
     type Ctx2D =
       CanvasRenderingContext2D
     val ctx = canv.getContext("2d")
       .asInstanceOf[Ctx2D]
 
-    val gs = initGS(Config(new Input{
-      var keysDown = Set[Int]()
-      val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80)
-
-      dom.window.addEventListener("keydown", (e: dom.KeyboardEvent) => {
-        if (validInput(e.keyCode)) {
-          e.preventDefault()
-          e.stopPropagation()
-          if (e.keyCode == 27 || e.keyCode == 80) {
-            paused = !paused
-            if (paused) onpausestart()
-            else onpauseend()
-          }
-          else keysDown += e.keyCode
-      }}, useCapture = false)
-
-      dom.window.addEventListener("keyup", (e: dom.KeyboardEvent) => {
-        if (validInput(e.keyCode)) {
-          e.preventDefault()
-          e.stopPropagation()
-          keysDown -= e.keyCode
-      }}, useCapture = false)
-
+    val gs = initGS(Config(IO {new Input{
       override def leftDown = keysDown.contains(37) || keysDown.contains(65)
 
       override def rightDown = keysDown.contains(39) || keysDown.contains(68)
@@ -79,7 +79,7 @@ object FTetris {
       override def softDropDown = keysDown.contains(40) || keysDown.contains(83)
 
       override def rotateDown = keysDown.contains(32)
-    }))
+    }}))
 
     def drawGradient(): Unit = {
       ctx.fillStyle = {
@@ -114,12 +114,10 @@ object FTetris {
 
     mainLoop = setInterval(1000d/60d) {
       if (!paused) {
-        val s = for {
-          isOver <- nextFrame
-        } yield isOver
-        val (newState, isOver) = s.run(lastState).value
-        if (lastState.points != newState.points) onpointchange(newState.points)
-        lastState = newState
+        // have to run here, since running everything at once fails to draw
+        val (newState, isOver) = nextFrame(lastState).unsafeRunSync()
+        if (lastState.points != newState.points) onpointchange (newState.points)
+          lastState = newState
         val newField = globalTetCoverage(lastState)
           .map(tc => lastState.field |+| tc)
         if (newField != lastField) {

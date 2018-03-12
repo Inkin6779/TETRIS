@@ -22,6 +22,10 @@ package object dractec {
     def unary_~ : T = if(rand.nextBoolean()) -f else f
   }
 
+  val echo = new {
+    def !(s: Any): Unit = println(s)
+  }
+
   implicit class Finally[T](val res: T) extends AnyVal {
     /** Call on return expression to cause some necessary side effects (ew) afterwards,
       * in order to skip the `val res = ...; todo; res` syntactic construct. */

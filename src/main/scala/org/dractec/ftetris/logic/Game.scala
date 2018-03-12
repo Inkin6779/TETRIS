@@ -3,12 +3,13 @@ package ftetris.logic
 
 import cats._
 import cats.data.State
+import cats.effect.IO
 import cats.implicits._
 import org.dractec.ftetris.logic.Tiles._
 
 import scala.util.Random
 
-/** Game logic and stuff based on the state monad */
+
 object Game {
 
   /* ===== CONVENTIONS =====
@@ -66,8 +67,8 @@ object Game {
   type FramesPerDrop = Int
   case class DASDelay(hard: Int, soft: Int)
   case class Config(
-      input: Input,
-      random: Random = new Random(System.currentTimeMillis),
+      input: IO[Input],
+      random: Random = util.Random,
       boardDims: Coord = Coord(10, 20),
       DAS: DASDelay = DASDelay(16, 6),
       dropSpeed: FramesPerDrop = 48,
@@ -103,22 +104,23 @@ object Game {
        conf)
 
   type GameField = Map[Coord, Option[Tile]]
-  type GameState[T] = State[GS, T]
-  def GameState[T](f: GS => (GS, T)) = State[GS, T](f)
+  type GameState = State[IO[GS], IO[Boolean]]
+  def GameState(f: GS => (GS, Boolean)) = State[GS, Boolean](f)
 
-  def nextFrame = GameState[Boolean] { gs => {
-    handleInput(gs) |> ((gs: GS) => {
+  def nextFrame(gs: GS): IO[(GS, Boolean)] = {
+    handleInput(gs) flatMap ((gs: GS) => gs.conf.input flatMap { inp =>
+      def noChange = IO { gs }
       if (gs.turnsToSpawn.contains(0))
         handleSpawn(gs)
-      else if (gs.currTet.isEmpty) gs // waiting for tet, do nothing
-      else if (gs.conf.input.softDropDown)
-        if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else gs
-      else if (gs.frameCount % gs.conf.dropSpeed == 0) moveDown(gs) else gs
-    }: GS) |> wrapTurn |> checkIfOver
-  }}
+      else if (gs.currTet.isEmpty) noChange // waiting for tet, do nothing
+      else if (inp.softDropDown)
+        if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else noChange
+      else if (gs.frameCount % gs.conf.dropSpeed == 0) moveDown(gs) else noChange
+    }) map wrapTurn map checkIfOver
+  }
 
-  private def handleSpawn(gs: GS): GS = {
-    val toSpawn = pickRandom(allTiles diff gs.tetSpawnBag)
+  private def handleSpawn(gs: GS): IO[GS] = pickRandom(allTiles diff gs.tetSpawnBag) map { toSpawn =>
+    println("handling spawn")
     gs.copy(currTet = Tetromino(
         toSpawn,
         (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
@@ -135,7 +137,7 @@ object Game {
   private def checkIfOver(gs: GS): (GS, Boolean) =
     gs -> (tetHasBlock(gs, _.y < 0) && hasFieldCollision(gs, mapTetYPos(_, _ + 1)))
 
-  private def moveDown(gs: GS): GS = {
+  private def moveDown(gs: GS): IO[GS] = gs.conf.input map { inp =>
     // try to move down
     // if not possible,
     //   schedule new spawn
@@ -154,7 +156,7 @@ object Game {
     {
       val mergedField = gs.field |+| globalTetCoverage(gs)
         .getOrElse(sys.error("Can't move a non-existing currTet downwards!"))
-      val newConsDrops = if (gs.conf.input.softDropDown) gs.numConsecutiveDrops + 1 else 0
+      val newConsDrops = if (inp.softDropDown) gs.numConsecutiveDrops + 1 else 0
       gs.copy(
         turnsToSpawn = calcARE(gs),
         currTet = None,
@@ -174,8 +176,7 @@ object Game {
       .collect{case (y, true) => y}
   }
 
-  private def handleInput(gs: GS): GS = {
-    def inp = gs.conf.input
+  private def handleInput(gs: GS): IO[GS] = gs.conf.input.map { inp =>
     def tryMoveLeft(d: Move) = if (inp.leftDown) tryMoveSideways(gs, LeftM) else d.asRight
     def tryMoveRight(d: Move) = if (inp.rightDown) tryMoveSideways(gs, RightM) else d.asRight
     def tryRotateWhenBtn = if (inp.rotateDown) tryRotate(gs) else Failure
@@ -255,7 +256,7 @@ object Game {
     )}.copy(points = gs.points + scoring(l.length))
   }
 
-  private def pickRandom[T](s: Set[T])(implicit rand: Random = util.Random): T = {
+  private def pickRandom[T](s: Set[T])(implicit rand: Random = util.Random): IO[T] = IO {
     val n = rand.nextInt(s.size)
     s.iterator.drop(n).next
   }
@@ -281,11 +282,10 @@ object Game {
         sys.error("Current tile exists and is overlapping with static field."))
     // cant have a current tet defined and a new one scheduled for spawn at the same time
     if (gs.currTet.nonEmpty && gs.turnsToSpawn.nonEmpty)
-      sys.error("currTet is defined and a new spawn is scheduled.")
+      sys.error("currTet is defined yet a new spawn is scheduled.")
     gs
   }
 
-  // TODO: replace with reader monad aka kleisli?
   /** Checks whether the according key is currently pressed
     * Methods are called max. once every `nextFrame` */
   trait Input {
