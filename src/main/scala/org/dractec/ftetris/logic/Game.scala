@@ -38,8 +38,8 @@ object Game {
 
    ========================= */
 
-  // TODO: soft drop only when button down
-  // TODO:
+  // TODO: random is not pure, so use IO monad instead ?
+  // TODO: return IO[Boolean] instead of Boolean in nextFrame, make input and random IOs
 
   implicit val mapMergeSG = new Semigroup[Map[Coord, Option[Tile]]] {
     override def combine(x: Map[Coord, Option[Tile]], y: Map[Coord, Option[Tile]]) =
@@ -81,6 +81,7 @@ object Game {
   case class GS private (frameCount: Frame,
                          field: GameField,
                          currTet: Option[Tetromino],
+                         tetSpawnBag: Set[Tile],
                          points: Int,
                          numConsecutiveDrops: Int,
                          lastMove: Move,
@@ -92,6 +93,7 @@ object Game {
     GS(frameCount = 0,
        field = initField(conf),
        currTet = None,
+       tetSpawnBag = Set(),
        points = 0,
        numConsecutiveDrops = 0,
        lastMove = LeftM, // irrelevant but easier this way
@@ -105,20 +107,30 @@ object Game {
   def GameState[T](f: GS => (GS, T)) = State[GS, T](f)
 
   def nextFrame = GameState[Boolean] { gs => {
-    def handleStart = handleInput(gs) |> ((gs: GS) => {
+    handleInput(gs) |> ((gs: GS) => {
       if (gs.turnsToSpawn.contains(0))
-        gs.copy(currTet = Tetromino(
-          tiles(gs.conf.random.nextInt(tiles.length)),
-          (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
-          pos = Coord(3, -2)).some, turnsToSpawn = None)
+        handleSpawn(gs)
       else if (gs.currTet.isEmpty) gs // waiting for tet, do nothing
-//      else if (gs.inDrop)
       else if (gs.conf.input.softDropDown)
         if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else gs
       else if (gs.frameCount % gs.conf.dropSpeed == 0) moveDown(gs) else gs
-    }: GS) |> wrapTurn
-    handleStart |> checkIfOver
+    }: GS) |> wrapTurn |> checkIfOver
   }}
+
+  private def handleSpawn(gs: GS): GS = {
+    val toSpawn = pickRandom(allTiles diff gs.tetSpawnBag)
+    gs.copy(currTet = Tetromino(
+        toSpawn,
+        (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
+        pos = Coord(3, -2)
+      ).some,
+      tetSpawnBag = {
+        val newBag = gs.tetSpawnBag + toSpawn
+        if (newBag == allTiles) Set() else newBag
+      },
+      turnsToSpawn = None
+    )
+  }
 
   private def checkIfOver(gs: GS): (GS, Boolean) =
     gs -> (tetHasBlock(gs, _.y < 0) && hasFieldCollision(gs, mapTetYPos(_, _ + 1)))
@@ -140,7 +152,6 @@ object Game {
     if (tetHasBlock(gs, _.y == gs.conf.boardDims.y - 1) ||
         hasFieldCollision(gs, mapTetYPos(_, _ + 1)))
     {
-      // TODO: cant move down, end turn
       val mergedField = gs.field |+| globalTetCoverage(gs)
         .getOrElse(sys.error("Can't move a non-existing currTet downwards!"))
       val newConsDrops = if (gs.conf.input.softDropDown) gs.numConsecutiveDrops + 1 else 0
@@ -174,7 +185,6 @@ object Game {
     } //|> {_.copy(inDrop = gs.inDrop || gs.currTet.isDefined && inp.softDropDown)}
   }
 
-  // TODO: if hitting a wall, rotate and push inside instead?
   private def tryRotate(gs: GS): Either[GS, Move] = {
     if (!tetHasBlock(gs,
       // if coord taken or outside of field, fail check
@@ -233,7 +243,6 @@ object Game {
     turnsToSpawn = gs.turnsToSpawn.map(_ - 1)
   ) |> handleLineClear |> optValidate
 
-  // TODO: handle line clear somehow
   private def handleLineClear(gs: GS): GS = gs.lastClears.collect {
     case LineClear(row, ct) if gs.frameCount - ct == 20 => row
   }.sorted |> {l => l.foldLeft(gs){ // smallest row ind first, so we dont have to fit indices while collapsing
@@ -246,10 +255,14 @@ object Game {
     )}.copy(points = gs.points + scoring(l.length))
   }
 
+  private def pickRandom[T](s: Set[T])(implicit rand: Random = util.Random): T = {
+    val n = rand.nextInt(s.size)
+    s.iterator.drop(n).next
+  }
 
   private def optValidate(gs: GS): GS = if (gs.conf.validateGS) validateRules(gs) else gs
 
-  def globalTetCoverage(implicit gs: GS, f: Tetromino => Tetromino = identity): Option[CoverageBox] =
+  def globalTetCoverage(gs: GS, f: Tetromino => Tetromino = identity): Option[CoverageBox] =
     gs.currTet.map(f).map(tet => coverage(tet.tile)(tet.rotation).mapKeys(_ |+| tet.pos))
 
   private def initField(conf: Config): GameField = (for {
@@ -269,11 +282,6 @@ object Game {
     // cant have a current tet defined and a new one scheduled for spawn at the same time
     if (gs.currTet.nonEmpty && gs.turnsToSpawn.nonEmpty)
       sys.error("currTet is defined and a new spawn is scheduled.")
-    // cant have a tet not defined and be in drop
-//    if (gs.currTet.isEmpty && gs.inDrop)
-//      sys.error("currTet is not defined but is in drop.")
-
-
     gs
   }
 

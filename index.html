@@ -23,10 +23,18 @@
         },
         function() {
             alert("GAME OVER");
+        },
+        function() {
+            document.getElementById("status").innerHTML = "<b>PAUSED</b>"
+        },
+        function() {
+            document.getElementById("status").innerHTML = "&nbsp;"
         }
     );
 }</script>
-<div style="margin: auto; width: 300px;">
+<div style="margin: auto; width: 300px; text-align: center;">
+    <span style="font-size:20px; color: red;" id="status">&nbsp;</span>
+    <hr/>
     <div style="display:flex; justify-content:space-around;">
         <div><button onclick="startGame()" style="margin: auto;">START GAME</button></div>
         <div><p id="score" style="font-size: 14px; margin: auto;">Score: 0</p></div>

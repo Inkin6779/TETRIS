@@ -53,7 +53,7 @@ object Tiles {
   case object Tee extends Tile
   case object SnakeR extends Tile
   case object SnakeL extends Tile
-  val tiles = List(Straight, Box, LeftL, RightL, Tee, SnakeR, SnakeL)
+  val allTiles = Set[Tile](Straight, Box, LeftL, RightL, Tee, SnakeR, SnakeL)
 
   sealed trait Rotation
   case object HorizDown extends Rotation

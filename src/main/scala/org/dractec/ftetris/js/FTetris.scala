@@ -20,6 +20,7 @@ object FTetris {
   // TODO: add callback API
 
   var canStart: Boolean = true
+  var paused: Boolean = false
 
   val tileColors = Map[Tile, String](
     Straight -> "#4AC948",
@@ -35,7 +36,9 @@ object FTetris {
   def startGame(
      canv: html.Canvas,
      onpointchange: js.Function1[Int, Unit],
-     ongameend: js.Function0[Unit]
+     ongameend: js.Function0[Unit],
+     onpausestart: js.Function0[Unit],
+     onpauseend: js.Function0[Unit],
    ): Unit = {
 
     if (!canStart) return
@@ -48,13 +51,18 @@ object FTetris {
 
     val gs = initGS(Config(new Input{
       var keysDown = Set[Int]()
-      val validInput = Set(37, 65, 39, 68, 40, 83, 32)
+      val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80)
 
       dom.window.addEventListener("keydown", (e: dom.KeyboardEvent) => {
         if (validInput(e.keyCode)) {
           e.preventDefault()
           e.stopPropagation()
-          keysDown += e.keyCode
+          if (e.keyCode == 27 || e.keyCode == 80) {
+            paused = !paused
+            if (paused) onpausestart()
+            else onpauseend()
+          }
+          else keysDown += e.keyCode
       }}, useCapture = false)
 
       dom.window.addEventListener("keyup", (e: dom.KeyboardEvent) => {
@@ -105,26 +113,27 @@ object FTetris {
     var lastField: Option[GameField] = None
 
     mainLoop = setInterval(1000d/60d) {
-      val s = for {
-        isOver <- nextFrame
-      } yield isOver
-      val (newState, isOver) = s.run(lastState).value
-      if (lastState.points != newState.points) onpointchange(newState.points)
-      lastState = newState
-      val newField = globalTetCoverage(lastState)
-        .map(tc => lastState.field |+| tc)
-      if (newField != lastField) {
-        drawGradient()
-        newField.getOrElse(lastState.field)
-          .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
-        lastField = newField
+      if (!paused) {
+        val s = for {
+          isOver <- nextFrame
+        } yield isOver
+        val (newState, isOver) = s.run(lastState).value
+        if (lastState.points != newState.points) onpointchange(newState.points)
+        lastState = newState
+        val newField = globalTetCoverage(lastState)
+          .map(tc => lastState.field |+| tc)
+        if (newField != lastField) {
+          drawGradient()
+          newField.getOrElse(lastState.field)
+            .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
+          lastField = newField
+        }
+        if (isOver) {
+          clearInterval(mainLoop)
+          canStart = true
+          ongameend()
+        }
       }
-      if (isOver) {
-        clearInterval(mainLoop)
-        canStart = true
-        ongameend()
-      }
-      gs -> ()
     }
   }
 }
