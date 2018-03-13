@@ -55,6 +55,7 @@ object Game {
   case object RightM extends Move
   case object Nothing extends Move
   case object Rotate extends Move
+  case object Drop extends Move
 
   type Level = Int
 
@@ -128,7 +129,7 @@ object Game {
        numConsecutiveDrops = 0,
        lastMove = Nothing, // irrelevant but easier this way
        lastClears = List(),
-       lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0),
+       lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0, Drop -> 0),
        turnsToSpawn = Some(1),
        conf)
 
@@ -137,11 +138,8 @@ object Game {
   def nextFrame(gs: GS): IO[(GS, Boolean)] = {
     handleInput(gs) flatMap ((gs: GS) => gs.conf.input flatMap { inp =>
       def noChange = IO.pure(gs)
-      if (gs.turnsToSpawn.contains(0))
-        handleSpawn(gs)
+      if (gs.turnsToSpawn.contains(0)) handleSpawn(gs)
       else if (gs.currTet.isEmpty) noChange // waiting for tet, do nothing
-      else if (inp.softDropDown)
-        if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else noChange
       else if (gs.frameCount % dropSpeed.getOrElse(gs.level, 2) == 0) moveDown(gs) else noChange
     }) map wrapTurn map checkIfOver
   }
@@ -196,15 +194,22 @@ object Game {
       .collect{case (y, true) => y}
   }
 
-  private def handleInput(gs: GS): IO[GS] = gs.conf.input.map { inp =>
+  private def handleInput(gs: GS): IO[GS] = gs.conf.input.flatMap { inp =>
     // first sucessfully updated gs left, last recognized button press as right
     def tryMoveLeft(d: Move) = if (inp.leftDown) tryMoveSideways(gs, LeftM) else d.asRight
     def tryMoveRight(d: Move) = if (inp.rightDown) tryMoveSideways(gs, RightM) else d.asRight
-    def tryRotateWhenBtn = if (inp.rotateDown) tryRotate(gs) else Failure
-    tryRotateWhenBtn flatMap tryMoveLeft flatMap tryMoveRight match {
+    def trySoftDrop(d: Move) = if (inp.softDropDown) tryDrop(gs) else IO.pure(d.asRight)
+    def tryRotateWhenBtn(d: Move) = if (inp.rotateDown) tryRotate(gs) else d.asRight
+    trySoftDrop(Nothing) map (_ flatMap tryRotateWhenBtn flatMap tryMoveLeft flatMap tryMoveRight match {
       case Left(res) => res
       case Right(dir) => gs.copy(lastMove = dir)
-    }
+    })
+  }
+
+  private def tryDrop(gs: GS): IO[Either[GS, Move]] = {
+    if (gs.currTet.isDefined && gs.frameCount % gs.conf.softDropSpeed == 0)
+      moveDown(gs).map(saveMove(_, Rotate)).map(_.asLeft)
+    else IO.pure(Drop.asRight)
   }
 
   private def tryRotate(gs: GS): Either[GS, Move] = {
@@ -307,9 +312,9 @@ object Game {
   def validateRules(gs: GS): GS = {
     // TODO: change to Validated somehow, accumulating errors
     // current tile cant overlap with static field
-    globalTetCoverage(gs).foreach(tc =>
-      if (gs.field.exists { case (c, v) => tc.getOrElse(c, None).isDefined && v.isDefined })
-        sys.error("Current tile exists and is overlapping with static field."))
+//    globalTetCoverage(gs).foreach(tc =>
+//      if (gs.field.exists { case (c, v) => tc.getOrElse(c, None).isDefined && v.isDefined })
+//        sys.error("Current tile exists and is overlapping with static field."))
     // cant have a current tet defined and a new one scheduled for spawn at the same time
     if (gs.currTet.nonEmpty && gs.turnsToSpawn.nonEmpty)
       sys.error("currTet is defined yet a new spawn is scheduled.")

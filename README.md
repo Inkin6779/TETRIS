@@ -43,6 +43,7 @@ can use the JS 'API':
         onlevelchange: Int => Void,
         onlineclear: Int => Void,
         ongameend: () => Void,
+        touchRootNode: [OPT] dom.Node,
         onpausestart: [OPT] () => Void,
         onpauseend: [OPT] () => Void
     ); 
@@ -52,6 +53,11 @@ to render in, e.g. `document.getElementByID('myCanvas')`.
 The game fits itself into the canvas dimensions, but it 
 assumes that the equation `height = 2 * width` holds, for
 aesthetic reasons.
+
+`touchRootNode` enables the user to specify the dom node 
+which receives all touch event handlers. If not specified,
+the canvas is used. This should encompass the whole area
+which allows touch input, but not the <body> tag itself.
 
 The others are callbacks that either take an `int` - the
 updated value - or no arguments and they all return nothing.
