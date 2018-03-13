@@ -64,8 +64,6 @@ object FTetris {
     canStart = false
 
     val touchRoot: dom.Node = if (touchRootNode == null) canv else touchRootNode
-    echo! s"Got touchRoot = $touchRoot"
-    if (touchRootNode == null) echo! "WAAAAT"
 
     type Ctx2D =
       CanvasRenderingContext2D

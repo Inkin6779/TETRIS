@@ -4113,12 +4113,6 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
   };
   this.canStart$1 = false;
   var touchRoot = ((touchRootNode === null) ? canv : touchRootNode);
-  var x = $m_Lorg_dractec_package$().echo$1;
-  x.$$bang__O__(new $c_s_StringContext().init___sc_Seq(new $c_sjs_js_WrappedArray().init___sjs_js_Array(["Got touchRoot = ", ""])).s__sc_Seq__T(new $c_sjs_js_WrappedArray().init___sjs_js_Array([touchRoot])));
-  if ((touchRootNode === null)) {
-    var x$2 = $m_Lorg_dractec_package$().echo$1;
-    x$2.$$bang__O__("WAAAAT")
-  };
   var ctx = canv.getContext("2d");
   var elem = $as_sci_Set($m_s_Predef$().Set$2.apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()));
   var keysDown = new $c_sr_ObjectRef().init___O(elem);
@@ -4239,9 +4233,9 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
         if (($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$2.elem$1).level$1 !== newState.level$1)) {
           onlevelchange$1(newState.level$1)
         };
-        var x$1 = $as_Lorg_dractec_ftetris_logic_Game$Move(lastTouchMove$2.elem$1);
+        var x = $as_Lorg_dractec_ftetris_logic_Game$Move(lastTouchMove$2.elem$1);
         var x$5 = $m_Lorg_dractec_ftetris_logic_Game$Rotate$();
-        if ((((x$1 !== null) && (x$1 === x$5)) && ((($uI(newState.lastMoveTimes$1.apply__O__O($m_Lorg_dractec_ftetris_logic_Game$Rotate$())) - newState.frameCount$1) | 0) < gs$2.conf$1.rotateDelay$1))) {
+        if ((((x !== null) && (x === x$5)) && ((($uI(newState.lastMoveTimes$1.apply__O__O($m_Lorg_dractec_ftetris_logic_Game$Rotate$())) - newState.frameCount$1) | 0) < gs$2.conf$1.rotateDelay$1))) {
           var x$6 = $m_Lorg_dractec_package$().echo$1;
           x$6.$$bang__O__("Resetting lastTouchMove from rotate");
           lastTouchMove$2.elem$1 = $m_Lorg_dractec_ftetris_logic_Game$Nothing$()
