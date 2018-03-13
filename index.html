@@ -25,7 +25,7 @@
             $("score", "Score: " + pts.toString());
         },
         function (lvl) {
-           $("level", "<b>Level: " + lvl + "</b>");
+            $("level", "<b>Level: " + lvl + "</b>");
         },
         function (lcs) {
             $("linescleared", "Lines Cleared: " + lcs);
@@ -51,7 +51,7 @@
     <canvas width="300px" height="600px" id="mainCanv" style="margin:auto; border:2px solid #000000;">
         Your browser must support the html5 canvas. Sorry, bro.
     </canvas>
-    <p>Built by </p>
+    <p>Built by <a href="https://github.com/XDracam">XDracam</a> with Love</p>
 </div>
 <script>document.getElementById("highscore").innerText = "Highscore: " + getHighscore().toString();</script>
 </body>
