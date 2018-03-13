@@ -127,7 +127,7 @@ object FTetris {
       val lineheight = canv.height / 5
       ctx.fillStyle = "red"
       ctx.fillRect(center.x - linewidth * 1.5, center.y - lineheight / 2, linewidth, lineheight)
-      ctx.fillRect(center.x + linewidth * 0.5,     center.y - lineheight / 2, linewidth, lineheight)
+      ctx.fillRect(center.x + linewidth * 0.5, center.y - lineheight / 2, linewidth, lineheight)
     } andFinally onpausestart()
 
     def resume(): Unit = {
@@ -178,7 +178,7 @@ object FTetris {
 
     def handleTouchEnd(e: TouchEvent): Unit = {
       e.preventDefault()
-      if (movesSinceTouchStart.lengthCompare(1) == 0)
+      if (moveIsDrop.isEmpty || movesSinceTouchStart.lengthCompare(1) == 0)
         lastTouchMove = Rotate
       else lastTouchMove = Nothing
       moveIsDrop = None
@@ -191,7 +191,7 @@ object FTetris {
     touchRoot.addEventListener("touchmove", (e: TouchEvent) => {
       // TODO: rework control flow
       e.preventDefault()
-      val thresh = canv.width / gs.conf.boardDims.x / 20
+      val thresh = canv.width / gs.conf.boardDims.x / 30
       val last = movesSinceTouchStart.top
       movesSinceTouchStart.push(e)
       val cp = pos(e)
