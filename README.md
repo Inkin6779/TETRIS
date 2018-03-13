@@ -21,6 +21,8 @@ The highscore is stored using cookies.
 
 *Local file cookies do not work in Google Chrome.* 
 
+[You can play the newest version from this repo right here on GitHub.](https://xdracam.github.io/functional-tetris/)
+
 ### Building yourself
 
 Clone the project and treat as a usual ScalaJS project:
