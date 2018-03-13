@@ -163,16 +163,19 @@ object FTetris {
     // soft drop while swiping down
     // tap to rotate
 
-    def pos(e: TouchEvent) = e.touches(0) |> { t: Touch => {
-      val cr = canv.getBoundingClientRect()
-      Coord(
-        (t.clientX - cr.left).toInt,
-        (t.clientY - cr.top).toInt
-      )
-    }}
+    def pos(e: TouchEvent, i: Int = 0) =
+      if (i >= e.touches.length) None
+      else Some(e.touches(i)) map { t: Touch => {
+        val cr = canv.getBoundingClientRect()
+        Coord(
+          (t.clientX - cr.left).toInt,
+          (t.clientY - cr.top).toInt
+        )
+      }}
 
     val movesSinceTouchStart = mutable.Stack[TouchEvent]()
     var moveIsDrop: Option[Boolean] = false.some
+    var lastPause = 0l
 
     def handleTouchEnd(e: TouchEvent): Unit = {
       e.preventDefault()
@@ -187,26 +190,39 @@ object FTetris {
       movesSinceTouchStart.push(e)
     })
     touchRoot.addEventListener("touchmove", (e: TouchEvent) => {
-      // TODO: rework control flow
+      // TODO: Rework control flow. Right now it's a mess.
       e.preventDefault()
+      def currTime = System.currentTimeMillis()
       val thresh = canv.width / gs.conf.boardDims.x / 30
       val last = movesSinceTouchStart.top
       movesSinceTouchStart.push(e)
-      val cp = pos(e)
-      val lp = pos(last)
-      if (moveIsDrop.getOrElse(true)) {
-        if ((cp.y - lp.y) > (lp.x - cp.x).abs && (cp.y - lp.y) > thresh) { // soft drop
-          lastTouchMove = Drop
-          moveIsDrop = true.some
+      val cp = pos(e).get
+      val lp = pos(last).get
+      val cp1opt = pos(e, 1)
+      val lp1opt = pos(last, 1)
+      //noinspection UnitInMap
+      cp1opt.flatMap(cp1 => lp1opt.map(lp1 =>
+        if ((cp.y - lp.y) > thresh && (cp1.y - lp1.y) > thresh && (currTime - lastPause) > 500) {
+          lastPause = currTime
+          paused = !paused
+          if (paused) pause()
+          else resume()
         }
-        else if (moveIsDrop.isEmpty && (cp.x - lp.x).abs > thresh)
-          moveIsDrop = false.some
-        else lastTouchMove = Nothing
-      }
-      if (moveIsDrop.contains(false)) {
-        if (cp.x - lp.x > thresh) lastTouchMove = RightM
-        else if (lp.x - cp.x > thresh) lastTouchMove = LeftM
-        else lastTouchMove = Nothing
+      )).getOrElse{
+        if (moveIsDrop.getOrElse(true)) {
+          if ((cp.y - lp.y) > (lp.x - cp.x).abs && (cp.y - lp.y) > thresh) { // soft drop
+            lastTouchMove = Drop
+            moveIsDrop = true.some
+          }
+          else if (moveIsDrop.isEmpty && (cp.x - lp.x).abs > thresh)
+            moveIsDrop = false.some
+          else lastTouchMove = Nothing
+        }
+        if (moveIsDrop.contains(false)) {
+          if (cp.x - lp.x > thresh) lastTouchMove = RightM
+          else if (lp.x - cp.x > thresh) lastTouchMove = LeftM
+          else lastTouchMove = Nothing
+        }
       }
     })
     touchRoot.addEventListener("touchend", handleTouchEnd)
