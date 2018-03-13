@@ -34,8 +34,7 @@ package object dractec {
 
   implicit class KTApply[T](val that: T) extends AnyVal {
     /** Kotlin's `apply` - equal to `Some(that).map(f).get`.
-      * Applies a function to a value with less nesting.
-      * Note that this destroys the entire idea of monadic types.
+      * Applies a function to a value causing less nesting.
       * Might be stolen directly from F# syntax...
       **/
     def |>[A](f: T => A ): A = f(that)
@@ -84,8 +83,12 @@ package object dractec {
   }
 
   implicit class RichMap[A, B](val map: Map[A, B]) extends AnyVal {
+    /** (!) Inefficient on larger maps (!) */
     def mapKeys[A1](f: A => A1): Map[A1, B] = map.map({ case (a, b) => (f(a), b) })
   }
+
+  // === Extractors for parsing certain
+  // === numeric types from Strings or AnyVals
 
   object D {
     def unapply(arg: Any): Option[Double] =

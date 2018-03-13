@@ -101,7 +101,7 @@ object Game {
       DAS: DASDelay = DASDelay(16, 6),
       softDropSpeed: FramesPerDrop = 2,
       rotateDelay: Int = 10, // delay between first rotation and next rotation
-      validateGS: Boolean = false
+      validateGS: Boolean = true
   )
 
   case class LineClear(row: Int, clearTime: Frame)
@@ -126,25 +126,23 @@ object Game {
        points = 0,
        level = conf.startLevel,
        numConsecutiveDrops = 0,
-       lastMove = LeftM, // irrelevant but easier this way
+       lastMove = Nothing, // irrelevant but easier this way
        lastClears = List(),
        lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0),
        turnsToSpawn = Some(1),
        conf)
 
   type GameField = Map[Coord, Option[Tile]]
-  type GameState = State[IO[GS], IO[Boolean]]
-  def GameState(f: GS => (GS, Boolean)) = State[GS, Boolean](f)
 
   def nextFrame(gs: GS): IO[(GS, Boolean)] = {
     handleInput(gs) flatMap ((gs: GS) => gs.conf.input flatMap { inp =>
-      def noChange = IO { gs }
+      def noChange = IO.pure(gs)
       if (gs.turnsToSpawn.contains(0))
         handleSpawn(gs)
       else if (gs.currTet.isEmpty) noChange // waiting for tet, do nothing
       else if (inp.softDropDown)
         if (gs.frameCount % gs.conf.softDropSpeed == 0) moveDown(gs) else noChange
-      else if (gs.frameCount % dropSpeed(gs.level) == 0) moveDown(gs) else noChange
+      else if (gs.frameCount % dropSpeed.getOrElse(gs.level, 2) == 0) moveDown(gs) else noChange
     }) map wrapTurn map checkIfOver
   }
 
@@ -166,12 +164,6 @@ object Game {
     gs -> (tetHasBlock(gs, _.y < 0) && hasFieldCollision(gs, mapTetYPos(_, _ + 1)))
 
   private def moveDown(gs: GS): IO[GS] = gs.conf.input map { inp =>
-    // try to move down
-    // if not possible,
-    //   schedule new spawn
-    //   and book points
-    //   and reset inDrop
-    //   and set currTet to None
     def calcARE(gs: GS): Option[Int] = {
       //    bottom 2 rows: 10 frames
       //    then each 4 rows above 2 frames longer
@@ -205,13 +197,14 @@ object Game {
   }
 
   private def handleInput(gs: GS): IO[GS] = gs.conf.input.map { inp =>
+    // first sucessfully updated gs left, last recognized button press as right
     def tryMoveLeft(d: Move) = if (inp.leftDown) tryMoveSideways(gs, LeftM) else d.asRight
     def tryMoveRight(d: Move) = if (inp.rightDown) tryMoveSideways(gs, RightM) else d.asRight
     def tryRotateWhenBtn = if (inp.rotateDown) tryRotate(gs) else Failure
     tryRotateWhenBtn flatMap tryMoveLeft flatMap tryMoveRight match {
       case Left(res) => res
       case Right(dir) => gs.copy(lastMove = dir)
-    } //|> {_.copy(inDrop = gs.inDrop || gs.currTet.isDefined && inp.softDropDown)}
+    }
   }
 
   private def tryRotate(gs: GS): Either[GS, Move] = {
@@ -286,8 +279,10 @@ object Game {
 
   private def levelUp(gs: GS): GS = gs.copy(
     level = if (gs.lastClears.count(gs.frameCount - _.clearTime >= 20) |> { linesCleared =>
+      // Tetris wiki specs: (confusing, unbalanced)
 //      val requiredClears = (gs.conf.startLevel * 10 + 10) min (100 max (gs.conf.startLevel * 10 - 50))
 //      linesCleared > (requiredClears + 10 * (gs.level - gs.conf.startLevel))
+      // Observed specs:
       linesCleared >= (gs.level + 1 - gs.conf.startLevel) * 10
     }) gs.level + 1 else gs.level
   )
@@ -310,11 +305,10 @@ object Game {
   private def Failure = Nothing.asRight
 
   def validateRules(gs: GS): GS = {
-    // TODO: validation rules aka 'unit test'
     // TODO: change to Validated somehow, accumulating errors
     // current tile cant overlap with static field
     globalTetCoverage(gs).foreach(tc =>
-      if (gs.field.exists { case (c, v) => tc(c).isDefined && v.isDefined })
+      if (gs.field.exists { case (c, v) => tc.getOrElse(c, None).isDefined && v.isDefined })
         sys.error("Current tile exists and is overlapping with static field."))
     // cant have a current tet defined and a new one scheduled for spawn at the same time
     if (gs.currTet.nonEmpty && gs.turnsToSpawn.nonEmpty)

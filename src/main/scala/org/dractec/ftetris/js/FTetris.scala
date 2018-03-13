@@ -9,15 +9,13 @@ import scala.scalajs.js.timers._
 import org.dractec.ftetris.logic.Tiles._
 import org.dractec.ftetris.logic.Game._
 import org.scalajs.dom
-import cats._
-import cats.data.{State, _}
 import cats.implicits._
 import cats.effect._
 
 @JSExportTopLevel("FTetris")
 object FTetris {
 
-  // TODO: add callback API
+  // TODO: add callback API docs
 
   var canStart: Boolean = true
   var paused: Boolean = false
@@ -83,8 +81,8 @@ object FTetris {
       val linewidth = canv.width / 10
       val lineheight = canv.height / 5
       ctx.fillStyle = "red"
-      ctx.fillRect(center.x - linewidth * 2, center.y - lineheight / 2, linewidth, lineheight)
-      ctx.fillRect(center.x + linewidth,     center.y - lineheight / 2, linewidth, lineheight)
+      ctx.fillRect(center.x - linewidth * 1.5, center.y - lineheight / 2, linewidth, lineheight)
+      ctx.fillRect(center.x + linewidth * 0.5,     center.y - lineheight / 2, linewidth, lineheight)
     } andFinally onpausestart()
 
     def resume(): Unit = {
@@ -142,7 +140,7 @@ object FTetris {
     onpointchange(0)
     onlevelchange(gs.level)
 
-    var mainLoop: SetIntervalHandle = null
+    var mainLoop: Option[SetIntervalHandle] = None
 
     mainLoop = setInterval(1000d/60d) {
       if (!paused) {
@@ -164,11 +162,11 @@ object FTetris {
           lastField = newField
         }
         if (isOver) {
-          clearInterval(mainLoop)
+          mainLoop.foreach(clearInterval)
           canStart = true
           ongameend()
         }
       }
-    }
+    }.some
   }
 }
