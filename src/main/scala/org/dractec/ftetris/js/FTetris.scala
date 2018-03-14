@@ -1,8 +1,6 @@
 package org.dractec
 package ftetris.js
 
-import cats.Functor
-
 import scalajs.js.annotation._
 import org.scalajs.dom._
 
@@ -13,13 +11,24 @@ import org.dractec.ftetris.logic.Game._
 import org.scalajs.dom
 import cats.implicits._
 import cats.effect._
+import org.scalajs.dom.raw.HTMLImageElement
 
 import scala.collection.mutable
 
 @JSExportTopLevel("FTetris")
 object FTetris {
 
-  // TODO: add callback API docs
+  @js.native
+  trait GameConf extends js.Object {
+    val canv: html.Canvas = js.native
+    val onpointchange: js.Function1[Int, Unit] = js.native
+    val onlevelchange: js.Function1[Int, Unit] = js.native
+    val onlineclear: js.Function1[Int, Unit] = js.native
+    val touchRootNode: dom.Node = js.native
+    val ongameend: js.Function0[Unit] = js.native
+    val onpausestart: js.Function0[Unit] = js.native
+    val onpauseend: js.Function0[Unit] = js.native
+  }
 
   var canStart: Boolean = true
   var paused: Boolean = false
@@ -49,26 +58,25 @@ object FTetris {
   }
 
   @JSExport
-  def startGame(
-     canv: html.Canvas,
-     onpointchange: js.Function1[Int, Unit],
-     onlevelchange: js.Function1[Int, Unit],
-     onlineclear: js.Function1[Int, Unit],
-     ongameend: js.Function0[Unit],
-     touchRootNode: dom.Node = null,
-     onpausestart: js.Function0[Unit] = () => {},
-     onpauseend: js.Function0[Unit] = () => {}
-   ): Unit = {
+  def startGame(gc: GameConf): Unit = {
 
     if (!canStart) return
     canStart = false
 
-    val touchRoot: dom.Node = if (touchRootNode == null) canv else touchRootNode
+    val touchRoot: dom.Node = if (js.isUndefined(gc.touchRootNode)) gc.canv else gc.touchRootNode
 
     type Ctx2D =
       CanvasRenderingContext2D
-    val ctx = canv.getContext("2d")
+    val ctx = gc.canv.getContext("2d")
       .asInstanceOf[Ctx2D]
+
+//    def callIfDef(f: js.Function, i: Int = 0): Unit = f match {
+//      case g: js.Function0[Unit] if !js.isUndefined(f) => g()
+//      case g: js.Function1[Int, Unit] if !js.isUndefined(f) => g(i)
+//      case _ => // nothing since not defined
+//    }
+
+    def callIfDef(f: js.Function0[Unit]): Unit = if (!js.isUndefined(f)) f()
 
     var keysDown = Set[Int]()
     var lastTouchMove: Move = Nothing
@@ -90,43 +98,61 @@ object FTetris {
 
   // __________ DRAWING FUNCTIONS __________
 
+    def gradientStyle = {
+      val grd = ctx.createLinearGradient(0, 0, 0, gc.canv.height)
+      grd.addColorStop(0, "black")
+      grd.addColorStop(1, "grey")
+      grd
+    }
+
     def drawGradient(): Unit = {
-      ctx.fillStyle = {
-        val grd = ctx.createLinearGradient(0, 0, 0, canv.height)
-        grd.addColorStop(0, "black")
-        grd.addColorStop(1, "grey")
-        grd
-      }
-      ctx.fillRect(0, 0, canv.width, canv.height)
+      ctx.fillStyle = gradientStyle
+      ctx.fillRect(0, 0, gc.canv.width, gc.canv.height)
+      drawSneakyGrid()
     }
 
     def clearAll(): Unit = {
-      ctx.clearRect(0, 0, canv.width, canv.height)
+      ctx.clearRect(0, 0, gc.canv.width, gc.canv.height)
+    }
+
+    def drawSneakyGrid(): Unit = {
+      val widthPerTile = gc.canv.width / gs.conf.boardDims.x
+      val heightPerTile = gc.canv.height / gs.conf.boardDims.y
+      ctx.strokeStyle = "black"
+      ctx.lineWidth = 1
+      ctx.globalAlpha = 0.1
+      for (x <- 0 until gs.conf.boardDims.x) {
+        ctx.strokeRect(x * widthPerTile, 0, 1, gc.canv.height)
+      }
+      for (y <- 0 until gs.conf.boardDims.y) {
+        ctx.strokeRect(0, y * heightPerTile, gc.canv.width, 1)
+      }
+      ctx.globalAlpha = 1
     }
 
     def drawTile(tile: Tile, coord: Coord): Unit = {
-      //      println(s"Drawing tile $coord")
-      val widthPerTile = canv.width / gs.conf.boardDims.x
-      val heightPerTile = canv.height / gs.conf.boardDims.y
-      // TODO print warning if not equal?
-      ctx.fillStyle = tileColors(tile) //"#49fb35" // neon green
+      val widthPerTile = gc.canv.width / gs.conf.boardDims.x
+      val heightPerTile = gc.canv.height / gs.conf.boardDims.y
+      ctx.fillStyle = tileColors(tile)
       ctx.fillRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
-      ctx.lineWidth = 1
-      ctx.fillStyle = "black"
-      ctx.rect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
+      ctx.globalAlpha = 0.1
+      ctx.strokeStyle = gradientStyle
+      ctx.lineWidth = 2
+      ctx.strokeRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
+      ctx.globalAlpha = 1
     }
 
   // __________ PAUSE HANDLING __________
 
     def pause(): Unit = {
       drawGradient()
-      val center = Coord(canv.width / 2, canv.height / 2)
-      val linewidth = canv.width / 10
-      val lineheight = canv.height / 5
+      val center = Coord(gc.canv.width / 2, gc.canv.height / 2)
+      val linewidth = gc.canv.width / 10
+      val lineheight = gc.canv.height / 5
       ctx.fillStyle = "red"
       ctx.fillRect(center.x - linewidth * 1.5, center.y - lineheight / 2, linewidth, lineheight)
       ctx.fillRect(center.x + linewidth * 0.5, center.y - lineheight / 2, linewidth, lineheight)
-    } andFinally onpausestart()
+    } andFinally callIfDef(gc.onpausestart)
 
     def resume(): Unit = {
       drawGradient()
@@ -134,7 +160,7 @@ object FTetris {
         .map(tc => lastState.field |+| tc)
         .getOrElse(lastState.field)
         .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
-    } andFinally onpauseend()
+    } andFinally callIfDef(gc.onpauseend)
 
   // __________ KEYBOARD EVENTS __________
 
@@ -166,7 +192,7 @@ object FTetris {
     def pos(e: TouchEvent, i: Int = 0) =
       if (i >= e.touches.length) None
       else Some(e.touches(i)) map { t: Touch => {
-        val cr = canv.getBoundingClientRect()
+        val cr = gc.canv.getBoundingClientRect()
         Coord(
           (t.clientX - cr.left).toInt,
           (t.clientY - cr.top).toInt
@@ -193,7 +219,7 @@ object FTetris {
       // TODO: Rework control flow. Right now it's a mess.
       e.preventDefault()
       def currTime = System.currentTimeMillis()
-      val thresh = canv.width / gs.conf.boardDims.x / 30
+      val thresh = gc.canv.width / gs.conf.boardDims.x / 30
       val last = movesSinceTouchStart.top
       movesSinceTouchStart.push(e)
       val cp = pos(e).get
@@ -228,29 +254,44 @@ object FTetris {
     touchRoot.addEventListener("touchend", handleTouchEnd)
     touchRoot.addEventListener("touchcancel", handleTouchEnd)
 
+  // __________ GAME END IMG __________
+
+    var mainLoop: Option[SetIntervalHandle] = None
+
+    //noinspection ScalaDeprecation
+    def endGame(): Unit = {
+      mainLoop.foreach(clearInterval)
+
+      val img = dom.document.createElement("img").asInstanceOf[HTMLImageElement]
+      img.src = "img/gameover.png"
+      img.onload = (e: dom.Event) => {
+        ctx.drawImage(img, 0, gc.canv.height/2 - img.height/2)
+      }
+
+      canStart = true
+      callIfDef(gc.ongameend)
+    }
+
   // __________ MAIN GAME LOOP __________
 
     clearAll()
     drawGradient()
-    onpointchange(0)
-    onlevelchange(gs.level)
-
-    var mainLoop: Option[SetIntervalHandle] = None
+    gc.onpointchange(0)
+    gc.onlevelchange(gs.level)
 
     mainLoop = setInterval(1000d/60d) {
       if (!paused) {
         // have to run here, since running everything at once fails to draw
         val (newState, isOver) = nextFrame(lastState).unsafeRunSync()
 
-        if (lastState.points != newState.points) onpointchange(newState.points)
+        if (lastState.points != newState.points) gc.onpointchange(newState.points)
         if (lastState.lastClears.count(_.clearTime >= 20) != newState.lastClears.count(_.clearTime >= 20))
-          onlineclear(newState.lastClears.size)
-        if (lastState.level != newState.level) onlevelchange(newState.level)
+          gc.onlineclear(newState.lastClears.size)
+        if (lastState.level != newState.level) gc.onlevelchange(newState.level)
 
-        if (lastTouchMove == Rotate && (newState.lastMoveTimes(Rotate) - newState.frameCount) < gs.conf.rotateDelay) {
-          echo! "Resetting lastTouchMove from rotate"
+        if (lastTouchMove == Rotate && (newState.lastMoveTimes(Rotate) - newState.frameCount) < gs.conf.rotateDelay)
           lastTouchMove = Nothing
-        }
+
         val newField = globalTetCoverage(newState)
           .map(tc => newState.field |+| tc)
         if (newField != lastField) {
@@ -261,11 +302,7 @@ object FTetris {
         }
         lastState = newState
 
-        if (isOver) {
-          mainLoop.foreach(clearInterval)
-          canStart = true
-          ongameend()
-        }
+        if (isOver) endGame()
       }
     }.some
   }

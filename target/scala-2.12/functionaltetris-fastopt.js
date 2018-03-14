@@ -4025,17 +4025,6 @@ function $h_Lorg_dractec_ftetris_js_FTetris$() {
   /*<skip>*/
 }
 $h_Lorg_dractec_ftetris_js_FTetris$.prototype = $c_Lorg_dractec_ftetris_js_FTetris$.prototype;
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.pause$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V = (function(canv$1, onpausestart$1, ctx$1) {
-  $m_Lorg_dractec_package$();
-  this.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv$1, ctx$1);
-  var center = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I((($uI(canv$1.width) / 2) | 0), (($uI(canv$1.height) / 2) | 0));
-  var linewidth = (($uI(canv$1.width) / 10) | 0);
-  var lineheight = (($uI(canv$1.height) / 5) | 0);
-  ctx$1.fillStyle = "red";
-  ctx$1.fillRect((center.x$1 - (1.5 * linewidth)), ((center.y$1 - ((lineheight / 2) | 0)) | 0), linewidth, lineheight);
-  ctx$1.fillRect((center.x$1 + (0.5 * linewidth)), ((center.y$1 - ((lineheight / 2) | 0)) | 0), linewidth, lineheight);
-  onpausestart$1()
-});
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.handleTouchEnd$1__p1__Lorg_scalajs_dom_raw_TouchEvent__sr_ObjectRef__scm_Stack__sr_ObjectRef__V = (function(e, lastTouchMove$1, movesSinceTouchStart$1, moveIsDrop$1) {
   e.preventDefault();
   if (($as_s_Option(moveIsDrop$1.elem$1).isEmpty__Z() || ($f_sc_SeqLike__lengthCompare__I__I(movesSinceTouchStart$1, 1) === 0))) {
@@ -4075,36 +4064,18 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.init___ = (function() {
   this.tileColors$1 = $as_sci_Map(this$16.elems$1);
   return this
 });
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$8__Lorg_scalajs_dom_raw_KeyboardEvent__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__sci_Set__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__O = (function(e, canv$1, onpausestart$1, onpauseend$1, ctx$1, keysDown$1, validInput$1, gs$1, lastState$1) {
-  var elem = $uI(e.keyCode);
-  if (validInput$1.contains__O__Z(elem)) {
-    e.preventDefault();
-    e.stopPropagation();
-    if ((($uI(e.keyCode) === 27) || ($uI(e.keyCode) === 80))) {
-      $m_Lorg_dractec_ftetris_js_FTetris$().paused$1 = (!$m_Lorg_dractec_ftetris_js_FTetris$().paused$1);
-      return ($m_Lorg_dractec_ftetris_js_FTetris$().paused$1 ? (this.pause$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv$1, onpausestart$1, ctx$1), (void 0)) : (this.resume$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V(canv$1, onpauseend$1, ctx$1, gs$1, lastState$1), (void 0)))
-    } else {
-      keysDown$1.elem$1 = $as_sci_Set($as_sci_Set(keysDown$1.elem$1).$$plus__O__sc_Set($uI(e.keyCode)));
-      return (void 0)
-    }
-  } else {
-    return (void 0)
-  }
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V = (function(canv$1, ctx$1) {
-  var grd = ctx$1.createLinearGradient(0.0, 0.0, 0.0, $uI(canv$1.height));
-  grd.addColorStop(0.0, "black");
-  grd.addColorStop(1.0, "grey");
-  ctx$1.fillStyle = grd;
-  ctx$1.fillRect(0.0, 0.0, $uI(canv$1.width), $uI(canv$1.height))
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function1__sjs_js_Function1__sjs_js_Function1__sjs_js_Function0__Lorg_scalajs_dom_raw_Node__sjs_js_Function0__sjs_js_Function0__V = (function(canv, onpointchange, onlevelchange, onlineclear, ongameend, touchRootNode, onpausestart, onpauseend) {
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_dractec_ftetris_js_FTetris$GameConf__V = (function(gc) {
   if ((!this.canStart$1)) {
     return (void 0)
   };
   this.canStart$1 = false;
-  var touchRoot = ((touchRootNode === null) ? canv : touchRootNode);
-  var ctx = canv.getContext("2d");
+  var v = gc.touchRootNode;
+  if ((v === (void 0))) {
+    var touchRoot = gc.canv
+  } else {
+    var touchRoot = gc.touchRootNode
+  };
+  var ctx = gc.canv.getContext("2d");
   var elem = $as_sci_Set($m_s_Predef$().Set$2.apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()));
   var keysDown = new $c_sr_ObjectRef().init___O(elem);
   var elem$1 = $m_Lorg_dractec_ftetris_logic_Game$Nothing$();
@@ -4136,14 +4107,14 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
   var lastState = new $c_sr_ObjectRef().init___O(gs);
   var elem$2 = $m_s_None$();
   var lastField = new $c_sr_ObjectRef().init___O(elem$2);
-  $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().addEventListener("keydown", (function(canv$1, onpausestart$1, onpauseend$1, ctx$1, keysDown$1$1, validInput$1, gs$1, lastState$1) {
+  $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().addEventListener("keydown", (function(gc$1, ctx$1, keysDown$1$1, validInput$1, gs$1, lastState$1) {
     return (function(arg1$2) {
-      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$8__Lorg_scalajs_dom_raw_KeyboardEvent__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__sci_Set__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__O(arg1$2, canv$1, onpausestart$1, onpauseend$1, ctx$1, keysDown$1$1, validInput$1, gs$1, lastState$1)
+      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$10__Lorg_scalajs_dom_raw_KeyboardEvent__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__sci_Set__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__O(arg1$2, gc$1, ctx$1, keysDown$1$1, validInput$1, gs$1, lastState$1)
     })
-  })(canv, onpausestart, onpauseend, ctx, keysDown, validInput, gs, lastState), false);
+  })(gc, ctx, keysDown, validInput, gs, lastState), false);
   $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().addEventListener("keyup", (function(keysDown$1$2, validInput$1$1) {
     return (function(arg1$2$1) {
-      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$9__Lorg_scalajs_dom_raw_KeyboardEvent__sr_ObjectRef__sci_Set__O(arg1$2$1, keysDown$1$2, validInput$1$1)
+      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$11__Lorg_scalajs_dom_raw_KeyboardEvent__sr_ObjectRef__sci_Set__O(arg1$2$1, keysDown$1$2, validInput$1$1)
     })
   })(keysDown, validInput), false);
   var movesSinceTouchStart = $as_scm_Stack($m_scm_Stack$().apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()));
@@ -4154,34 +4125,34 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
   var lastPause = new $c_sr_LongRef().init___J($m_sjsr_RuntimeLong$().Zero__sjsr_RuntimeLong());
   touchRoot.addEventListener("touchstart", (function(movesSinceTouchStart$1) {
     return (function(arg1$2$2) {
-      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$11__Lorg_scalajs_dom_raw_TouchEvent__scm_Stack__scm_Stack(arg1$2$2, movesSinceTouchStart$1)
+      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$13__Lorg_scalajs_dom_raw_TouchEvent__scm_Stack__scm_Stack(arg1$2$2, movesSinceTouchStart$1)
     })
   })(movesSinceTouchStart));
-  touchRoot.addEventListener("touchmove", (function(canv$1$1, onpausestart$1$1, onpauseend$1$1, ctx$1$1, lastTouchMove$1$1, gs$1$1, lastState$1$1, movesSinceTouchStart$1$1, moveIsDrop$1, lastPause$1) {
+  touchRoot.addEventListener("touchmove", (function(gc$1$1, ctx$1$1, lastTouchMove$1$1, gs$1$1, lastState$1$1, movesSinceTouchStart$1$1, moveIsDrop$1, lastPause$1) {
     return (function(arg1$2$3) {
-      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$12__Lorg_scalajs_dom_raw_TouchEvent__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__scm_Stack__sr_ObjectRef__sr_LongRef__O(arg1$2$3, canv$1$1, onpausestart$1$1, onpauseend$1$1, ctx$1$1, lastTouchMove$1$1, gs$1$1, lastState$1$1, movesSinceTouchStart$1$1, moveIsDrop$1, lastPause$1)
+      return $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$14__Lorg_scalajs_dom_raw_TouchEvent__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__scm_Stack__sr_ObjectRef__sr_LongRef__O(arg1$2$3, gc$1$1, ctx$1$1, lastTouchMove$1$1, gs$1$1, lastState$1$1, movesSinceTouchStart$1$1, moveIsDrop$1, lastPause$1)
     })
-  })(canv, onpausestart, onpauseend, ctx, lastTouchMove, gs, lastState, movesSinceTouchStart, moveIsDrop, lastPause));
+  })(gc, ctx, lastTouchMove, gs, lastState, movesSinceTouchStart, moveIsDrop, lastPause));
   touchRoot.addEventListener("touchend", (function(lastTouchMove$1$2, movesSinceTouchStart$1$2, moveIsDrop$1$1) {
     return (function(arg1$2$4) {
-      var this$14 = $m_Lorg_dractec_ftetris_js_FTetris$();
-      this$14.handleTouchEnd$1__p1__Lorg_scalajs_dom_raw_TouchEvent__sr_ObjectRef__scm_Stack__sr_ObjectRef__V(arg1$2$4, lastTouchMove$1$2, movesSinceTouchStart$1$2, moveIsDrop$1$1)
+      var this$15 = $m_Lorg_dractec_ftetris_js_FTetris$();
+      this$15.handleTouchEnd$1__p1__Lorg_scalajs_dom_raw_TouchEvent__sr_ObjectRef__scm_Stack__sr_ObjectRef__V(arg1$2$4, lastTouchMove$1$2, movesSinceTouchStart$1$2, moveIsDrop$1$1)
     })
   })(lastTouchMove, movesSinceTouchStart, moveIsDrop));
   touchRoot.addEventListener("touchcancel", (function(lastTouchMove$1$3, movesSinceTouchStart$1$3, moveIsDrop$1$2) {
     return (function(arg1$2$5) {
-      var this$15 = $m_Lorg_dractec_ftetris_js_FTetris$();
-      this$15.handleTouchEnd$1__p1__Lorg_scalajs_dom_raw_TouchEvent__sr_ObjectRef__scm_Stack__sr_ObjectRef__V(arg1$2$5, lastTouchMove$1$3, movesSinceTouchStart$1$3, moveIsDrop$1$2)
+      var this$16 = $m_Lorg_dractec_ftetris_js_FTetris$();
+      this$16.handleTouchEnd$1__p1__Lorg_scalajs_dom_raw_TouchEvent__sr_ObjectRef__scm_Stack__sr_ObjectRef__V(arg1$2$5, lastTouchMove$1$3, movesSinceTouchStart$1$3, moveIsDrop$1$2)
     })
   })(lastTouchMove, movesSinceTouchStart, moveIsDrop));
-  this.clearAll$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv, ctx);
-  this.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv, ctx);
-  onpointchange(0);
-  onlevelchange(gs.level$1);
   var elem$4 = $m_s_None$();
   var mainLoop = new $c_sr_ObjectRef().init___O(elem$4);
+  this.clearAll$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(gc, ctx);
+  this.drawGradient$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc, ctx, gs);
+  (0, gc.onpointchange)(0);
+  (0, gc.onlevelchange)(gs.level$1);
   $m_Lcats_implicits$();
-  var a = $m_sjs_js_timers_package$().setInterval__D__F0__sjs_js_timers_SetIntervalHandle(16.666666666666668, new $c_sjsr_AnonFunction0().init___sjs_js_Function0((function(this$2$1, canv$2, onpointchange$1, onlevelchange$1, onlineclear$1, ongameend$1, ctx$2, lastTouchMove$2, gs$2, lastState$2, lastField$1, mainLoop$1) {
+  var a = $m_sjs_js_timers_package$().setInterval__D__F0__sjs_js_timers_SetIntervalHandle(16.666666666666668, new $c_sjsr_AnonFunction0().init___sjs_js_Function0((function(this$2$1, gc$2, ctx$2, lastTouchMove$2, gs$2, lastState$2, lastField$1, mainLoop$1) {
     return (function() {
       if ((!$m_Lorg_dractec_ftetris_js_FTetris$().paused$1)) {
         var x1 = $as_T2($m_Lorg_dractec_ftetris_logic_Game$().nextFrame__Lorg_dractec_ftetris_logic_Game$GS__Lcats_effect_IO($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$2.elem$1)).unsafeRunSync__O());
@@ -4191,12 +4162,12 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
         var newState = $as_Lorg_dractec_ftetris_logic_Game$GS(x1.$$und1__O());
         var isOver = $uZ(x1.$$und2__O());
         if (($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$2.elem$1).points$1 !== newState.points$1)) {
-          onpointchange$1(newState.points$1)
+          (0, gc$2.onpointchange)(newState.points$1)
         };
-        var this$17 = $as_Lorg_dractec_ftetris_logic_Game$GS(lastState$2.elem$1).lastClears$1;
+        var this$18 = $as_Lorg_dractec_ftetris_logic_Game$GS(lastState$2.elem$1).lastClears$1;
         var elem$1$1 = 0;
         elem$1$1 = 0;
-        var these = this$17;
+        var these = this$18;
         while ((!these.isEmpty__Z())) {
           var arg1$1 = these.head__O();
           var x$3 = $as_Lorg_dractec_ftetris_logic_Game$LineClear(arg1$1);
@@ -4206,10 +4177,10 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
           these = $as_sci_List(these.tail__O())
         };
         var jsx$3 = elem$1$1;
-        var this$19 = newState.lastClears$1;
+        var this$20 = newState.lastClears$1;
         var elem$1$2 = 0;
         elem$1$2 = 0;
-        var these$1 = this$19;
+        var these$1 = this$20;
         while ((!these$1.isEmpty__Z())) {
           var arg1$3 = these$1.head__O();
           var x$4 = $as_Lorg_dractec_ftetris_logic_Game$LineClear(arg1$3);
@@ -4219,31 +4190,30 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
           these$1 = $as_sci_List(these$1.tail__O())
         };
         if ((jsx$3 !== elem$1$2)) {
-          var this$21 = newState.lastClears$1;
-          onlineclear$1($f_sc_LinearSeqOptimized__length__I(this$21))
+          var jsx$4 = gc$2.onlineclear;
+          var this$22 = newState.lastClears$1;
+          jsx$4($f_sc_LinearSeqOptimized__length__I(this$22))
         };
         if (($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$2.elem$1).level$1 !== newState.level$1)) {
-          onlevelchange$1(newState.level$1)
+          (0, gc$2.onlevelchange)(newState.level$1)
         };
         var x = $as_Lorg_dractec_ftetris_logic_Game$Move(lastTouchMove$2.elem$1);
         var x$5 = $m_Lorg_dractec_ftetris_logic_Game$Rotate$();
         if ((((x !== null) && (x === x$5)) && ((($uI(newState.lastMoveTimes$1.apply__O__O($m_Lorg_dractec_ftetris_logic_Game$Rotate$())) - newState.frameCount$1) | 0) < gs$2.conf$1.rotateDelay$1))) {
-          var x$6 = $m_Lorg_dractec_package$().echo$1;
-          x$6.$$bang__O__("Resetting lastTouchMove from rotate");
           lastTouchMove$2.elem$1 = $m_Lorg_dractec_ftetris_logic_Game$Nothing$()
         };
-        var this$22 = $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage__Lorg_dractec_ftetris_logic_Game$GS__F1__s_Option(newState, $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage$default$2__F1());
-        if (this$22.isEmpty__Z()) {
+        var this$23 = $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage__Lorg_dractec_ftetris_logic_Game$GS__F1__s_Option(newState, $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage$default$2__F1());
+        if (this$23.isEmpty__Z()) {
           var newField = $m_s_None$()
         } else {
-          var arg1$4 = this$22.get__O();
+          var arg1$4 = this$23.get__O();
           var tc = $as_sci_Map(arg1$4);
           var newField = new $c_s_Some().init___O($as_sci_Map($as_Lcats_kernel_Semigroup($m_Lorg_dractec_ftetris_logic_Game$().mapMergeSG$1).combine__O__O__O(newState.field$1, tc)))
         };
-        var x$8 = $as_s_Option(lastField$1.elem$1);
-        if ((!((newField === null) ? (x$8 === null) : newField.equals__O__Z(x$8)))) {
-          this$2$1.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv$2, ctx$2);
-          $as_sc_IterableLike((newField.isEmpty__Z() ? newState.field$1 : newField.get__O())).foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(this$5$1, canv$1$2, ctx$1$2, gs$1$2) {
+        var x$7 = $as_s_Option(lastField$1.elem$1);
+        if ((!((newField === null) ? (x$7 === null) : newField.equals__O__Z(x$7)))) {
+          this$2$1.drawGradient$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc$2, ctx$2, gs$2);
+          $as_sc_IterableLike((newField.isEmpty__Z() ? newState.field$1 : newField.get__O())).foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(this$5$1, gc$1$2, ctx$1$2, gs$1$2) {
             return (function(x0$2$2) {
               var x0$2 = $as_T2(x0$2$2);
               if ((x0$2 !== null)) {
@@ -4252,42 +4222,204 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_scalajs_dom_raw_HT
                 if ((!t.isEmpty__Z())) {
                   var arg1$5 = t.get__O();
                   var x$5$1 = $as_Lorg_dractec_ftetris_logic_Tiles$Tile(arg1$5);
-                  this$5$1.drawTile$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(x$5$1, c, canv$1$2, ctx$1$2, gs$1$2)
+                  this$5$1.drawTile$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(x$5$1, c, gc$1$2, ctx$1$2, gs$1$2)
                 }
               } else {
                 throw new $c_s_MatchError().init___O(x0$2)
               }
             })
-          })(this$2$1, canv$2, ctx$2, gs$2)));
+          })(this$2$1, gc$2, ctx$2, gs$2)));
           lastField$1.elem$1 = newField
         };
         lastState$2.elem$1 = newState;
         if (isOver) {
-          var this$23 = $as_s_Option(mainLoop$1.elem$1);
-          if ((!this$23.isEmpty__Z())) {
-            var arg1$6 = this$23.get__O();
-            $m_sjs_js_timers_package$().clearInterval__sjs_js_timers_SetIntervalHandle__V(arg1$6)
-          };
-          $m_Lorg_dractec_ftetris_js_FTetris$().canStart$1 = true;
-          ongameend$1()
+          this$2$1.endGame$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__V(gc$2, ctx$2, mainLoop$1)
         }
       }
     })
-  })(this, canv, onpointchange, onlevelchange, onlineclear, ongameend, ctx, lastTouchMove, gs, lastState, lastField, mainLoop)));
+  })(this, gc, ctx, lastTouchMove, gs, lastState, lastField, mainLoop)));
   mainLoop.elem$1 = new $c_s_Some().init___O(a)
 });
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.$$js$exported$meth$startGame__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function1__sjs_js_Function1__sjs_js_Function1__sjs_js_Function0__Lorg_scalajs_dom_raw_Node__sjs_js_Function0__sjs_js_Function0__O = (function(canv, onpointchange, onlevelchange, onlineclear, ongameend, touchRootNode, onpausestart, onpauseend) {
-  this.startGame__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function1__sjs_js_Function1__sjs_js_Function1__sjs_js_Function0__Lorg_scalajs_dom_raw_Node__sjs_js_Function0__sjs_js_Function0__V(canv, onpointchange, onlevelchange, onlineclear, ongameend, touchRootNode, onpausestart, onpauseend)
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.callIfDef$1__p1__sjs_js_Function0__V = (function(f) {
+  if ((f !== (void 0))) {
+    f()
+  }
 });
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$12__Lorg_scalajs_dom_raw_TouchEvent__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__scm_Stack__sr_ObjectRef__sr_LongRef__O = (function(e, canv$1, onpausestart$1, onpauseend$1, ctx$1, lastTouchMove$1, gs$1, lastState$1, movesSinceTouchStart$1, moveIsDrop$1, lastPause$1) {
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.endGame$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__V = (function(gc$1, ctx$1, mainLoop$1) {
+  var this$1 = $as_s_Option(mainLoop$1.elem$1);
+  if ((!this$1.isEmpty__Z())) {
+    var arg1 = this$1.get__O();
+    $m_sjs_js_timers_package$().clearInterval__sjs_js_timers_SetIntervalHandle__V(arg1)
+  };
+  var img = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().createElement("img");
+  img.src = "img/gameover.png";
+  img.onload = (function(gc$1$1, ctx$1$1, img$1) {
+    return (function(arg1$2) {
+      $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$22__Lorg_scalajs_dom_raw_Event__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_scalajs_dom_raw_HTMLImageElement__V(arg1$2, gc$1$1, ctx$1$1, img$1)
+    })
+  })(gc$1, ctx$1, img);
+  this.canStart$1 = true;
+  this.callIfDef$1__p1__sjs_js_Function0__V(gc$1.ongameend)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawTile$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V = (function(tile, coord, gc$1, ctx$1, gs$1) {
+  var widthPerTile = (($uI(gc$1.canv.width) / gs$1.conf$1.boardDims$1.x$1) | 0);
+  var heightPerTile = (($uI(gc$1.canv.height) / gs$1.conf$1.boardDims$1.y$1) | 0);
+  var s = $as_T(this.tileColors$1.apply__O__O(tile));
+  ctx$1.fillStyle = s;
+  ctx$1.fillRect($imul(coord.x$1, widthPerTile), $imul(coord.y$1, heightPerTile), widthPerTile, heightPerTile);
+  ctx$1.globalAlpha = 0.1;
+  ctx$1.strokeStyle = this.gradientStyle$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_scalajs_dom_raw_CanvasGradient(gc$1, ctx$1);
+  ctx$1.lineWidth = 2.0;
+  ctx$1.strokeRect($imul(coord.x$1, widthPerTile), $imul(coord.y$1, heightPerTile), widthPerTile, heightPerTile);
+  ctx$1.globalAlpha = 1.0
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawGradient$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V = (function(gc$1, ctx$1, gs$1) {
+  ctx$1.fillStyle = this.gradientStyle$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_scalajs_dom_raw_CanvasGradient(gc$1, ctx$1);
+  ctx$1.fillRect(0.0, 0.0, $uI(gc$1.canv.width), $uI(gc$1.canv.height));
+  this.drawSneakyGrid$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc$1, ctx$1, gs$1)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$10__Lorg_scalajs_dom_raw_KeyboardEvent__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__sci_Set__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__O = (function(e, gc$1, ctx$1, keysDown$1, validInput$1, gs$1, lastState$1) {
+  var elem = $uI(e.keyCode);
+  if (validInput$1.contains__O__Z(elem)) {
+    e.preventDefault();
+    e.stopPropagation();
+    if ((($uI(e.keyCode) === 27) || ($uI(e.keyCode) === 80))) {
+      $m_Lorg_dractec_ftetris_js_FTetris$().paused$1 = (!$m_Lorg_dractec_ftetris_js_FTetris$().paused$1);
+      return ($m_Lorg_dractec_ftetris_js_FTetris$().paused$1 ? (this.pause$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc$1, ctx$1, gs$1), (void 0)) : (this.resume$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V(gc$1, ctx$1, gs$1, lastState$1), (void 0)))
+    } else {
+      keysDown$1.elem$1 = $as_sci_Set($as_sci_Set(keysDown$1.elem$1).$$plus__O__sc_Set($uI(e.keyCode)));
+      return (void 0)
+    }
+  } else {
+    return (void 0)
+  }
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.$$js$exported$meth$startGame__Lorg_dractec_ftetris_js_FTetris$GameConf__O = (function(gc) {
+  this.startGame__Lorg_dractec_ftetris_js_FTetris$GameConf__V(gc)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$13__Lorg_scalajs_dom_raw_TouchEvent__scm_Stack__scm_Stack = (function(e, movesSinceTouchStart$1) {
   e.preventDefault();
-  var thresh = (((($uI(canv$1.width) / gs$1.conf$1.boardDims$1.x$1) | 0) / 30) | 0);
+  movesSinceTouchStart$1.elems$5 = $m_sci_Nil$();
+  return movesSinceTouchStart$1.push__O__scm_Stack(e)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.clearAll$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V = (function(gc$1, ctx$1) {
+  ctx$1.clearRect(0.0, 0.0, $uI(gc$1.canv.width), $uI(gc$1.canv.height))
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.pause$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V = (function(gc$1, ctx$1, gs$1) {
+  $m_Lorg_dractec_package$();
+  this.drawGradient$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc$1, ctx$1, gs$1);
+  var center = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I((($uI(gc$1.canv.width) / 2) | 0), (($uI(gc$1.canv.height) / 2) | 0));
+  var linewidth = (($uI(gc$1.canv.width) / 10) | 0);
+  var lineheight = (($uI(gc$1.canv.height) / 5) | 0);
+  ctx$1.fillStyle = "red";
+  ctx$1.fillRect((center.x$1 - (1.5 * linewidth)), ((center.y$1 - ((lineheight / 2) | 0)) | 0), linewidth, lineheight);
+  ctx$1.fillRect((center.x$1 + (0.5 * linewidth)), ((center.y$1 - ((lineheight / 2) | 0)) | 0), linewidth, lineheight);
+  this.callIfDef$1__p1__sjs_js_Function0__V(gc$1.onpausestart)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option = (function(e, i, gc$1) {
+  if ((i >= $uI(e.touches.length))) {
+    return $m_s_None$()
+  } else {
+    var this$1 = new $c_s_Some().init___O(e.touches[i]);
+    var arg1 = this$1.value$2;
+    var cr = gc$1.canv.getBoundingClientRect();
+    return new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I($doubleToInt(($uD(arg1.clientX) - $uD(cr.left))), $doubleToInt(($uD(arg1.clientY) - $uD(cr.top)))))
+  }
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$11__Lorg_scalajs_dom_raw_KeyboardEvent__sr_ObjectRef__sci_Set__O = (function(e, keysDown$1, validInput$1) {
+  var elem = $uI(e.keyCode);
+  if (validInput$1.contains__O__Z(elem)) {
+    e.preventDefault();
+    e.stopPropagation();
+    keysDown$1.elem$1 = $as_sci_Set($as_sci_Set(keysDown$1.elem$1).$$minus__O__sc_Set($uI(e.keyCode)));
+    return (void 0)
+  } else {
+    return (void 0)
+  }
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$22__Lorg_scalajs_dom_raw_Event__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_scalajs_dom_raw_HTMLImageElement__V = (function(e, gc$1, ctx$1, img$1) {
+  ctx$1.drawImage(img$1, 0.0, (((($uI(gc$1.canv.height) / 2) | 0) - (($uI(img$1.height) / 2) | 0)) | 0))
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawSneakyGrid$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V = (function(gc$1, ctx$1, gs$1) {
+  var widthPerTile = (($uI(gc$1.canv.width) / gs$1.conf$1.boardDims$1.x$1) | 0);
+  var heightPerTile = (($uI(gc$1.canv.height) / gs$1.conf$1.boardDims$1.y$1) | 0);
+  ctx$1.strokeStyle = "black";
+  ctx$1.lineWidth = 1.0;
+  ctx$1.globalAlpha = 0.1;
+  var end = gs$1.conf$1.boardDims$1.x$1;
+  var isEmpty$4 = (end <= 0);
+  var scala$collection$immutable$Range$$lastElement$4 = (((-1) + end) | 0);
+  if ((!isEmpty$4)) {
+    var i = 0;
+    while (true) {
+      var v1 = i;
+      ctx$1.strokeRect($imul(v1, widthPerTile), 0.0, 1.0, $uI(gc$1.canv.height));
+      if ((i === scala$collection$immutable$Range$$lastElement$4)) {
+        break
+      };
+      i = ((1 + i) | 0)
+    }
+  };
+  var end$1 = gs$1.conf$1.boardDims$1.y$1;
+  var isEmpty$4$1 = (end$1 <= 0);
+  var scala$collection$immutable$Range$$lastElement$4$1 = (((-1) + end$1) | 0);
+  if ((!isEmpty$4$1)) {
+    var i$1 = 0;
+    while (true) {
+      var v1$1 = i$1;
+      ctx$1.strokeRect(0.0, $imul(v1$1, heightPerTile), $uI(gc$1.canv.width), 1.0);
+      if ((i$1 === scala$collection$immutable$Range$$lastElement$4$1)) {
+        break
+      };
+      i$1 = ((1 + i$1) | 0)
+    }
+  };
+  ctx$1.globalAlpha = 1.0
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.gradientStyle$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_scalajs_dom_raw_CanvasGradient = (function(gc$1, ctx$1) {
+  var grd = ctx$1.createLinearGradient(0.0, 0.0, 0.0, $uI(gc$1.canv.height));
+  grd.addColorStop(0.0, "black");
+  grd.addColorStop(1.0, "grey");
+  return grd
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.resume$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V = (function(gc$1, ctx$1, gs$1, lastState$1) {
+  $m_Lorg_dractec_package$();
+  this.drawGradient$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc$1, ctx$1, gs$1);
+  var this$1 = $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage__Lorg_dractec_ftetris_logic_Game$GS__F1__s_Option($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1), $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage$default$2__F1());
+  if (this$1.isEmpty__Z()) {
+    var this$2 = $m_s_None$()
+  } else {
+    var arg1 = this$1.get__O();
+    var tc = $as_sci_Map(arg1);
+    var this$2 = new $c_s_Some().init___O($as_sci_Map($as_Lcats_kernel_Semigroup($m_Lorg_dractec_ftetris_logic_Game$().mapMergeSG$1).combine__O__O__O($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1, tc)))
+  };
+  $as_sc_IterableLike((this$2.isEmpty__Z() ? $as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1 : this$2.get__O())).foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(this$3, gc$1$1, ctx$1$1, gs$1$1) {
+    return (function(x0$1$2) {
+      var x0$1 = $as_T2(x0$1$2);
+      if ((x0$1 !== null)) {
+        var c = $as_Lorg_dractec_ftetris_logic_Tiles$Coord(x0$1.$$und1__O());
+        var t = $as_s_Option(x0$1.$$und2__O());
+        if ((!t.isEmpty__Z())) {
+          var arg1$1 = t.get__O();
+          var x$1 = $as_Lorg_dractec_ftetris_logic_Tiles$Tile(arg1$1);
+          this$3.drawTile$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(x$1, c, gc$1$1, ctx$1$1, gs$1$1)
+        }
+      } else {
+        throw new $c_s_MatchError().init___O(x0$1)
+      }
+    })
+  })(this, gc$1, ctx$1, gs$1)));
+  this.callIfDef$1__p1__sjs_js_Function0__V(gc$1.onpauseend)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$14__Lorg_scalajs_dom_raw_TouchEvent__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__sr_ObjectRef__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__scm_Stack__sr_ObjectRef__sr_LongRef__O = (function(e, gc$1, ctx$1, lastTouchMove$1, gs$1, lastState$1, movesSinceTouchStart$1, moveIsDrop$1, lastPause$1) {
+  e.preventDefault();
+  var thresh = (((($uI(gc$1.canv.width) / gs$1.conf$1.boardDims$1.x$1) | 0) / 30) | 0);
   var last = movesSinceTouchStart$1.elems$5.head__O();
   movesSinceTouchStart$1.push__O__scm_Stack(e);
-  var cp = $as_Lorg_dractec_ftetris_logic_Tiles$Coord(this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_scalajs_dom_raw_HTMLCanvasElement__s_Option(e, 0, canv$1).get__O());
-  var lp = $as_Lorg_dractec_ftetris_logic_Tiles$Coord(this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_scalajs_dom_raw_HTMLCanvasElement__s_Option(last, 0, canv$1).get__O());
-  var cp1opt = this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_scalajs_dom_raw_HTMLCanvasElement__s_Option(e, 1, canv$1);
-  var lp1opt = this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_scalajs_dom_raw_HTMLCanvasElement__s_Option(last, 1, canv$1);
+  var cp = $as_Lorg_dractec_ftetris_logic_Tiles$Coord(this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option(e, 0, gc$1).get__O());
+  var lp = $as_Lorg_dractec_ftetris_logic_Tiles$Coord(this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option(last, 0, gc$1).get__O());
+  var cp1opt = this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option(e, 1, gc$1);
+  var lp1opt = this.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option(last, 1, gc$1);
   if (cp1opt.isEmpty__Z()) {
     var this$2 = $m_s_None$()
   } else {
@@ -4314,9 +4446,9 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$a
         lastPause$1.elem$1 = $m_jl_System$().currentTimeMillis__J();
         $m_Lorg_dractec_ftetris_js_FTetris$().paused$1 = (!$m_Lorg_dractec_ftetris_js_FTetris$().paused$1);
         if ($m_Lorg_dractec_ftetris_js_FTetris$().paused$1) {
-          this.pause$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv$1, onpausestart$1, ctx$1)
+          this.pause$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(gc$1, ctx$1, gs$1)
         } else {
-          this.resume$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V(canv$1, onpauseend$1, ctx$1, gs$1, lastState$1)
+          this.resume$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V(gc$1, ctx$1, gs$1, lastState$1)
         }
       };
       var this$2 = new $c_s_Some().init___O((void 0))
@@ -4367,110 +4499,9 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$a
     return this$2.get__O()
   }
 });
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_scalajs_dom_raw_HTMLCanvasElement__s_Option = (function(e, i, canv$1) {
-  if ((i >= $uI(e.touches.length))) {
-    return $m_s_None$()
-  } else {
-    var this$1 = new $c_s_Some().init___O(e.touches[i]);
-    var arg1 = this$1.value$2;
-    var cr = canv$1.getBoundingClientRect();
-    return new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I($doubleToInt(($uD(arg1.clientX) - $uD(cr.left))), $doubleToInt(($uD(arg1.clientY) - $uD(cr.top)))))
-  }
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.$$js$exported$meth$startGame$default$8__sjs_js_Function0 = (function() {
-  return this.startGame$default$8__sjs_js_Function0()
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$9__Lorg_scalajs_dom_raw_KeyboardEvent__sr_ObjectRef__sci_Set__O = (function(e, keysDown$1, validInput$1) {
-  var elem = $uI(e.keyCode);
-  if (validInput$1.contains__O__Z(elem)) {
-    e.preventDefault();
-    e.stopPropagation();
-    keysDown$1.elem$1 = $as_sci_Set($as_sci_Set(keysDown$1.elem$1).$$minus__O__sc_Set($uI(e.keyCode)));
-    return (void 0)
-  } else {
-    return (void 0)
-  }
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$11__Lorg_scalajs_dom_raw_TouchEvent__scm_Stack__scm_Stack = (function(e, movesSinceTouchStart$1) {
-  e.preventDefault();
-  movesSinceTouchStart$1.elems$5 = $m_sci_Nil$();
-  return movesSinceTouchStart$1.push__O__scm_Stack(e)
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame$default$8__sjs_js_Function0 = (function() {
-  return (function() {
-    $m_Lorg_dractec_ftetris_js_FTetris$()
-  })
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.$$js$exported$meth$startGame$default$7__sjs_js_Function0 = (function() {
-  return this.startGame$default$7__sjs_js_Function0()
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.$$js$exported$meth$startGame$default$6__Lorg_scalajs_dom_raw_Node = (function() {
-  return null
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.clearAll$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V = (function(canv$1, ctx$1) {
-  ctx$1.clearRect(0.0, 0.0, $uI(canv$1.width), $uI(canv$1.height))
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawTile$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V = (function(tile, coord, canv$1, ctx$1, gs$1) {
-  var widthPerTile = (($uI(canv$1.width) / gs$1.conf$1.boardDims$1.x$1) | 0);
-  var heightPerTile = (($uI(canv$1.height) / gs$1.conf$1.boardDims$1.y$1) | 0);
-  var s = $as_T(this.tileColors$1.apply__O__O(tile));
-  ctx$1.fillStyle = s;
-  ctx$1.fillRect($imul(coord.x$1, widthPerTile), $imul(coord.y$1, heightPerTile), widthPerTile, heightPerTile);
-  ctx$1.lineWidth = 1.0;
-  ctx$1.fillStyle = "black";
-  ctx$1.rect($imul(coord.x$1, widthPerTile), $imul(coord.y$1, heightPerTile), widthPerTile, heightPerTile)
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.resume$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function0__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V = (function(canv$1, onpauseend$1, ctx$1, gs$1, lastState$1) {
-  $m_Lorg_dractec_package$();
-  this.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__V(canv$1, ctx$1);
-  var this$1 = $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage__Lorg_dractec_ftetris_logic_Game$GS__F1__s_Option($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1), $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage$default$2__F1());
-  if (this$1.isEmpty__Z()) {
-    var this$2 = $m_s_None$()
-  } else {
-    var arg1 = this$1.get__O();
-    var tc = $as_sci_Map(arg1);
-    var this$2 = new $c_s_Some().init___O($as_sci_Map($as_Lcats_kernel_Semigroup($m_Lorg_dractec_ftetris_logic_Game$().mapMergeSG$1).combine__O__O__O($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1, tc)))
-  };
-  $as_sc_IterableLike((this$2.isEmpty__Z() ? $as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1 : this$2.get__O())).foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(this$3, canv$1$1, ctx$1$1, gs$1$1) {
-    return (function(x0$1$2) {
-      var x0$1 = $as_T2(x0$1$2);
-      if ((x0$1 !== null)) {
-        var c = $as_Lorg_dractec_ftetris_logic_Tiles$Coord(x0$1.$$und1__O());
-        var t = $as_s_Option(x0$1.$$und2__O());
-        if ((!t.isEmpty__Z())) {
-          var arg1$1 = t.get__O();
-          var x$1 = $as_Lorg_dractec_ftetris_logic_Tiles$Tile(arg1$1);
-          this$3.drawTile$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_dractec_ftetris_logic_Game$GS__V(x$1, c, canv$1$1, ctx$1$1, gs$1$1)
-        }
-      } else {
-        throw new $c_s_MatchError().init___O(x0$1)
-      }
-    })
-  })(this, canv$1, ctx$1, gs$1)));
-  onpauseend$1()
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame$default$7__sjs_js_Function0 = (function() {
-  return (function() {
-    $m_Lorg_dractec_ftetris_js_FTetris$()
-  })
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame = (function(arg$1, arg$2, arg$3, arg$4, arg$5) {
-  var jsx$1 = (arguments.length | 0);
-  var jsx$2 = 5;
-  var arg$rest = [];
-  while ((jsx$2 < jsx$1)) {
-    arg$rest.push(arguments[jsx$2]);
-    jsx$2 = ((jsx$2 + 1) | 0)
-  };
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame = (function(arg$1) {
   var prep0 = arg$1;
-  var prep1 = arg$2;
-  var prep2 = arg$3;
-  var prep3 = arg$4;
-  var prep4 = arg$5;
-  var prep5 = ((arg$rest[0] === (void 0)) ? this.$$js$exported$meth$startGame$default$6__Lorg_scalajs_dom_raw_Node() : arg$rest[0]);
-  var prep6 = ((arg$rest[1] === (void 0)) ? this.$$js$exported$meth$startGame$default$7__sjs_js_Function0() : arg$rest[1]);
-  var prep7 = ((arg$rest[2] === (void 0)) ? this.$$js$exported$meth$startGame$default$8__sjs_js_Function0() : arg$rest[2]);
-  return this.$$js$exported$meth$startGame__Lorg_scalajs_dom_raw_HTMLCanvasElement__sjs_js_Function1__sjs_js_Function1__sjs_js_Function1__sjs_js_Function0__Lorg_scalajs_dom_raw_Node__sjs_js_Function0__sjs_js_Function0__O(prep0, prep1, prep2, prep3, prep4, prep5, prep6, prep7)
+  return this.$$js$exported$meth$startGame__Lorg_dractec_ftetris_js_FTetris$GameConf__O(prep0)
 });
 var $d_Lorg_dractec_ftetris_js_FTetris$ = new $TypeData().initClass({
   Lorg_dractec_ftetris_js_FTetris$: 0
@@ -6157,11 +6188,6 @@ $h_Lorg_dractec_package$$anon$1.prototype = $c_Lorg_dractec_package$$anon$1.prot
 $c_Lorg_dractec_package$$anon$1.prototype.init___ = (function() {
   return this
 });
-$c_Lorg_dractec_package$$anon$1.prototype.$$bang__O__ = (function(s) {
-  var this$2 = $m_s_Console$();
-  var this$3 = $as_Ljava_io_PrintStream(this$2.outVar$2.v$1);
-  this$3.java$lang$JSConsoleBasedPrintStream$$printString__T__V((s + "\n"))
-});
 var $d_Lorg_dractec_package$$anon$1 = new $TypeData().initClass({
   Lorg_dractec_package$$anon$1: 0
 }, false, "org.dractec.package$$anon$1", {
@@ -6306,6 +6332,9 @@ $h_Lorg_scalajs_dom_package$.prototype = $c_Lorg_scalajs_dom_package$.prototype;
 $c_Lorg_scalajs_dom_package$.prototype.init___ = (function() {
   return this
 });
+$c_Lorg_scalajs_dom_package$.prototype.document__Lorg_scalajs_dom_raw_HTMLDocument = (function() {
+  return (((268435456 & this.bitmap$0$1) === 0) ? this.document$lzycompute__p1__Lorg_scalajs_dom_raw_HTMLDocument() : this.document$1)
+});
 $c_Lorg_scalajs_dom_package$.prototype.window__Lorg_scalajs_dom_raw_Window = (function() {
   return (((134217728 & this.bitmap$0$1) === 0) ? this.window$lzycompute__p1__Lorg_scalajs_dom_raw_Window() : this.window$1)
 });
@@ -6315,6 +6344,13 @@ $c_Lorg_scalajs_dom_package$.prototype.window$lzycompute__p1__Lorg_scalajs_dom_r
     this.bitmap$0$1 = (134217728 | this.bitmap$0$1)
   };
   return this.window$1
+});
+$c_Lorg_scalajs_dom_package$.prototype.document$lzycompute__p1__Lorg_scalajs_dom_raw_HTMLDocument = (function() {
+  if (((268435456 & this.bitmap$0$1) === 0)) {
+    this.document$1 = this.window__Lorg_scalajs_dom_raw_Window().document;
+    this.bitmap$0$1 = (268435456 | this.bitmap$0$1)
+  };
+  return this.document$1
 });
 var $d_Lorg_scalajs_dom_package$ = new $TypeData().initClass({
   Lorg_scalajs_dom_package$: 0
@@ -6841,17 +6877,6 @@ function $m_ju_Arrays$() {
   return $n_ju_Arrays$
 }
 /** @constructor */
-function $c_s_DeprecatedConsole() {
-  $c_O.call(this)
-}
-$c_s_DeprecatedConsole.prototype = new $h_O();
-$c_s_DeprecatedConsole.prototype.constructor = $c_s_DeprecatedConsole;
-/** @constructor */
-function $h_s_DeprecatedConsole() {
-  /*<skip>*/
-}
-$h_s_DeprecatedConsole.prototype = $c_s_DeprecatedConsole.prototype;
-/** @constructor */
 function $c_s_FallbackArrayBuilding() {
   $c_O.call(this)
 }
@@ -7245,32 +7270,6 @@ function $m_s_sys_package$() {
   };
   return $n_s_sys_package$
 }
-/** @constructor */
-function $c_s_util_DynamicVariable() {
-  $c_O.call(this);
-  this.v$1 = null
-}
-$c_s_util_DynamicVariable.prototype = new $h_O();
-$c_s_util_DynamicVariable.prototype.constructor = $c_s_util_DynamicVariable;
-/** @constructor */
-function $h_s_util_DynamicVariable() {
-  /*<skip>*/
-}
-$h_s_util_DynamicVariable.prototype = $c_s_util_DynamicVariable.prototype;
-$c_s_util_DynamicVariable.prototype.toString__T = (function() {
-  return (("DynamicVariable(" + this.v$1) + ")")
-});
-$c_s_util_DynamicVariable.prototype.init___O = (function(init) {
-  this.v$1 = init;
-  return this
-});
-var $d_s_util_DynamicVariable = new $TypeData().initClass({
-  s_util_DynamicVariable: 0
-}, false, "scala.util.DynamicVariable", {
-  s_util_DynamicVariable: 1,
-  O: 1
-});
-$c_s_util_DynamicVariable.prototype.$classData = $d_s_util_DynamicVariable;
 /** @constructor */
 function $c_s_util_control_Breaks() {
   $c_O.call(this);
@@ -11743,43 +11742,6 @@ function $m_ju_regex_Pattern$() {
     $n_ju_regex_Pattern$ = new $c_ju_regex_Pattern$().init___()
   };
   return $n_ju_regex_Pattern$
-}
-/** @constructor */
-function $c_s_Console$() {
-  $c_s_DeprecatedConsole.call(this);
-  this.outVar$2 = null;
-  this.errVar$2 = null;
-  this.inVar$2 = null
-}
-$c_s_Console$.prototype = new $h_s_DeprecatedConsole();
-$c_s_Console$.prototype.constructor = $c_s_Console$;
-/** @constructor */
-function $h_s_Console$() {
-  /*<skip>*/
-}
-$h_s_Console$.prototype = $c_s_Console$.prototype;
-$c_s_Console$.prototype.init___ = (function() {
-  $n_s_Console$ = this;
-  this.outVar$2 = new $c_s_util_DynamicVariable().init___O($m_jl_System$().out$1);
-  this.errVar$2 = new $c_s_util_DynamicVariable().init___O($m_jl_System$().err$1);
-  this.inVar$2 = new $c_s_util_DynamicVariable().init___O(null);
-  return this
-});
-var $d_s_Console$ = new $TypeData().initClass({
-  s_Console$: 0
-}, false, "scala.Console$", {
-  s_Console$: 1,
-  s_DeprecatedConsole: 1,
-  O: 1,
-  s_io_AnsiColor: 1
-});
-$c_s_Console$.prototype.$classData = $d_s_Console$;
-var $n_s_Console$ = (void 0);
-function $m_s_Console$() {
-  if ((!$n_s_Console$)) {
-    $n_s_Console$ = new $c_s_Console$().init___()
-  };
-  return $n_s_Console$
 }
 /** @constructor */
 function $c_s_Predef$() {
@@ -22701,18 +22663,6 @@ $c_Ljava_io_PrintStream.prototype.init___Ljava_io_OutputStream__Z__Ljava_nio_cha
   this.errorFlag$3 = false;
   return this
 });
-function $is_Ljava_io_PrintStream(obj) {
-  return (!(!((obj && obj.$classData) && obj.$classData.ancestors.Ljava_io_PrintStream)))
-}
-function $as_Ljava_io_PrintStream(obj) {
-  return (($is_Ljava_io_PrintStream(obj) || (obj === null)) ? obj : $throwClassCastException(obj, "java.io.PrintStream"))
-}
-function $isArrayOf_Ljava_io_PrintStream(obj, depth) {
-  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Ljava_io_PrintStream)))
-}
-function $asArrayOf_Ljava_io_PrintStream(obj, depth) {
-  return (($isArrayOf_Ljava_io_PrintStream(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Ljava.io.PrintStream;", depth))
-}
 /** @constructor */
 function $c_ju_Arrays$$anon$3() {
   $c_O.call(this);
@@ -23171,44 +23121,6 @@ $c_jl_JSConsoleBasedPrintStream.prototype.init___jl_Boolean = (function(isErr) {
   this.flushed$4 = true;
   this.buffer$4 = "";
   return this
-});
-$c_jl_JSConsoleBasedPrintStream.prototype.java$lang$JSConsoleBasedPrintStream$$printString__T__V = (function(s) {
-  var rest = s;
-  while ((rest !== "")) {
-    var thiz = rest;
-    var nlPos = $uI(thiz.indexOf("\n"));
-    if ((nlPos < 0)) {
-      this.buffer$4 = (("" + this.buffer$4) + rest);
-      this.flushed$4 = false;
-      rest = ""
-    } else {
-      var jsx$1 = this.buffer$4;
-      var thiz$1 = rest;
-      this.doWriteLine__p4__T__V((("" + jsx$1) + $as_T(thiz$1.substring(0, nlPos))));
-      this.buffer$4 = "";
-      this.flushed$4 = true;
-      var thiz$2 = rest;
-      var beginIndex = ((1 + nlPos) | 0);
-      rest = $as_T(thiz$2.substring(beginIndex))
-    }
-  }
-});
-$c_jl_JSConsoleBasedPrintStream.prototype.doWriteLine__p4__T__V = (function(line) {
-  var x = $g.console;
-  if ($uZ((!(!x)))) {
-    var x$1 = this.isErr$4;
-    if ($uZ(x$1)) {
-      var x$2 = $g.console.error;
-      var jsx$1 = $uZ((!(!x$2)))
-    } else {
-      var jsx$1 = false
-    };
-    if (jsx$1) {
-      $g.console.error(line)
-    } else {
-      $g.console.log(line)
-    }
-  }
 });
 var $d_jl_JSConsoleBasedPrintStream = new $TypeData().initClass({
   jl_JSConsoleBasedPrintStream: 0

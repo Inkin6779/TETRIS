@@ -1,6 +1,6 @@
 name := "FunctionalTetris"
 
-version := "1.3"
+version := "rolling_release"
 
 scalaVersion := "2.12.4"
 

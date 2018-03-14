@@ -19,6 +19,11 @@ release folders and open with your browser. There are no ads
 and I do not collect any data. In fact, you can just play offline.
 The highscore is stored using cookies. 
 
+From 1.5 onwards, the code uses `img/gameover.png` to signal the
+default game over. While it might work without, having the image
+available does grant you a slight style bonus.
+
+
 *Local file cookies do not work in Google Chrome.* 
 
 [You can play the newest version from this repo right here on GitHub.](https://xdracam.github.io/functional-tetris/)
@@ -35,18 +40,18 @@ Clone the project and treat as a usual ScalaJS project:
 
 Sure. Just include one of the JS files found inside the 
 release folders inside of a `<script>` tag. Then you 
-can use the JS 'API':
+can use the JS 'API' by passing a proper config object:
 
-    FTetris.startGame(
+    FTetris.startGame({
         canv: html.Canvas,
         onpointchange: Int => Void,
         onlevelchange: Int => Void,
         onlineclear: Int => Void,
-        ongameend: () => Void,
         touchRootNode: [OPT] dom.Node,
+        ongameend: [OPT] () => Void,
         onpausestart: [OPT] () => Void,
         onpauseend: [OPT] () => Void
-    ); 
+    }); 
     
 Where `canv` is a reference to the canvas you want the game 
 to render in, e.g. `document.getElementByID('myCanvas')`.
