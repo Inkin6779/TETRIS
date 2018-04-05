@@ -33,7 +33,7 @@ object FTetris {
   var canStart: Boolean = true
   var paused: Boolean = false
 
-  /* // TODO: guideline colors
+  /* TODO: guideline colors
         Cyan I
         Yellow O
         Purple T

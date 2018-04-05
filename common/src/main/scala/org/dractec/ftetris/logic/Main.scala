@@ -1,4 +1,5 @@
-package org.dractec.ftetris.logic
+package org.dractec
+package ftetris.logic
 
 import cats.effect.IO
 import org.dractec.ftetris.logic.Game._
