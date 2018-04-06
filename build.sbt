@@ -1,16 +1,50 @@
+import java.nio.file.{StandardCopyOption, Files}
+import java.nio
+
 name := "FunctionalTetris"
 
 version := "rolling_release"
 
 scalaVersion := "2.12.4"
 
-lazy val global = project
+// GLITCH BONUS
+
+lazy val fastGlitchApp = taskKey[Unit]("build glitch app project structure from compiled sources")
+lazy val fullGlitchApp = taskKey[Unit]("build glitch app project structure from compiled sources")
+
+lazy val root = project
   .in(file("."))
   .settings(
     settings,
-    (compile in Compile) := ((compile in Compile)
-      dependsOn (fastOptJS in(frontend, Compile))
-      dependsOn (fastOptJS in(backend, Compile))).value
+    fastGlitchApp := {
+      def cp(p1: nio.file.Path, p2: nio.file.Path) = {
+        //Files.deleteIfExists(p2)
+        Files.copy(p1, p2, StandardCopyOption.REPLACE_EXISTING)
+      }
+      def / = baseDirectory.value.toPath resolve (_: String)
+      cp(/("package.json"), /("app/package.json"))
+      cp(/("backend/target/scala-2.12/backend-fastopt.js"), /("app/server.js"))
+      cp(/("frontend/target/scala-2.12/frontend-fastopt.js"), /("app/public/client.js"))
+      //cp(/("index.html"), /("app/views/index.html"))
+    },
+    fullGlitchApp := {
+      def cp(p1: nio.file.Path, p2: nio.file.Path) = {
+        Files.deleteIfExists(p2)
+        Files.copy(p1, p2)
+      }
+      def / = new File(baseDirectory.value, _: String).toPath
+      cp(/("package.json"), /("app/package.json"))
+      cp(/("backend/target/scala-2.12/backend-fullopt.js"), /("app/server.js"))
+      cp(/("frontend/target/scala-2.12/frontend-fullopt.js"), /("app/public/client.js"))
+      //cp(/("index.html"), /("app/views/index.html"))
+    }
+//    commands ++= Seq(
+//      Command.single("fastGlitchApp")(
+//        (s: State, _: String) => {fastGlitchApp.value; s}
+//      ),
+//      Command.single("fullGlitchApp")(
+//        (s: State, _: String) => {fullGlitchApp.value; s}
+//    ))
   )
   .aggregate(
     common,
