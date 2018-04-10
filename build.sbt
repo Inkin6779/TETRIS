@@ -12,14 +12,14 @@ scalaVersion := "2.12.4"
 
 // GLITCH BONUS
 
-lazy val fastGlitchApp = taskKey[Unit]("build glitch app project structure from compiled sources")
-lazy val fullGlitchApp = taskKey[Unit]("build glitch app project structure from compiled sources")
+lazy val fastNodeApp = taskKey[Unit]("build node app project structure from compiled sources")
+lazy val fullNodeApp = taskKey[Unit]("build node app project structure from compiled sources")
 
 lazy val root: Project = project
   .in(file("."))
   .settings(
     settings,
-    fastGlitchApp := {
+    fastNodeApp := {
       clean.value
       //(fastOptJS in Compile in common).value
       (fastOptJS in Compile in frontend).value
@@ -32,7 +32,7 @@ lazy val root: Project = project
       cp(/("frontend/target/scala-2.12/frontend-fastopt.js"), /("app/public/client.js"))
       //cp(/("index.html"), /("app/views/index.html"))
     },
-    fullGlitchApp := {
+    fullNodeApp := {
       clean.value
       //(fullOptJS in Compile in common).value
       (fullOptJS in Compile in frontend).value

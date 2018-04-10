@@ -32,3 +32,9 @@ project/plugins/project/
 *.log
 
 # End of https://www.gitignore.io/api/sbt,scala
+
+
+### Project ###
+
+app/server.js
+app/public/client.js
