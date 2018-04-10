@@ -263,7 +263,7 @@ object FTetris {
       mainLoop.foreach(clearInterval)
 
       val img = dom.document.createElement("img").asInstanceOf[HTMLImageElement]
-      img.src = "img/gameover.png"
+      img.src = "/public/gameover.png"
       img.onload = (e: dom.Event) => {
         ctx.drawImage(img, 0, gc.canv.height/2 - img.height/2)
       }

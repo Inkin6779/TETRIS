@@ -4252,7 +4252,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.endGame$1__p1__Lorg_dractec_ftetri
     $m_sjs_js_timers_package$().clearInterval__sjs_js_timers_SetIntervalHandle__V(arg1)
   };
   var img = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().createElement("img");
-  img.src = "img/gameover.png";
+  img.src = "/public/gameover.png";
   img.onload = (function(gc$1$1, ctx$1$1, img$1) {
     return (function(arg1$2) {
       $m_Lorg_dractec_ftetris_js_FTetris$().org$dractec$ftetris$js$FTetris$$$anonfun$startGame$22__Lorg_scalajs_dom_raw_Event__Lorg_dractec_ftetris_js_FTetris$GameConf__Lorg_scalajs_dom_raw_CanvasRenderingContext2D__Lorg_scalajs_dom_raw_HTMLImageElement__V(arg1$2, gc$1$1, ctx$1$1, img$1)

@@ -1,5 +1,8 @@
-import java.nio.file.{StandardCopyOption, Files}
+import java.nio.file.{Files, StandardCopyOption}
 import java.nio
+
+// shadow sbt-scalajs' crossProject and CrossType until Scala.js 1.0.0 is released
+import sbtcrossproject.{crossProject, CrossType}
 
 name := "FunctionalTetris"
 
@@ -12,58 +15,62 @@ scalaVersion := "2.12.4"
 lazy val fastGlitchApp = taskKey[Unit]("build glitch app project structure from compiled sources")
 lazy val fullGlitchApp = taskKey[Unit]("build glitch app project structure from compiled sources")
 
-lazy val root = project
+lazy val root: Project = project
   .in(file("."))
   .settings(
     settings,
     fastGlitchApp := {
-      def cp(p1: nio.file.Path, p2: nio.file.Path) = {
-        //Files.deleteIfExists(p2)
+      clean.value
+      //(fastOptJS in Compile in common).value
+      (fastOptJS in Compile in frontend).value
+      (fastOptJS in Compile in backend).value
+      def cp(p1: nio.file.Path, p2: nio.file.Path) =
         Files.copy(p1, p2, StandardCopyOption.REPLACE_EXISTING)
-      }
       def / = baseDirectory.value.toPath resolve (_: String)
-      cp(/("package.json"), /("app/package.json"))
+//      cp(/("package.json"), /("app/package.json"))
       cp(/("backend/target/scala-2.12/backend-fastopt.js"), /("app/server.js"))
       cp(/("frontend/target/scala-2.12/frontend-fastopt.js"), /("app/public/client.js"))
       //cp(/("index.html"), /("app/views/index.html"))
     },
     fullGlitchApp := {
-      def cp(p1: nio.file.Path, p2: nio.file.Path) = {
-        Files.deleteIfExists(p2)
-        Files.copy(p1, p2)
-      }
+      clean.value
+      //(fullOptJS in Compile in common).value
+      (fullOptJS in Compile in frontend).value
+      (fullOptJS in Compile in backend).value
+      def cp(p1: nio.file.Path, p2: nio.file.Path) =
+        Files.copy(p1, p2, StandardCopyOption.REPLACE_EXISTING)
       def / = new File(baseDirectory.value, _: String).toPath
-      cp(/("package.json"), /("app/package.json"))
-      cp(/("backend/target/scala-2.12/backend-fullopt.js"), /("app/server.js"))
-      cp(/("frontend/target/scala-2.12/frontend-fullopt.js"), /("app/public/client.js"))
+//      cp(/("package.json"), /("app/package.json"))
+      cp(/("backend/target/scala-2.12/backend-opt.js"), /("app/server.js"))
+      cp(/("frontend/target/scala-2.12/frontend-opt.js"), /("app/public/client.js"))
       //cp(/("index.html"), /("app/views/index.html"))
     }
-//    commands ++= Seq(
-//      Command.single("fastGlitchApp")(
-//        (s: State, _: String) => {fastGlitchApp.value; s}
-//      ),
-//      Command.single("fullGlitchApp")(
-//        (s: State, _: String) => {fullGlitchApp.value; s}
-//    ))
   )
   .aggregate(
-    common,
+    common.js,
     frontend,
     backend
   )
 
-lazy val common: Project = project
-  .enablePlugins(ScalaJSPlugin)
+lazy val common =
+  crossProject(JSPlatform, JVMPlatform, NativePlatform)
+  .crossType(CrossType.Pure)
+  .in(file("common"))
+  //.enablePlugins(ScalaJSPlugin)
   .settings(
     name := "common",
-    settings,
+    settings
+  ).jsSettings(
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-core" % "1.0.1",
       "org.typelevel" %%% "cats-effect" % "0.9"
     )
   )
 
-lazy val frontend: Project = project
+lazy val commonJS = common.js
+lazy val commonJVM = common.jvm
+
+lazy val frontend: Project = project.in(file("frontend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "frontend",
@@ -77,24 +84,28 @@ lazy val frontend: Project = project
     )
   )
   .dependsOn(
-    common
+    common.js
   )
 
-lazy val backend: Project = project
+lazy val backend: Project = project.in(file("backend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "backend",
     settings,
+    scalaJSModuleKind := ModuleKind.CommonJSModule,
+    scalaJSUseMainModuleInitializer := true,
+    //mainClass in (Compile, run) := Some("org.dractec.ftetris.node.ScoreServer"),
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "cats-core" % "1.0.1",
       "org.typelevel" %%% "cats-effect" % "0.9"
     ) ++ Seq(
       "io.scalajs" %%% "nodejs" % "0.4.2",
-      "io.scalajs.npm" %%% "express" % "0.4.2"
+      "io.scalajs.npm" %%% "express" % "0.4.2",
+      "io.scalajs.npm" %%% "body-parser" % "0.4.2"
     )
   )
   .dependsOn(
-    common
+    common.js
   )
 
 // SETTINGS

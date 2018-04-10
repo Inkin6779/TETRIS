@@ -11,7 +11,11 @@
     <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
     <title>FTetris by XDracam</title>
 
+
     <script src="frontend/target/scala-2.12/frontend-fastopt.js"></script>
+    <!-- if not fastOpt, then fullOpt -->
+    <script>FTetris || document.write('<script src="frontend/target/scala-2.12/frontend-opt.js">\x3C/script>')</script>
+    <script>FTetris || alert("Game logic script not found!")</script>
     <script> function $(id, text) {
         document.getElementById(id).innerHTML = text;
     }</script>

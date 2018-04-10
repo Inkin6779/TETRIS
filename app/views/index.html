@@ -11,10 +11,11 @@
     <meta name="keywords" content="Tetris, FTetris, ScalaJS">
     <meta name="author" content="Cameron Reuschel">
 
-    <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
+    <link rel="shortcut icon" type="image/png" href="/public/favicon.ico"/>
     <title>FTetris by XDracam</title>
 
-    <script src="../../frontend/target/scala-2.12/frontend-fastopt.js"></script>
+    <script src="/public/client.js" type="text/javascript"></script>
+    <script>FTetris || alert("Game logic script not found!")</script>
     <script> function $(id, text) {
         document.getElementById(id).innerHTML = text;
     }</script>

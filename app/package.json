@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "1989 NES Tetris clone written in Scalajs in a functional haskellesque style.",
   "scripts": {
-    "start": "node backend/target/scala-2.12/backend-fastopt.js"
+    "start": "node server.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.3"
   },
   "engines": {
