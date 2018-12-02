@@ -28,6 +28,7 @@ object FTetris {
     val ongameend: js.Function0[Unit] = js.native
     val onpausestart: js.Function0[Unit] = js.native
     val onpauseend: js.Function0[Unit] = js.native
+    val simpleRenderingMode: Boolean = js.native
   }
 
   var canStart: Boolean = true
@@ -43,14 +44,16 @@ object FTetris {
         Orange L
   */
 
-  val tileColors = Map[Tile, String](
-    Straight -> "#4AC948",
-    Box      -> "#83F52C",
-    LeftL    -> "#76EE00",
-    RightL   -> "#66CD00",
-    Tee      -> "#49E20E",
-    SnakeL   -> "#83F52C",
-    SnakeR   -> "#4DBD33"
+  val tileColors = Map[Option[Tile], String](
+    Straight.some -> "#4AC948",
+    Box.some      -> "#83F52C",
+    LeftL.some    -> "#76EE00",
+    RightL.some   -> "#66CD00",
+    Tee.some      -> "#49E20E",
+    SnakeL.some   -> "#83F52C",
+    SnakeR.some   -> "#4DBD33",
+    // for simple rendering mode
+    None          -> "#303030"//"black"//"#2F4F4F"//"#696969",
   )
 
   implicit class DOMListWrapper[A](val v: DOMList[A]) extends AnyVal {
@@ -62,6 +65,8 @@ object FTetris {
 
     if (!canStart) return
     canStart = false
+    
+    val simpleRenderingMode = if (js.isUndefined(gc.simpleRenderingMode)) false else gc.simpleRenderingMode
 
     val touchRoot: dom.Node = if (js.isUndefined(gc.touchRootNode)) gc.canv else gc.touchRootNode
 
@@ -69,12 +74,6 @@ object FTetris {
       CanvasRenderingContext2D
     val ctx = gc.canv.getContext("2d")
       .asInstanceOf[Ctx2D]
-
-//    def callIfDef(f: js.Function, i: Int = 0): Unit = f match {
-//      case g: js.Function0[Unit] if !js.isUndefined(f) => g()
-//      case g: js.Function1[Int, Unit] if !js.isUndefined(f) => g(i)
-//      case _ => // nothing since not defined
-//    }
 
     def callIfDef(f: js.Function0[Unit]): Unit = if (!js.isUndefined(f)) f()
 
@@ -98,7 +97,24 @@ object FTetris {
 
   // __________ DRAWING FUNCTIONS __________
 
-    def gradientStyle = {
+    def redraw(oldField: Option[GameField], newField: GameField): Unit = {
+      if (simpleRenderingMode) {
+        if (oldField.isEmpty) {
+          // draw all first time
+          newField.foreach{case (c, t) => drawTile(t, c)}
+        } else {
+          // draw only the difference
+          val diff = newField.collect{
+            case (c, t) if t != oldField.get.apply(c) => c -> t}
+          diff.foreach{case (c, t) => drawTile(t, c)}
+        }
+      } else {
+        drawGradient()
+        newField.foreach{case (c, t) => if (t.isDefined) drawTile(t, c) }
+      }
+    }
+
+    def gradientStyle: CanvasGradient = {
       val grd = ctx.createLinearGradient(0, 0, 0, gc.canv.height)
       grd.addColorStop(0, "black")
       grd.addColorStop(1, "grey")
@@ -130,14 +146,20 @@ object FTetris {
       ctx.globalAlpha = 1
     }
 
-    def drawTile(tile: Tile, coord: Coord): Unit = {
+    def drawTile(tile: Option[Tile], coord: Coord): Unit = {
       val widthPerTile = gc.canv.width / gs.conf.boardDims.x
       val heightPerTile = gc.canv.height / gs.conf.boardDims.y
       ctx.fillStyle = tileColors(tile)
       ctx.fillRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
-      ctx.globalAlpha = 0.1
-      ctx.strokeStyle = gradientStyle
-      ctx.lineWidth = 2
+      if (simpleRenderingMode) {
+        ctx.globalAlpha = 1
+        ctx.strokeStyle = "#696969" //"#2F4F4F"
+        ctx.lineWidth = 1
+      } else {
+        ctx.globalAlpha = 0.1
+        ctx.strokeStyle = gradientStyle
+        ctx.lineWidth = 2
+      }
       ctx.strokeRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
       ctx.globalAlpha = 1
     }
@@ -156,10 +178,10 @@ object FTetris {
 
     def resume(): Unit = {
       drawGradient()
-      globalTetCoverage(lastState)
+      val field = globalTetCoverage(lastState)
         .map(tc => lastState.field |+| tc)
         .getOrElse(lastState.field)
-        .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
+      redraw(None, field)
     } andFinally callIfDef(gc.onpauseend)
 
   // __________ KEYBOARD EVENTS __________
@@ -292,13 +314,12 @@ object FTetris {
         if (lastTouchMove == Rotate && (newState.lastMoveTimes(Rotate) - newState.frameCount) < gs.conf.rotateDelay)
           lastTouchMove = Nothing
 
-        val newField = globalTetCoverage(newState)
+        val rawNewField = globalTetCoverage(newState)
           .map(tc => newState.field |+| tc)
-        if (newField != lastField) {
-          drawGradient()
-          newField.getOrElse(newState.field)
-            .foreach { case (c, t) => t.foreach(drawTile(_, c)) }
-          lastField = newField
+        val newField = coverageWithClearAnimation(newState, rawNewField.getOrElse(newState.field))
+        if (lastField.isEmpty || newField != lastField.get) {
+          redraw(lastField, newField)
+          lastField = newField.some
         }
         lastState = newState
 

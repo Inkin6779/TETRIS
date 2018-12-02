@@ -39,9 +39,6 @@ object Game {
 
    ========================= */
 
-  // TODO: random is not pure, so use IO monad instead ?
-  // TODO: return IO[Boolean] instead of Boolean in nextFrame, make input and random IOs
-
   implicit val mapMergeSG = new Semigroup[Map[Coord, Option[Tile]]] {
     override def combine(x: Map[Coord, Option[Tile]], y: Map[Coord, Option[Tile]]) =
       x.map { case (c, v) => c -> (y.getOrElse(c, None) orElse v) }
@@ -301,6 +298,19 @@ object Game {
 
   def globalTetCoverage(gs: GS, f: Tetromino => Tetromino = identity): Option[CoverageBox] =
     gs.currTet.map(f).map(tet => coverage(tet.tile)(tet.rotation).mapKeys(_ |+| tet.pos))
+
+  def coverageWithClearAnimation(gs: GS, field: GameField): GameField = field.map{
+    case (c, t) =>
+      if (gs.lastClears.exists{ cl =>
+        val diff = gs.frameCount - cl.clearTime
+        val disappearing = cl.row == c.y && diff < 20
+        disappearing && diff % 8 >= 4
+      }) {
+        c -> None
+      } else {
+        c -> t
+      }
+  }
 
   private def initField(conf: Config): GameField = (for {
     x <- 0 until conf.boardDims.x

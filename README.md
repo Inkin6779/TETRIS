@@ -50,7 +50,8 @@ can use the JS 'API' by passing a proper config object:
         touchRootNode: [OPT] dom.Node,
         ongameend: [OPT] () => Void,
         onpausestart: [OPT] () => Void,
-        onpauseend: [OPT] () => Void
+        onpauseend: [OPT] () => Void,
+        simpleRenderingMode: [OPT] boolean
     }); 
     
 Where `canv` is a reference to the canvas you want the game 
@@ -62,7 +63,11 @@ aesthetic reasons.
 `touchRootNode` enables the user to specify the dom node 
 which receives all touch event handlers. If not specified,
 the canvas is used. This should encompass the whole area
-which allows touch input, but not the <body> tag itself.
+which allows touch input, but not the `<body>` tag itself.
+
+`simpleRenderingMode` can be explicitly set to `true` in 
+order to enable a less beautiful but far more efficient
+rendering mode suitable for poor hardware or alternative browsers.
 
 The others are callbacks that either take an `int` - the
 updated value - or no arguments and they all return nothing.

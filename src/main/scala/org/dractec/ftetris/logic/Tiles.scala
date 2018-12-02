@@ -39,6 +39,7 @@ object Tiles {
   }
 
   type CoverageBox = Map[Coord, Option[Tile]]
+
   implicit val cbShow = new Show[CoverageBox] {
     def maxC(t: CoverageBox) = t.map{case (k, _) => k.x max k.y}.max + 1
     override def show(t: CoverageBox) = List.tabulate(maxC(t), maxC(t))((a, b) =>
@@ -80,11 +81,6 @@ object Tiles {
       """.stripMargin, Straight)
     case _ => rotate3x3BoxTimes(baseCoverage(tile), numRotations(rotation))
   }
-
-//  def boxWidth(tile: Tile): Int = {
-//    case Straight | Box => 4
-//    case _ => 3
-//  }
 
   def baseCoverage(tile: Tile): CoverageBox = string2CB(initBox(tile), tile)
 

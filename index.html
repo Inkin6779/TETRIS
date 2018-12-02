@@ -18,7 +18,7 @@
     <script> function getHighscore() {
         if (!document.cookie) return 0;
         const hs = document.cookie.split("highscore=")[1];
-        return hs.substr(0, hs.length);
+        return parseInt(hs.substr(0, hs.length));
     }</script>
     <script> function startGame() {
         FTetris.startGame({
@@ -41,7 +41,8 @@
                 $("linescleared", "Lines Cleared: " + lcs);
             },
             // the touch root if not the canvas
-            touchRootNode: document.getElementById("body")
+            touchRootNode: document.getElementById("body"),
+            simpleRenderingMode: false
         });
     }</script>
 </head>
