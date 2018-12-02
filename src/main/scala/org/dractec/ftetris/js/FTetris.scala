@@ -28,7 +28,7 @@ object FTetris {
     val ongameend: js.Function0[Unit] = js.native
     val onpausestart: js.Function0[Unit] = js.native
     val onpauseend: js.Function0[Unit] = js.native
-    val simpleRenderingMode: Boolean = js.native
+    val simpleRenderingMode: js.Function0[Boolean] = js.native
   }
 
   var canStart: Boolean = true
@@ -65,8 +65,13 @@ object FTetris {
 
     if (!canStart) return
     canStart = false
-    
-    val simpleRenderingMode = if (js.isUndefined(gc.simpleRenderingMode)) false else gc.simpleRenderingMode
+
+    var lastRenderingMode = false
+    def simpleRenderingMode = {
+      val res = if (js.isUndefined(gc.simpleRenderingMode)) false else gc.simpleRenderingMode()
+      lastRenderingMode = res
+      res
+    }
 
     val touchRoot: dom.Node = if (js.isUndefined(gc.touchRootNode)) gc.canv else gc.touchRootNode
 
@@ -98,19 +103,20 @@ object FTetris {
   // __________ DRAWING FUNCTIONS __________
 
     def redraw(oldField: Option[GameField], newField: GameField): Unit = {
+      val lastMode = lastRenderingMode
       if (simpleRenderingMode) {
-        if (oldField.isEmpty) {
+        if (oldField.isEmpty || !lastMode) {
           // draw all first time
-          newField.foreach{case (c, t) => drawTile(t, c)}
+          newField.foreach{case (c, t) => drawTile(t, c, lastRenderingMode)}
         } else {
           // draw only the difference
           val diff = newField.collect{
             case (c, t) if t != oldField.get.apply(c) => c -> t}
-          diff.foreach{case (c, t) => drawTile(t, c)}
+          diff.foreach{case (c, t) => drawTile(t, c, lastRenderingMode)}
         }
       } else {
         drawGradient()
-        newField.foreach{case (c, t) => if (t.isDefined) drawTile(t, c) }
+        newField.foreach{case (c, t) => if (t.isDefined) drawTile(t, c, lastRenderingMode) }
       }
     }
 
@@ -146,12 +152,12 @@ object FTetris {
       ctx.globalAlpha = 1
     }
 
-    def drawTile(tile: Option[Tile], coord: Coord): Unit = {
+    def drawTile(tile: Option[Tile], coord: Coord, renderingMode: Boolean): Unit = {
       val widthPerTile = gc.canv.width / gs.conf.boardDims.x
       val heightPerTile = gc.canv.height / gs.conf.boardDims.y
       ctx.fillStyle = tileColors(tile)
       ctx.fillRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
-      if (simpleRenderingMode) {
+      if (renderingMode) {
         ctx.globalAlpha = 1
         ctx.strokeStyle = "#696969" //"#2F4F4F"
         ctx.lineWidth = 1
@@ -276,32 +282,33 @@ object FTetris {
     touchRoot.addEventListener("touchend", handleTouchEnd)
     touchRoot.addEventListener("touchcancel", handleTouchEnd)
 
-  // __________ GAME END IMG __________
+  // __________ GAME END STUFF __________
 
     var mainLoop: Option[SetIntervalHandle] = None
 
-    //noinspection ScalaDeprecation
+    val img = dom.document.createElement("img").asInstanceOf[HTMLImageElement]
+    img.src = "img/gameover.png"
+
     def endGame(): Unit = {
       mainLoop.foreach(clearInterval)
-
-      val img = dom.document.createElement("img").asInstanceOf[HTMLImageElement]
-      img.src = "img/gameover.png"
-      img.onload = (e: dom.Event) => {
-        ctx.drawImage(img, 0, gc.canv.height/2 - img.height/2)
-      }
-
-      canStart = true
-      callIfDef(gc.ongameend)
+      ctx.drawImage(img, 0, gc.canv.height/2 - img.height/2)
     }
 
-  // __________ MAIN GAME LOOP __________
+    // __________ MAIN GAME LOOP __________
 
     clearAll()
     drawGradient()
     gc.onpointchange(0)
     gc.onlevelchange(gs.level)
 
+    canStart = true
+    callIfDef(gc.ongameend)
+
+    var frameIsRunning = false
+
     mainLoop = setInterval(1000d/60d) {
+      if (frameIsRunning) sys.error("Calculating a frame took too long.")
+      frameIsRunning = true
       if (!paused) {
         // have to run here, since running everything at once fails to draw
         val (newState, isOver) = nextFrame(lastState).unsafeRunSync()
@@ -325,6 +332,7 @@ object FTetris {
 
         if (isOver) endGame()
       }
+      frameIsRunning = false
     }.some
   }
 }

@@ -20,8 +20,10 @@
         const hs = document.cookie.split("highscore=")[1];
         return parseInt(hs.substr(0, hs.length));
     }</script>
-    <script> function startGame() {
-        FTetris.startGame({
+    <script>
+        var simpleRenderingMode;
+        function startGame() {
+        gameConf = {
             // the canvas
             canv: document.getElementById("mainCanv"),
             // the point callback
@@ -42,14 +44,22 @@
             },
             // the touch root if not the canvas
             touchRootNode: document.getElementById("body"),
-            simpleRenderingMode: false
-        });
+            simpleRenderingMode: () => simpleRenderingMode || false
+        };
+        FTetris.startGame(gameConf);
+    }</script>
+    <script> function setSimpleMode(cb) {
+        simpleRenderingMode = cb.checked;
     }</script>
 </head>
 <body>
 <div id="body" style="width:100%;">
 <div style="margin: auto; width: 300px; text-align: center;">
     <div style="display:flex; justify-content:space-around;">
+        <div>
+            <input type="checkbox" onclick="setSimpleMode(this)" id="simpleModeCheck"/>
+            <label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Mode</label>
+        </div>
         <div><button onclick="startGame()" style="margin: auto;">START GAME</button></div>
         <div><p id="level" style="font-size: 20px; margin: auto;"><b>Level: 0</b></p></div>
         <!--<div><span style="font-size:20px; color: red;" id="status">&nbsp;&nbsp;&nbsp;</span></div>-->

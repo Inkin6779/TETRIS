@@ -51,7 +51,7 @@ can use the JS 'API' by passing a proper config object:
         ongameend: [OPT] () => Void,
         onpausestart: [OPT] () => Void,
         onpauseend: [OPT] () => Void,
-        simpleRenderingMode: [OPT] boolean
+        simpleRenderingMode: [OPT] () => Boolean
     }); 
     
 Where `canv` is a reference to the canvas you want the game 
@@ -67,7 +67,8 @@ which allows touch input, but not the `<body>` tag itself.
 
 `simpleRenderingMode` can be explicitly set to `true` in 
 order to enable a less beautiful but far more efficient
-rendering mode suitable for poor hardware or alternative browsers.
+rendering mode suitable for poor hardware or alternative 
+browsers. It's a function to allow changes during runtime.
 
 The others are callbacks that either take an `int` - the
 updated value - or no arguments and they all return nothing.
