@@ -339,7 +339,10 @@ object FTetris {
     var frameIsRunning = false
 
     mainLoop = setInterval(1000d/60d) {
-      if (frameIsRunning) sys.error("Calculating a frame took too long.")
+      if (frameIsRunning) {
+        frameIsRunning = false
+        sys.error("Calculating a frame took too long.")
+      }
       frameIsRunning = true
       if (!paused) {
         // have to run here, since running everything at once fails to draw

@@ -4436,6 +4436,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_dractec_ftetris_js
   var a = $m_sjs_js_timers_package$().setInterval__D__F0__sjs_js_timers_SetIntervalHandle(16.666666666666668, new $c_sjsr_AnonFunction0().init___sjs_js_Function0((function(this$2$1, gc$2, lastRenderingMode$2, contextMap$2, lastTouchMove$2, initialGs$2, lastState$2, lastField$1, lastNextTile$1, mainLoop$1, img$1, frameIsRunning$1) {
     return (function() {
       if (frameIsRunning$1.elem$1) {
+        frameIsRunning$1.elem$1 = false;
         $m_s_sys_package$().error__T__sr_Nothing$("Calculating a frame took too long.")
       };
       frameIsRunning$1.elem$1 = true;
