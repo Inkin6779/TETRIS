@@ -4106,8 +4106,7 @@ function $m_Ljava_math_Multiplication$() {
 function $c_Lorg_dractec_ftetris_js_FTetris$() {
   $c_O.call(this);
   this.canStart$1 = false;
-  this.paused$1 = false;
-  this.tileColors$1 = null
+  this.paused$1 = false
 }
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype = new $h_O();
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.constructor = $c_Lorg_dractec_ftetris_js_FTetris$;
@@ -4120,7 +4119,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawTile$1__p1__s_Option__Lorg_dra
   var widthPerTile = (($uI(canv.width) / dimensions.x$1) | 0);
   var heightPerTile = (($uI(canv.height) / dimensions.y$1) | 0);
   var jsx$1 = contextMap$1.apply__O__O(canv);
-  var s = $as_T(this.tileColors$1.apply__O__O(tile));
+  var s = $as_T(this.tileColors$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map(gc$1).apply__O__O(tile));
   jsx$1.fillStyle = s;
   contextMap$1.apply__O__O(canv).fillRect($imul(coord.x$1, widthPerTile), $imul(coord.y$1, heightPerTile), widthPerTile, heightPerTile);
   if (renderingMode) {
@@ -4128,12 +4127,97 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawTile$1__p1__s_Option__Lorg_dra
     contextMap$1.apply__O__O(canv).strokeStyle = "#696969";
     contextMap$1.apply__O__O(canv).lineWidth = 1.0
   } else {
-    contextMap$1.apply__O__O(canv).globalAlpha = 0.1;
-    contextMap$1.apply__O__O(canv).strokeStyle = this.gradientStyle$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_scalajs_dom_raw_CanvasGradient(canv, gc$1, contextMap$1);
+    contextMap$1.apply__O__O(canv).globalAlpha = (this.useGuidelineColors$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Z(gc$1) ? 1.0 : 0.1);
+    contextMap$1.apply__O__O(canv).strokeStyle = (this.useGuidelineColors$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Z(gc$1) ? "#696969" : this.gradientStyle$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_scalajs_dom_raw_CanvasGradient(canv, gc$1, contextMap$1));
     contextMap$1.apply__O__O(canv).lineWidth = 2.0
   };
   contextMap$1.apply__O__O(canv).strokeRect($imul(coord.x$1, widthPerTile), $imul(coord.y$1, heightPerTile), widthPerTile, heightPerTile);
   contextMap$1.apply__O__O(canv).globalAlpha = 1.0
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.tileColors$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map = (function(gc$1) {
+  if (this.useGuidelineColors$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Z(gc$1)) {
+    $m_Lcats_implicits$();
+    var a = $m_Lorg_dractec_ftetris_logic_Tiles$Straight$();
+    var self = new $c_s_Some().init___O(a);
+    var jsx$7 = new $c_T2().init___O__O(self, "cyan");
+    $m_Lcats_implicits$();
+    var a$1 = $m_Lorg_dractec_ftetris_logic_Tiles$Box$();
+    var self$1 = new $c_s_Some().init___O(a$1);
+    var jsx$6 = new $c_T2().init___O__O(self$1, "yellow");
+    $m_Lcats_implicits$();
+    var a$2 = $m_Lorg_dractec_ftetris_logic_Tiles$LeftL$();
+    var self$2 = new $c_s_Some().init___O(a$2);
+    var jsx$5 = new $c_T2().init___O__O(self$2, "blue");
+    $m_Lcats_implicits$();
+    var a$3 = $m_Lorg_dractec_ftetris_logic_Tiles$RightL$();
+    var self$3 = new $c_s_Some().init___O(a$3);
+    var jsx$4 = new $c_T2().init___O__O(self$3, "orange");
+    $m_Lcats_implicits$();
+    var a$4 = $m_Lorg_dractec_ftetris_logic_Tiles$Tee$();
+    var self$4 = new $c_s_Some().init___O(a$4);
+    var jsx$3 = new $c_T2().init___O__O(self$4, "purple");
+    $m_Lcats_implicits$();
+    var a$5 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeL$();
+    var self$5 = new $c_s_Some().init___O(a$5);
+    var jsx$2 = new $c_T2().init___O__O(self$5, "red");
+    $m_Lcats_implicits$();
+    var a$6 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeR$();
+    var self$6 = new $c_s_Some().init___O(a$6);
+    var jsx$1 = new $c_T2().init___O__O(self$6, "green");
+    var self$7 = $m_s_None$();
+    var array = [jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$7, "#303030")];
+    var this$32 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+    var i = 0;
+    var len = $uI(array.length);
+    while ((i < len)) {
+      var index = i;
+      var arg1 = array[index];
+      this$32.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
+      i = ((1 + i) | 0)
+    };
+    return $as_sci_Map(this$32.elems$1)
+  } else {
+    $m_Lcats_implicits$();
+    var a$7 = $m_Lorg_dractec_ftetris_logic_Tiles$Straight$();
+    var self$8 = new $c_s_Some().init___O(a$7);
+    var jsx$14 = new $c_T2().init___O__O(self$8, "#4AC948");
+    $m_Lcats_implicits$();
+    var a$8 = $m_Lorg_dractec_ftetris_logic_Tiles$Box$();
+    var self$9 = new $c_s_Some().init___O(a$8);
+    var jsx$13 = new $c_T2().init___O__O(self$9, "#83F52C");
+    $m_Lcats_implicits$();
+    var a$9 = $m_Lorg_dractec_ftetris_logic_Tiles$LeftL$();
+    var self$10 = new $c_s_Some().init___O(a$9);
+    var jsx$12 = new $c_T2().init___O__O(self$10, "#76EE00");
+    $m_Lcats_implicits$();
+    var a$10 = $m_Lorg_dractec_ftetris_logic_Tiles$RightL$();
+    var self$11 = new $c_s_Some().init___O(a$10);
+    var jsx$11 = new $c_T2().init___O__O(self$11, "#66CD00");
+    $m_Lcats_implicits$();
+    var a$11 = $m_Lorg_dractec_ftetris_logic_Tiles$Tee$();
+    var self$12 = new $c_s_Some().init___O(a$11);
+    var jsx$10 = new $c_T2().init___O__O(self$12, "#49E20E");
+    $m_Lcats_implicits$();
+    var a$12 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeL$();
+    var self$13 = new $c_s_Some().init___O(a$12);
+    var jsx$9 = new $c_T2().init___O__O(self$13, "#83F52C");
+    $m_Lcats_implicits$();
+    var a$13 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeR$();
+    var self$14 = new $c_s_Some().init___O(a$13);
+    var jsx$8 = new $c_T2().init___O__O(self$14, "#4DBD33");
+    var self$15 = $m_s_None$();
+    var array$1 = [jsx$14, jsx$13, jsx$12, jsx$11, jsx$10, jsx$9, jsx$8, new $c_T2().init___O__O(self$15, "#303030")];
+    var this$64 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+    var i$1 = 0;
+    var len$1 = $uI(array$1.length);
+    while ((i$1 < len$1)) {
+      var index$1 = i$1;
+      var arg1$1 = array$1[index$1];
+      this$64.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$1));
+      i$1 = ((1 + i$1) | 0)
+    };
+    return $as_sci_Map(this$64.elems$1)
+  }
 });
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.handleTouchEnd$1__p1__Lorg_scalajs_dom_raw_TouchEvent__sr_ObjectRef__scm_Stack__sr_ObjectRef__V = (function(e, lastTouchMove$1, movesSinceTouchStart$1, moveIsDrop$1) {
   e.preventDefault();
@@ -4143,52 +4227,6 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.handleTouchEnd$1__p1__Lorg_scalajs
     lastTouchMove$1.elem$1 = $m_Lorg_dractec_ftetris_logic_Game$Nothing$()
   };
   moveIsDrop$1.elem$1 = $m_s_None$()
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.init___ = (function() {
-  $n_Lorg_dractec_ftetris_js_FTetris$ = this;
-  this.canStart$1 = true;
-  this.paused$1 = false;
-  $m_Lcats_implicits$();
-  var a = $m_Lorg_dractec_ftetris_logic_Tiles$Straight$();
-  var self = new $c_s_Some().init___O(a);
-  var jsx$7 = new $c_T2().init___O__O(self, "#4AC948");
-  $m_Lcats_implicits$();
-  var a$1 = $m_Lorg_dractec_ftetris_logic_Tiles$Box$();
-  var self$1 = new $c_s_Some().init___O(a$1);
-  var jsx$6 = new $c_T2().init___O__O(self$1, "#83F52C");
-  $m_Lcats_implicits$();
-  var a$2 = $m_Lorg_dractec_ftetris_logic_Tiles$LeftL$();
-  var self$2 = new $c_s_Some().init___O(a$2);
-  var jsx$5 = new $c_T2().init___O__O(self$2, "#76EE00");
-  $m_Lcats_implicits$();
-  var a$3 = $m_Lorg_dractec_ftetris_logic_Tiles$RightL$();
-  var self$3 = new $c_s_Some().init___O(a$3);
-  var jsx$4 = new $c_T2().init___O__O(self$3, "#66CD00");
-  $m_Lcats_implicits$();
-  var a$4 = $m_Lorg_dractec_ftetris_logic_Tiles$Tee$();
-  var self$4 = new $c_s_Some().init___O(a$4);
-  var jsx$3 = new $c_T2().init___O__O(self$4, "#49E20E");
-  $m_Lcats_implicits$();
-  var a$5 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeL$();
-  var self$5 = new $c_s_Some().init___O(a$5);
-  var jsx$2 = new $c_T2().init___O__O(self$5, "#83F52C");
-  $m_Lcats_implicits$();
-  var a$6 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeR$();
-  var self$6 = new $c_s_Some().init___O(a$6);
-  var jsx$1 = new $c_T2().init___O__O(self$6, "#4DBD33");
-  var self$7 = $m_s_None$();
-  var array = [jsx$7, jsx$6, jsx$5, jsx$4, jsx$3, jsx$2, jsx$1, new $c_T2().init___O__O(self$7, "#303030")];
-  var this$32 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i = 0;
-  var len = $uI(array.length);
-  while ((i < len)) {
-    var index = i;
-    var arg1 = array[index];
-    this$32.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1));
-    i = ((1 + i) | 0)
-  };
-  this.tileColors$1 = $as_sci_Map(this$32.elems$1);
-  return this
 });
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.redraw$1__p1__s_Option__sci_Map__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V = (function(oldField, newField, gc$1, lastRenderingMode$1, contextMap$1, initialGs$1) {
   var canv = gc$1.mainCanvas;
@@ -4242,6 +4280,11 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.redraw$1__p1__s_Option__sci_Map__L
       })
     })(this, gc$1, lastRenderingMode$1, contextMap$1, initialGs$1, canv)))
   }
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.init___ = (function() {
+  this.canStart$1 = true;
+  this.paused$1 = false;
+  return this
 });
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawSneakyGrid$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V = (function(canv, contextMap$1, initialGs$1) {
   var widthPerTile = (($uI(canv.width) / initialGs$1.conf$1.boardDims$1.x$1) | 0);
@@ -4311,7 +4354,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_dractec_ftetris_js
   var keysDown = new $c_sr_ObjectRef().init___O(elem);
   var elem$1 = $m_Lorg_dractec_ftetris_logic_Game$Nothing$();
   var lastTouchMove = new $c_sr_ObjectRef().init___O(elem$1);
-  var array$1 = [37, 65, 39, 68, 40, 83, 32, 27, 80];
+  var array$1 = [37, 65, 39, 68, 40, 83, 32, 27, 80, 38];
   if (($uI(array$1.length) === 0)) {
     var jsx$2 = $m_sci_Set$EmptySet$()
   } else {
@@ -4334,7 +4377,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_dractec_ftetris_js
       return new $c_Lorg_dractec_ftetris_js_FTetris$$anon$1().init___sr_ObjectRef__sr_ObjectRef(keysDown$1, lastTouchMove$1)
     })
   })(this, keysDown, lastTouchMove));
-  var initialGs = jsx$3.initGS__Lorg_dractec_ftetris_logic_Game$Config__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$Config().init___Lcats_effect_IO__I__s_util_Random__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_dractec_ftetris_logic_Game$DASDelay__I__I__Z(new $c_Lcats_effect_IO$Delay().init___F0(body), 0, $m_s_util_Random$(), new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(10, 20), new $c_Lorg_dractec_ftetris_logic_Game$DASDelay().init___I__I(16, 6), 2, 10, true));
+  var initialGs = $as_Lorg_dractec_ftetris_logic_Game$GS(jsx$3.initGS__Lorg_dractec_ftetris_logic_Game$Config__Lcats_effect_IO(new $c_Lorg_dractec_ftetris_logic_Game$Config().init___Lcats_effect_IO__I__s_util_Random__Lorg_dractec_ftetris_logic_Tiles$Coord__Lorg_dractec_ftetris_logic_Game$DASDelay__I__I__Z(new $c_Lcats_effect_IO$Delay().init___F0(body), 0, $m_s_util_Random$(), new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(10, 20), new $c_Lorg_dractec_ftetris_logic_Game$DASDelay().init___I__I(16, 6), 2, 10, true)).unsafeRunSync__O());
   var lastState = new $c_sr_ObjectRef().init___O(initialGs);
   var elem$2 = $m_s_None$();
   var lastField = new $c_sr_ObjectRef().init___O(elem$2);
@@ -4384,10 +4427,9 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_dractec_ftetris_js
   img.src = "img/gameover.png";
   this.clearAll$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sci_Map__V(gc.mainCanvas, contextMap);
   this.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(gc.mainCanvas, gc, contextMap, initialGs);
-  this.drawPreview$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Z__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V($as_Lorg_dractec_ftetris_logic_Tiles$Tile(lastNextTile.elem$1), this.simpleRenderingMode$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__Z(gc, lastRenderingMode), gc, contextMap, initialGs);
+  this.drawPreview$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Z__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(initialGs.nextTile$1, initialGs.nextRotation$1, this.simpleRenderingMode$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__Z(gc, lastRenderingMode), gc, contextMap, initialGs);
   (0, gc.onpointchange)(0);
   (0, gc.onlevelchange)(initialGs.level$1);
-  this.canStart$1 = true;
   this.callIfDef$1__p1__sjs_js_Function0__V(gc.ongameend);
   var frameIsRunning = new $c_sr_BooleanRef().init___Z(false);
   $m_Lcats_implicits$();
@@ -4444,7 +4486,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame__Lorg_dractec_ftetris_js
         var x$2 = newState.nextTile$1;
         if ((!(x === x$2))) {
           lastNextTile$1.elem$1 = newState.nextTile$1;
-          this$2$1.drawPreview$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Z__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V($as_Lorg_dractec_ftetris_logic_Tiles$Tile(lastNextTile$1.elem$1), this$2$1.simpleRenderingMode$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__Z(gc$2, lastRenderingMode$2), gc$2, contextMap$2, initialGs$2)
+          this$2$1.drawPreview$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Z__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(newState.nextTile$1, newState.nextRotation$1, this$2$1.simpleRenderingMode$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__Z(gc$2, lastRenderingMode$2), gc$2, contextMap$2, initialGs$2)
         };
         var x$6 = $as_Lorg_dractec_ftetris_logic_Game$Move(lastTouchMove$2.elem$1);
         var x$7 = $m_Lorg_dractec_ftetris_logic_Game$Rotate$();
@@ -4499,6 +4541,14 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.pause$1__p1__Lorg_dractec_ftetris_
 });
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.$$js$exported$meth$startGame__Lorg_dractec_ftetris_js_FTetris$GameConf__O = (function(gc) {
   this.startGame__Lorg_dractec_ftetris_js_FTetris$GameConf__V(gc)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.useGuidelineColors$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__Z = (function(gc$1) {
+  var v = gc$1.guidelineColors;
+  if ((!(v === (void 0)))) {
+    return $uZ((0, gc$1.guidelineColors)())
+  } else {
+    return false
+  }
 });
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$14__Lorg_scalajs_dom_raw_KeyboardEvent__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__sci_Map__sr_ObjectRef__sci_Set__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__O = (function(e, gc$1, lastRenderingMode$1, contextMap$1, keysDown$1, validInput$1, initialGs$1, lastState$1) {
   var elem = $uI(e.keyCode);
@@ -4610,81 +4660,10 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$a
     return this$2.get__O()
   }
 });
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option = (function(e, i, gc$1) {
-  if ((i >= $uI(e.touches.length))) {
-    return $m_s_None$()
-  } else {
-    var this$1 = new $c_s_Some().init___O(e.touches[i]);
-    var arg1 = this$1.value$2;
-    var cr = gc$1.mainCanvas.getBoundingClientRect();
-    return new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I($doubleToInt(($uD(arg1.clientX) - $uD(cr.left))), $doubleToInt(($uD(arg1.clientY) - $uD(cr.top)))))
-  }
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$17__Lorg_scalajs_dom_raw_TouchEvent__scm_Stack__scm_Stack = (function(e, movesSinceTouchStart$1) {
-  e.preventDefault();
-  movesSinceTouchStart$1.elems$5 = $m_sci_Nil$();
-  return movesSinceTouchStart$1.push__O__scm_Stack(e)
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V = (function(canv, gc$1, contextMap$1, initialGs$1) {
-  contextMap$1.apply__O__O(canv).fillStyle = this.gradientStyle$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_scalajs_dom_raw_CanvasGradient(canv, gc$1, contextMap$1);
-  contextMap$1.apply__O__O(canv).fillRect(0.0, 0.0, $uI(canv.width), $uI(canv.height));
-  this.drawSneakyGrid$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(canv, contextMap$1, initialGs$1)
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$15__Lorg_scalajs_dom_raw_KeyboardEvent__sr_ObjectRef__sci_Set__O = (function(e, keysDown$1, validInput$1) {
-  var elem = $uI(e.keyCode);
-  if (validInput$1.contains__O__Z(elem)) {
-    e.preventDefault();
-    e.stopPropagation();
-    keysDown$1.elem$1 = $as_sci_Set($as_sci_Set(keysDown$1.elem$1).$$minus__O__sc_Set($uI(e.keyCode)));
-    return (void 0)
-  } else {
-    return (void 0)
-  }
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.resume$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V = (function(gc$1, lastRenderingMode$1, contextMap$1, initialGs$1, lastState$1) {
-  $m_Lorg_dractec_package$();
-  var canv = gc$1.mainCanvas;
-  this.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(canv, gc$1, contextMap$1, initialGs$1);
-  var this$1 = $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage__Lorg_dractec_ftetris_logic_Game$GS__F1__s_Option($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1), $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage$default$2__F1());
-  if (this$1.isEmpty__Z()) {
-    var this$2 = $m_s_None$()
-  } else {
-    var arg1 = this$1.get__O();
-    var tc = $as_sci_Map(arg1);
-    var this$2 = new $c_s_Some().init___O($as_sci_Map($as_Lcats_kernel_Semigroup($m_Lorg_dractec_ftetris_logic_Game$().mapMergeSG$1).combine__O__O__O($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1, tc)))
-  };
-  var field = $as_sci_Map((this$2.isEmpty__Z() ? $as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1 : this$2.get__O()));
-  this.redraw$1__p1__s_Option__sci_Map__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V($m_s_None$(), field, gc$1, lastRenderingMode$1, contextMap$1, initialGs$1);
-  this.callIfDef$1__p1__sjs_js_Function0__V(gc$1.onpauseend)
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.clearAll$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sci_Map__V = (function(canv, contextMap$1) {
-  contextMap$1.apply__O__O(canv).clearRect(0.0, 0.0, $uI(canv.width), $uI(canv.height))
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.endGame$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__sr_ObjectRef__Lorg_scalajs_dom_raw_HTMLImageElement__V = (function(gc$1, contextMap$1, mainLoop$1, img$1) {
-  var this$1 = $as_s_Option(mainLoop$1.elem$1);
-  if ((!this$1.isEmpty__Z())) {
-    var arg1 = this$1.get__O();
-    $m_sjs_js_timers_package$().clearInterval__sjs_js_timers_SetIntervalHandle__V(arg1)
-  };
-  var canv = gc$1.mainCanvas;
-  var qual$1 = contextMap$1.apply__O__O(canv);
-  var x$8 = (((($uI(gc$1.mainCanvas.height) / 2) | 0) - (($uI(img$1.height) / 2) | 0)) | 0);
-  qual$1.drawImage(img$1, 0.0, x$8)
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.simpleRenderingMode$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__Z = (function(gc$1, lastRenderingMode$1) {
-  var v = gc$1.simpleRenderingMode;
-  if ((!(v === (void 0)))) {
-    var res = $uZ((0, gc$1.simpleRenderingMode)())
-  } else {
-    var res = false
-  };
-  lastRenderingMode$1.elem$1 = res;
-  return res
-});
-$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawPreview$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Z__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V = (function(tile, renderingMode, gc$1, contextMap$1, initialGs$1) {
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawPreview$1__p1__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Z__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V = (function(tile, rotation, renderingMode, gc$1, contextMap$1, initialGs$1) {
   var canv = gc$1.nextTileCanvas;
   var dims = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(4, 4);
-  var tiles = $m_Lorg_dractec_ftetris_logic_Tiles$().coverage__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Map(tile, $m_Lorg_dractec_ftetris_logic_Tiles$HorizDown$());
+  var tiles = $m_Lorg_dractec_ftetris_logic_Tiles$().coverage__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Map(tile, rotation);
   $m_sci_IndexedSeq$();
   $m_sc_IndexedSeq$();
   $m_sci_IndexedSeq$();
@@ -4734,6 +4713,78 @@ $c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawPreview$1__p1__Lorg_dractec_ft
       }
     })
   })(this, gc$1, contextMap$1, renderingMode, canv, dims)))
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.pos$1__p1__Lorg_scalajs_dom_raw_TouchEvent__I__Lorg_dractec_ftetris_js_FTetris$GameConf__s_Option = (function(e, i, gc$1) {
+  if ((i >= $uI(e.touches.length))) {
+    return $m_s_None$()
+  } else {
+    var this$1 = new $c_s_Some().init___O(e.touches[i]);
+    var arg1 = this$1.value$2;
+    var cr = gc$1.mainCanvas.getBoundingClientRect();
+    return new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I($doubleToInt(($uD(arg1.clientX) - $uD(cr.left))), $doubleToInt(($uD(arg1.clientY) - $uD(cr.top)))))
+  }
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$17__Lorg_scalajs_dom_raw_TouchEvent__scm_Stack__scm_Stack = (function(e, movesSinceTouchStart$1) {
+  e.preventDefault();
+  movesSinceTouchStart$1.elems$5 = $m_sci_Nil$();
+  return movesSinceTouchStart$1.push__O__scm_Stack(e)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V = (function(canv, gc$1, contextMap$1, initialGs$1) {
+  contextMap$1.apply__O__O(canv).fillStyle = this.gradientStyle$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_scalajs_dom_raw_CanvasGradient(canv, gc$1, contextMap$1);
+  contextMap$1.apply__O__O(canv).fillRect(0.0, 0.0, $uI(canv.width), $uI(canv.height));
+  this.drawSneakyGrid$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(canv, contextMap$1, initialGs$1)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.resume$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__sr_ObjectRef__V = (function(gc$1, lastRenderingMode$1, contextMap$1, initialGs$1, lastState$1) {
+  $m_Lorg_dractec_package$();
+  var canv = gc$1.mainCanvas;
+  this.drawGradient$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V(canv, gc$1, contextMap$1, initialGs$1);
+  var this$1 = $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage__Lorg_dractec_ftetris_logic_Game$GS__F1__s_Option($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1), $m_Lorg_dractec_ftetris_logic_Game$().globalTetCoverage$default$2__F1());
+  if (this$1.isEmpty__Z()) {
+    var this$2 = $m_s_None$()
+  } else {
+    var arg1 = this$1.get__O();
+    var tc = $as_sci_Map(arg1);
+    var this$2 = new $c_s_Some().init___O($as_sci_Map($as_Lcats_kernel_Semigroup($m_Lorg_dractec_ftetris_logic_Game$().mapMergeSG$1).combine__O__O__O($as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1, tc)))
+  };
+  var field = $as_sci_Map((this$2.isEmpty__Z() ? $as_Lorg_dractec_ftetris_logic_Game$GS(lastState$1.elem$1).field$1 : this$2.get__O()));
+  this.redraw$1__p1__s_Option__sci_Map__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__sci_Map__Lorg_dractec_ftetris_logic_Game$GS__V($m_s_None$(), field, gc$1, lastRenderingMode$1, contextMap$1, initialGs$1);
+  this.callIfDef$1__p1__sjs_js_Function0__V(gc$1.onpauseend)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.org$dractec$ftetris$js$FTetris$$$anonfun$startGame$15__Lorg_scalajs_dom_raw_KeyboardEvent__sr_ObjectRef__sci_Set__O = (function(e, keysDown$1, validInput$1) {
+  var elem = $uI(e.keyCode);
+  if (validInput$1.contains__O__Z(elem)) {
+    e.preventDefault();
+    e.stopPropagation();
+    keysDown$1.elem$1 = $as_sci_Set($as_sci_Set(keysDown$1.elem$1).$$minus__O__sc_Set($uI(e.keyCode)));
+    return (void 0)
+  } else {
+    return (void 0)
+  }
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.clearAll$1__p1__Lorg_scalajs_dom_raw_HTMLCanvasElement__sci_Map__V = (function(canv, contextMap$1) {
+  contextMap$1.apply__O__O(canv).clearRect(0.0, 0.0, $uI(canv.width), $uI(canv.height))
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.endGame$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sci_Map__sr_ObjectRef__Lorg_scalajs_dom_raw_HTMLImageElement__V = (function(gc$1, contextMap$1, mainLoop$1, img$1) {
+  var this$1 = $as_s_Option(mainLoop$1.elem$1);
+  if ((!this$1.isEmpty__Z())) {
+    var arg1 = this$1.get__O();
+    $m_sjs_js_timers_package$().clearInterval__sjs_js_timers_SetIntervalHandle__V(arg1)
+  };
+  this.canStart$1 = true;
+  var canv = gc$1.mainCanvas;
+  var qual$1 = contextMap$1.apply__O__O(canv);
+  var x$8 = (((($uI(gc$1.mainCanvas.height) / 2) | 0) - (($uI(img$1.height) / 2) | 0)) | 0);
+  qual$1.drawImage(img$1, 0.0, x$8)
+});
+$c_Lorg_dractec_ftetris_js_FTetris$.prototype.simpleRenderingMode$1__p1__Lorg_dractec_ftetris_js_FTetris$GameConf__sr_BooleanRef__Z = (function(gc$1, lastRenderingMode$1) {
+  var v = gc$1.simpleRenderingMode;
+  if ((!(v === (void 0)))) {
+    var res = $uZ((0, gc$1.simpleRenderingMode)())
+  } else {
+    var res = false
+  };
+  lastRenderingMode$1.elem$1 = res;
+  return res
 });
 $c_Lorg_dractec_ftetris_js_FTetris$.prototype.startGame = (function(arg$1) {
   var prep0 = arg$1;
@@ -4812,12 +4863,12 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.checkIfOver__p1__Lorg_dractec_ftet
           $m_Lorg_dractec_ftetris_logic_Game$();
           var arg1$4 = x$2.pos$1;
           var v1 = arg1$4.y$1;
-          var x$114 = ((1 + v1) | 0);
-          var x$115 = arg1$4.x$1;
-          var x$111 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$115, x$114);
-          var x$112 = x$2.tile$1;
-          var x$113 = x$2.rotation$1;
-          var this$9 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112, x$113, x$111))
+          var x$120 = ((1 + v1) | 0);
+          var x$121 = arg1$4.x$1;
+          var x$117 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$121, x$120);
+          var x$118 = x$2.tile$1;
+          var x$119 = x$2.rotation$1;
+          var this$9 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118, x$119, x$117))
         };
         if (this$9.isEmpty__Z()) {
           var this$11 = $m_s_None$()
@@ -4912,10 +4963,10 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryMoveSideways__p1__Lorg_dractec_
             var v1 = arg1$4.x$1;
             var x$1 = (((-1) + v1) | 0);
             var y = arg1$4.y$1;
-            var x$111 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$1, y);
-            var x$112 = x$13.tile$1;
-            var x$113 = x$13.rotation$1;
-            var this$8 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112, x$113, x$111))
+            var x$117 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$1, y);
+            var x$118 = x$13.tile$1;
+            var x$119 = x$13.rotation$1;
+            var this$8 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118, x$119, x$117))
           };
           if (this$8.isEmpty__Z()) {
             var this$10 = $m_s_None$()
@@ -4965,31 +5016,32 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryMoveSideways__p1__Lorg_dractec_
         $m_Lcats_implicits$();
         var this$11 = gs.currTet$1;
         if (this$11.isEmpty__Z()) {
-          var x$98 = $m_s_None$()
+          var x$103 = $m_s_None$()
         } else {
           var arg1$7 = this$11.get__O();
           var x$23 = $as_Lorg_dractec_ftetris_logic_Game$Tetromino(arg1$7);
           $m_Lorg_dractec_ftetris_logic_Game$();
           var arg1$8 = x$23.pos$1;
           var v1$1 = arg1$8.x$1;
-          var x$111$1 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I((((-1) + v1$1) | 0), arg1$8.y$1);
-          var x$112$1 = x$23.tile$1;
-          var x$113$1 = x$23.rotation$1;
-          var x$98 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112$1, x$113$1, x$111$1))
+          var x$117$1 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I((((-1) + v1$1) | 0), arg1$8.y$1);
+          var x$118$1 = x$23.tile$1;
+          var x$119$1 = x$23.rotation$1;
+          var x$103 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118$1, x$119$1, x$117$1))
         };
-        var x$99 = gs.frameCount$1;
-        var x$100 = gs.field$1;
-        var x$101 = gs.nextTile$1;
-        var x$102 = gs.tetSpawnBag$1;
-        var x$103 = gs.points$1;
-        var x$104 = gs.level$1;
-        var x$105 = gs.numConsecutiveDrops$1;
-        var x$106 = gs.lastMove$1;
-        var x$107 = gs.lastClears$1;
-        var x$108 = gs.lastMoveTimes$1;
-        var x$109 = gs.turnsToSpawn$1;
-        var x$110 = gs.conf$1;
-        var a = this.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$99, x$100, x$98, x$101, x$102, x$103, x$104, x$105, x$106, x$107, x$108, x$109, x$110), dir$1);
+        var x$104 = gs.frameCount$1;
+        var x$105 = gs.field$1;
+        var x$106 = gs.nextTile$1;
+        var x$107 = gs.nextRotation$1;
+        var x$108 = gs.tetSpawnBag$1;
+        var x$109 = gs.points$1;
+        var x$110 = gs.level$1;
+        var x$111 = gs.numConsecutiveDrops$1;
+        var x$112 = gs.lastMove$1;
+        var x$113 = gs.lastClears$1;
+        var x$114 = gs.lastMoveTimes$1;
+        var x$115 = gs.turnsToSpawn$1;
+        var x$116 = gs.conf$1;
+        var a = this.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$104, x$105, x$103, x$106, x$107, x$108, x$109, x$110, x$111, x$112, x$113, x$114, x$115, x$116), dir$1);
         $m_s_package$();
         return new $c_s_util_Left().init___O(a)
       } else {
@@ -5049,10 +5101,10 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryMoveSideways__p1__Lorg_dractec_
               var v1$2 = arg1$13.x$1;
               var x$4 = ((1 + v1$2) | 0);
               var y$1 = arg1$13.y$1;
-              var x$111$2 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$4, y$1);
-              var x$112$2 = x$17.tile$1;
-              var x$113$2 = x$17.rotation$1;
-              var this$26 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112$2, x$113$2, x$111$2))
+              var x$117$2 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$4, y$1);
+              var x$118$2 = x$17.tile$1;
+              var x$119$2 = x$17.rotation$1;
+              var this$26 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118$2, x$119$2, x$117$2))
             };
             if (this$26.isEmpty__Z()) {
               var this$28 = $m_s_None$()
@@ -5102,31 +5154,32 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryMoveSideways__p1__Lorg_dractec_
           $m_Lcats_implicits$();
           var this$29 = gs.currTet$1;
           if (this$29.isEmpty__Z()) {
-            var x$98$1 = $m_s_None$()
+            var x$103$1 = $m_s_None$()
           } else {
             var arg1$16 = this$29.get__O();
             var x$23$1 = $as_Lorg_dractec_ftetris_logic_Game$Tetromino(arg1$16);
             $m_Lorg_dractec_ftetris_logic_Game$();
             var arg1$17 = x$23$1.pos$1;
             var v1$3 = arg1$17.x$1;
-            var x$111$3 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(((1 + v1$3) | 0), arg1$17.y$1);
-            var x$112$3 = x$23$1.tile$1;
-            var x$113$3 = x$23$1.rotation$1;
-            var x$98$1 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112$3, x$113$3, x$111$3))
+            var x$117$3 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(((1 + v1$3) | 0), arg1$17.y$1);
+            var x$118$3 = x$23$1.tile$1;
+            var x$119$3 = x$23$1.rotation$1;
+            var x$103$1 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118$3, x$119$3, x$117$3))
           };
-          var x$99$1 = gs.frameCount$1;
-          var x$100$1 = gs.field$1;
-          var x$101$1 = gs.nextTile$1;
-          var x$102$1 = gs.tetSpawnBag$1;
-          var x$103$1 = gs.points$1;
-          var x$104$1 = gs.level$1;
-          var x$105$1 = gs.numConsecutiveDrops$1;
-          var x$106$1 = gs.lastMove$1;
-          var x$107$1 = gs.lastClears$1;
-          var x$108$1 = gs.lastMoveTimes$1;
-          var x$109$1 = gs.turnsToSpawn$1;
-          var x$110$1 = gs.conf$1;
-          var a$1 = this.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$99$1, x$100$1, x$98$1, x$101$1, x$102$1, x$103$1, x$104$1, x$105$1, x$106$1, x$107$1, x$108$1, x$109$1, x$110$1), dir$2);
+          var x$104$1 = gs.frameCount$1;
+          var x$105$1 = gs.field$1;
+          var x$106$1 = gs.nextTile$1;
+          var x$107$1 = gs.nextRotation$1;
+          var x$108$1 = gs.tetSpawnBag$1;
+          var x$109$1 = gs.points$1;
+          var x$110$1 = gs.level$1;
+          var x$111$1 = gs.numConsecutiveDrops$1;
+          var x$112$1 = gs.lastMove$1;
+          var x$113$1 = gs.lastClears$1;
+          var x$114$1 = gs.lastMoveTimes$1;
+          var x$115$1 = gs.turnsToSpawn$1;
+          var x$116$1 = gs.conf$1;
+          var a$1 = this.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$104$1, x$105$1, x$103$1, x$106$1, x$107$1, x$108$1, x$109$1, x$110$1, x$111$1, x$112$1, x$113$1, x$114$1, x$115$1, x$116$1), dir$2);
           $m_s_package$();
           return new $c_s_util_Left().init___O(a$1)
         } else {
@@ -5182,19 +5235,20 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.init___ = (function() {
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS = (function(gs, dir) {
   var jsx$1 = gs.lastMoveTimes$1;
   var y = gs.frameCount$1;
-  var x$86 = jsx$1.$$plus__T2__sci_Map(new $c_T2().init___O__O(dir, y));
-  var x$87 = gs.frameCount$1;
-  var x$88 = gs.field$1;
-  var x$89 = gs.currTet$1;
-  var x$90 = gs.nextTile$1;
-  var x$91 = gs.tetSpawnBag$1;
-  var x$92 = gs.points$1;
-  var x$93 = gs.level$1;
-  var x$94 = gs.numConsecutiveDrops$1;
-  var x$95 = gs.lastClears$1;
-  var x$96 = gs.turnsToSpawn$1;
-  var x$97 = gs.conf$1;
-  return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$87, x$88, x$89, x$90, x$91, x$92, x$93, x$94, dir, x$95, x$86, x$96, x$97)
+  var x$90 = jsx$1.$$plus__T2__sci_Map(new $c_T2().init___O__O(dir, y));
+  var x$91 = gs.frameCount$1;
+  var x$92 = gs.field$1;
+  var x$93 = gs.currTet$1;
+  var x$94 = gs.nextTile$1;
+  var x$95 = gs.nextRotation$1;
+  var x$96 = gs.tetSpawnBag$1;
+  var x$97 = gs.points$1;
+  var x$98 = gs.level$1;
+  var x$99 = gs.numConsecutiveDrops$1;
+  var x$100 = gs.lastClears$1;
+  var x$101 = gs.turnsToSpawn$1;
+  var x$102 = gs.conf$1;
+  return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$91, x$92, x$93, x$94, x$95, x$96, x$97, x$98, x$99, dir, x$100, x$90, x$101, x$102)
 });
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.allFullLines__p1__Lorg_dractec_ftetris_logic_Game$Config__sci_Map__sci_List = (function(conf, gf) {
   $m_sci_List$();
@@ -5272,19 +5326,20 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.handleInput__p1__Lorg_dractec_ftet
           } else if ($is_s_util_Right(x1)) {
             var x3 = $as_s_util_Right(x1);
             var dir = $as_Lorg_dractec_ftetris_logic_Game$Move(x3.value$2);
-            var x$54 = gs$2.frameCount$1;
-            var x$55 = gs$2.field$1;
-            var x$56 = gs$2.currTet$1;
-            var x$57 = gs$2.nextTile$1;
-            var x$58 = gs$2.tetSpawnBag$1;
-            var x$59 = gs$2.points$1;
-            var x$60 = gs$2.level$1;
-            var x$61 = gs$2.numConsecutiveDrops$1;
-            var x$62 = gs$2.lastClears$1;
-            var x$63 = gs$2.lastMoveTimes$1;
-            var x$64 = gs$2.turnsToSpawn$1;
-            var x$65 = gs$2.conf$1;
-            return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$54, x$55, x$56, x$57, x$58, x$59, x$60, x$61, dir, x$62, x$63, x$64, x$65)
+            var x$56 = gs$2.frameCount$1;
+            var x$57 = gs$2.field$1;
+            var x$58 = gs$2.currTet$1;
+            var x$59 = gs$2.nextTile$1;
+            var x$60 = gs$2.nextRotation$1;
+            var x$61 = gs$2.tetSpawnBag$1;
+            var x$62 = gs$2.points$1;
+            var x$63 = gs$2.level$1;
+            var x$64 = gs$2.numConsecutiveDrops$1;
+            var x$65 = gs$2.lastClears$1;
+            var x$66 = gs$2.lastMoveTimes$1;
+            var x$67 = gs$2.turnsToSpawn$1;
+            var x$68 = gs$2.conf$1;
+            return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$56, x$57, x$58, x$59, x$60, x$61, x$62, x$63, x$64, dir, x$65, x$66, x$67, x$68)
           } else {
             throw new $c_s_MatchError().init___O(x1)
           }
@@ -5349,12 +5404,12 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.moveDown__p1__Lorg_dractec_ftetris
               $m_Lorg_dractec_ftetris_logic_Game$();
               var arg1$4 = x$6.pos$1;
               var v1 = arg1$4.y$1;
-              var x$114 = ((1 + v1) | 0);
-              var x$115 = arg1$4.x$1;
-              var x$111 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$115, x$114);
-              var x$112 = x$6.tile$1;
-              var x$113 = x$6.rotation$1;
-              var this$10 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112, x$113, x$111))
+              var x$120 = ((1 + v1) | 0);
+              var x$121 = arg1$4.x$1;
+              var x$117 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(x$121, x$120);
+              var x$118 = x$6.tile$1;
+              var x$119 = x$6.rotation$1;
+              var this$10 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118, x$119, x$117))
             };
             if (this$10.isEmpty__Z()) {
               var this$12 = $m_s_None$()
@@ -5405,9 +5460,9 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.moveDown__p1__Lorg_dractec_ftetris
         };
         var mergedField = $as_sci_Map(jsx$6.combine__O__O__O(jsx$5, this$13.get__O()));
         var newConsDrops = (inp.softDropDown__Z() ? ((1 + gs$1.numConsecutiveDrops$1) | 0) : 0);
-        var x$40 = $this.calcARE$1__p1__Lorg_dractec_ftetris_logic_Game$GS__s_Option(gs$1);
-        var x$41 = $m_s_None$();
-        var x$43 = ((gs$1.points$1 + newConsDrops) | 0);
+        var x$41 = $this.calcARE$1__p1__Lorg_dractec_ftetris_logic_Game$GS__s_Option(gs$1);
+        var x$42 = $m_s_None$();
+        var x$44 = ((gs$1.points$1 + newConsDrops) | 0);
         var jsx$9 = gs$1.lastClears$1;
         var this$15 = $m_Lorg_dractec_ftetris_logic_Game$().allFullLines__p1__Lorg_dractec_ftetris_logic_Game$Config__sci_Map__sci_List(gs$1.conf$1, mergedField);
         var f = (function(this$4$1, gs$4) {
@@ -5447,43 +5502,45 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.moveDown__p1__Lorg_dractec_ftetris
         };
         var jsx$7 = $as_sc_GenTraversableOnce(jsx$8);
         var this$16 = $m_sci_List$();
-        var x$45 = $as_sci_List(jsx$9.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$7, this$16.ReusableCBFInstance$2));
-        var x$46 = gs$1.frameCount$1;
-        var x$47 = gs$1.nextTile$1;
-        var x$48 = gs$1.tetSpawnBag$1;
-        var x$49 = gs$1.level$1;
-        var x$50 = gs$1.lastMove$1;
-        var x$51 = gs$1.lastMoveTimes$1;
-        var x$52 = gs$1.conf$1;
-        return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$46, mergedField, x$41, x$47, x$48, x$43, x$49, newConsDrops, x$50, x$45, x$51, x$40, x$52)
+        var x$46 = $as_sci_List(jsx$9.$$plus$plus__sc_GenTraversableOnce__scg_CanBuildFrom__O(jsx$7, this$16.ReusableCBFInstance$2));
+        var x$47 = gs$1.frameCount$1;
+        var x$48 = gs$1.nextTile$1;
+        var x$49 = gs$1.nextRotation$1;
+        var x$50 = gs$1.tetSpawnBag$1;
+        var x$51 = gs$1.level$1;
+        var x$52 = gs$1.lastMove$1;
+        var x$53 = gs$1.lastMoveTimes$1;
+        var x$54 = gs$1.conf$1;
+        return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$47, mergedField, x$42, x$48, x$49, x$50, x$44, x$51, newConsDrops, x$52, x$46, x$53, x$41, x$54)
       } else {
         $m_Lorg_dractec_ftetris_logic_Game$();
         var this$18 = gs$1.currTet$1;
         if (this$18.isEmpty__Z()) {
-          var x$98 = $m_s_None$()
+          var x$103 = $m_s_None$()
         } else {
           var arg1$10 = this$18.get__O();
           var x$23 = $as_Lorg_dractec_ftetris_logic_Game$Tetromino(arg1$10);
           $m_Lorg_dractec_ftetris_logic_Game$();
           var arg1$11 = x$23.pos$1;
-          var x$111$1 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(arg1$11.x$1, ((1 + arg1$11.y$1) | 0));
-          var x$112$1 = x$23.tile$1;
-          var x$113$1 = x$23.rotation$1;
-          var x$98 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$112$1, x$113$1, x$111$1))
+          var x$117$1 = new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(arg1$11.x$1, ((1 + arg1$11.y$1) | 0));
+          var x$118$1 = x$23.tile$1;
+          var x$119$1 = x$23.rotation$1;
+          var x$103 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$118$1, x$119$1, x$117$1))
         };
-        var x$99 = gs$1.frameCount$1;
-        var x$100 = gs$1.field$1;
-        var x$101 = gs$1.nextTile$1;
-        var x$102 = gs$1.tetSpawnBag$1;
-        var x$103 = gs$1.points$1;
-        var x$104 = gs$1.level$1;
-        var x$105 = gs$1.numConsecutiveDrops$1;
-        var x$106 = gs$1.lastMove$1;
-        var x$107 = gs$1.lastClears$1;
-        var x$108 = gs$1.lastMoveTimes$1;
-        var x$109 = gs$1.turnsToSpawn$1;
-        var x$110 = gs$1.conf$1;
-        return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$99, x$100, x$98, x$101, x$102, x$103, x$104, x$105, x$106, x$107, x$108, x$109, x$110)
+        var x$104 = gs$1.frameCount$1;
+        var x$105 = gs$1.field$1;
+        var x$106 = gs$1.nextTile$1;
+        var x$107 = gs$1.nextRotation$1;
+        var x$108 = gs$1.tetSpawnBag$1;
+        var x$109 = gs$1.points$1;
+        var x$110 = gs$1.level$1;
+        var x$111 = gs$1.numConsecutiveDrops$1;
+        var x$112 = gs$1.lastMove$1;
+        var x$113 = gs$1.lastClears$1;
+        var x$114 = gs$1.lastMoveTimes$1;
+        var x$115 = gs$1.turnsToSpawn$1;
+        var x$116 = gs$1.conf$1;
+        return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$104, x$105, x$103, x$106, x$107, x$108, x$109, x$110, x$111, x$112, x$113, x$114, x$115, x$116)
       }
     })
   })(this, gs)))
@@ -5506,12 +5563,6 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.globalTetCoverage__Lorg_dractec_ft
       })
     })(this, tet))))
   }
-});
-$c_Lorg_dractec_ftetris_logic_Game$.prototype.randomTile__p1__s_util_Random__Lorg_dractec_ftetris_logic_Tiles$Tile = (function(rand) {
-  var this$1 = $m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1;
-  var jsx$1 = $f_sc_SetLike__toSeq__sc_Seq(this$1);
-  var n = $m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1.size__I();
-  return $as_Lorg_dractec_ftetris_logic_Tiles$Tile(jsx$1.apply__I__O(rand.self$1.nextInt__I__I(n)))
 });
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.checkDAS$1__p1__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS__Z = (function(dir, gs$7) {
   if ((((gs$7.frameCount$1 - $uI(gs$7.lastMoveTimes$1.apply__O__O(dir))) | 0) >= gs$7.conf$1.DAS$1.hard$1)) {
@@ -5593,37 +5644,39 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.handleLineClear__p1__Lorg_dractec_
       b$3.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$4));
       these$2 = $as_sci_List(these$2.tail__O())
     };
-    var x$129 = $as_sci_Map(b$3.elems$1);
-    var x$130 = x0$3.frameCount$1;
-    var x$131 = x0$3.currTet$1;
-    var x$132 = x0$3.nextTile$1;
-    var x$133 = x0$3.tetSpawnBag$1;
-    var x$134 = x0$3.points$1;
-    var x$135 = x0$3.level$1;
-    var x$136 = x0$3.numConsecutiveDrops$1;
-    var x$137 = x0$3.lastMove$1;
-    var x$138 = x0$3.lastClears$1;
-    var x$139 = x0$3.lastMoveTimes$1;
-    var x$140 = x0$3.turnsToSpawn$1;
-    var x$141 = x0$3.conf$1;
-    acc = new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$130, x$129, x$131, x$132, x$133, x$134, x$135, x$136, x$137, x$138, x$139, x$140, x$141);
+    var x$136 = $as_sci_Map(b$3.elems$1);
+    var x$137 = x0$3.frameCount$1;
+    var x$138 = x0$3.currTet$1;
+    var x$139 = x0$3.nextTile$1;
+    var x$140 = x0$3.nextRotation$1;
+    var x$141 = x0$3.tetSpawnBag$1;
+    var x$142 = x0$3.points$1;
+    var x$143 = x0$3.level$1;
+    var x$144 = x0$3.numConsecutiveDrops$1;
+    var x$145 = x0$3.lastMove$1;
+    var x$146 = x0$3.lastClears$1;
+    var x$147 = x0$3.lastMoveTimes$1;
+    var x$148 = x0$3.turnsToSpawn$1;
+    var x$149 = x0$3.conf$1;
+    acc = new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$137, x$136, x$138, x$139, x$140, x$141, x$142, x$143, x$144, x$145, x$146, x$147, x$148, x$149);
     these = $as_sc_LinearSeqOptimized(these.tail__O())
   };
   var qual$1 = $as_Lorg_dractec_ftetris_logic_Game$GS(acc);
-  var x$142 = ((gs.points$1 + $m_Lorg_dractec_ftetris_logic_Game$().scoring__I__I__I(gs.level$1, $f_sc_LinearSeqOptimized__length__I(l))) | 0);
-  var x$143 = qual$1.frameCount$1;
-  var x$144 = qual$1.field$1;
-  var x$145 = qual$1.currTet$1;
-  var x$146 = qual$1.nextTile$1;
-  var x$147 = qual$1.tetSpawnBag$1;
-  var x$148 = qual$1.level$1;
-  var x$149 = qual$1.numConsecutiveDrops$1;
-  var x$150 = qual$1.lastMove$1;
-  var x$151 = qual$1.lastClears$1;
-  var x$152 = qual$1.lastMoveTimes$1;
-  var x$153 = qual$1.turnsToSpawn$1;
-  var x$154 = qual$1.conf$1;
-  var that$1 = new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$143, x$144, x$145, x$146, x$147, x$142, x$148, x$149, x$150, x$151, x$152, x$153, x$154);
+  var x$150 = ((gs.points$1 + $m_Lorg_dractec_ftetris_logic_Game$().scoring__I__I__I(gs.level$1, $f_sc_LinearSeqOptimized__length__I(l))) | 0);
+  var x$151 = qual$1.frameCount$1;
+  var x$152 = qual$1.field$1;
+  var x$153 = qual$1.currTet$1;
+  var x$154 = qual$1.nextTile$1;
+  var x$155 = qual$1.nextRotation$1;
+  var x$156 = qual$1.tetSpawnBag$1;
+  var x$157 = qual$1.level$1;
+  var x$158 = qual$1.numConsecutiveDrops$1;
+  var x$159 = qual$1.lastMove$1;
+  var x$160 = qual$1.lastClears$1;
+  var x$161 = qual$1.lastMoveTimes$1;
+  var x$162 = qual$1.turnsToSpawn$1;
+  var x$163 = qual$1.conf$1;
+  var that$1 = new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$151, x$152, x$153, x$154, x$155, x$156, x$150, x$157, x$158, x$159, x$160, x$161, x$162, x$163);
   return $m_Lorg_dractec_ftetris_logic_Game$().levelUp__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$GS(that$1)
 });
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.lowestTetY$1__p1__Lorg_dractec_ftetris_logic_Game$GS__s_Option = (function(gs$6) {
@@ -5649,10 +5702,10 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryRotate__p1__Lorg_dractec_ftetri
   } else {
     var arg1 = this$1.get__O();
     var tet = $as_Lorg_dractec_ftetris_logic_Game$Tetromino(arg1);
-    var x$66 = $m_Lorg_dractec_ftetris_logic_Tiles$().nextRotation__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Rotation(tet.rotation$1);
-    var x$67 = tet.tile$1;
-    var x$68 = tet.pos$1;
-    var this$2 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$67, x$66, x$68))
+    var x$69 = $m_Lorg_dractec_ftetris_logic_Tiles$().nextRotation__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Rotation(tet.rotation$1);
+    var x$70 = tet.tile$1;
+    var x$71 = tet.pos$1;
+    var this$2 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$70, x$69, x$71))
   };
   if (this$2.isEmpty__Z()) {
     var this$4 = $m_s_None$()
@@ -5703,28 +5756,29 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryRotate__p1__Lorg_dractec_ftetri
     $m_Lcats_implicits$();
     var this$7 = gs.currTet$1;
     if (this$7.isEmpty__Z()) {
-      var x$72 = $m_s_None$()
+      var x$75 = $m_s_None$()
     } else {
       var arg1$5 = this$7.get__O();
       var ct = $as_Lorg_dractec_ftetris_logic_Game$Tetromino(arg1$5);
-      var x$69 = $m_Lorg_dractec_ftetris_logic_Tiles$().nextRotation__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Rotation(ct.rotation$1);
-      var x$70 = ct.tile$1;
-      var x$71 = ct.pos$1;
-      var x$72 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$70, x$69, x$71))
+      var x$72 = $m_Lorg_dractec_ftetris_logic_Tiles$().nextRotation__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Rotation(ct.rotation$1);
+      var x$73 = ct.tile$1;
+      var x$74 = ct.pos$1;
+      var x$75 = new $c_s_Some().init___O(new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(x$73, x$72, x$74))
     };
-    var x$73 = gs.frameCount$1;
-    var x$74 = gs.field$1;
-    var x$75 = gs.nextTile$1;
-    var x$76 = gs.tetSpawnBag$1;
-    var x$77 = gs.points$1;
-    var x$78 = gs.level$1;
-    var x$79 = gs.numConsecutiveDrops$1;
-    var x$80 = gs.lastMove$1;
-    var x$81 = gs.lastClears$1;
-    var x$82 = gs.lastMoveTimes$1;
-    var x$83 = gs.turnsToSpawn$1;
-    var x$84 = gs.conf$1;
-    var a = this.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$73, x$74, x$72, x$75, x$76, x$77, x$78, x$79, x$80, x$81, x$82, x$83, x$84), $m_Lorg_dractec_ftetris_logic_Game$Rotate$());
+    var x$76 = gs.frameCount$1;
+    var x$77 = gs.field$1;
+    var x$78 = gs.nextTile$1;
+    var x$79 = gs.nextRotation$1;
+    var x$80 = gs.tetSpawnBag$1;
+    var x$81 = gs.points$1;
+    var x$82 = gs.level$1;
+    var x$83 = gs.numConsecutiveDrops$1;
+    var x$84 = gs.lastMove$1;
+    var x$85 = gs.lastClears$1;
+    var x$86 = gs.lastMoveTimes$1;
+    var x$87 = gs.turnsToSpawn$1;
+    var x$88 = gs.conf$1;
+    var a = this.saveMove__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS(new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$76, x$77, x$75, x$78, x$79, x$80, x$81, x$82, x$83, x$84, x$85, x$86, x$87, x$88), $m_Lorg_dractec_ftetris_logic_Game$Rotate$());
     $m_s_package$();
     return new $c_s_util_Left().init___O(a)
   } else {
@@ -5829,50 +5883,6 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryDrop__p1__Lorg_dractec_ftetris_
     return new $c_Lcats_effect_IO$Pure().init___O(a$1)
   }
 });
-$c_Lorg_dractec_ftetris_logic_Game$.prototype.initGS__Lorg_dractec_ftetris_logic_Game$Config__Lorg_dractec_ftetris_logic_Game$GS = (function(conf) {
-  var nextTile = this.randomTile__p1__s_util_Random__Lorg_dractec_ftetris_logic_Tiles$Tile(conf.random$1);
-  var field = this.initField__p1__Lorg_dractec_ftetris_logic_Game$Config__sci_Map(conf);
-  var currTet = $m_s_None$();
-  var array = [nextTile];
-  if (($uI(array.length) === 0)) {
-    var jsx$1 = $m_sci_Set$EmptySet$()
-  } else {
-    var b = new $c_scm_SetBuilder().init___sc_Set($m_sci_Set$EmptySet$());
-    var i = 0;
-    var len = $uI(array.length);
-    while ((i < len)) {
-      var index = i;
-      var arg1 = array[index];
-      b.$$plus$eq__O__scm_SetBuilder(arg1);
-      i = ((1 + i) | 0)
-    };
-    var jsx$1 = b.elems$1
-  };
-  var tetSpawnBag = $as_sci_Set(jsx$1);
-  var level = conf.startLevel$1;
-  var lastMove = $m_Lorg_dractec_ftetris_logic_Game$Nothing$();
-  var lastClears = $m_sci_Nil$();
-  var self = $m_Lorg_dractec_ftetris_logic_Game$LeftM$();
-  var jsx$4 = new $c_T2().init___O__O(self, 0);
-  var self$1 = $m_Lorg_dractec_ftetris_logic_Game$RightM$();
-  var jsx$3 = new $c_T2().init___O__O(self$1, 0);
-  var self$2 = $m_Lorg_dractec_ftetris_logic_Game$Rotate$();
-  var jsx$2 = new $c_T2().init___O__O(self$2, 0);
-  var self$3 = $m_Lorg_dractec_ftetris_logic_Game$Drop$();
-  var array$1 = [jsx$4, jsx$3, jsx$2, new $c_T2().init___O__O(self$3, 0)];
-  var this$11 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i$1 = 0;
-  var len$1 = $uI(array$1.length);
-  while ((i$1 < len$1)) {
-    var index$1 = i$1;
-    var arg1$1 = array$1[index$1];
-    this$11.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$1));
-    i$1 = ((1 + i$1) | 0)
-  };
-  var lastMoveTimes = $as_sci_Map(this$11.elems$1);
-  var turnsToSpawn = new $c_s_Some().init___O(1);
-  return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(0, field, currTet, nextTile, tetSpawnBag, 0, level, 0, lastMove, lastClears, lastMoveTimes, turnsToSpawn, conf)
-});
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.levelUp__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$GS = (function(gs) {
   $m_Lorg_dractec_package$();
   var this$1 = gs.lastClears$1;
@@ -5889,23 +5899,79 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.levelUp__p1__Lorg_dractec_ftetris_
   };
   var that = elem$1;
   if ((that >= $imul(10, ((((1 + gs.level$1) | 0) - gs.conf$1.startLevel$1) | 0)))) {
-    var x$155 = ((1 + gs.level$1) | 0)
+    var x$164 = ((1 + gs.level$1) | 0)
   } else {
-    var x$155 = gs.level$1
+    var x$164 = gs.level$1
   };
-  var x$156 = gs.frameCount$1;
-  var x$157 = gs.field$1;
-  var x$158 = gs.currTet$1;
-  var x$159 = gs.nextTile$1;
-  var x$160 = gs.tetSpawnBag$1;
-  var x$161 = gs.points$1;
-  var x$162 = gs.numConsecutiveDrops$1;
-  var x$163 = gs.lastMove$1;
-  var x$164 = gs.lastClears$1;
-  var x$165 = gs.lastMoveTimes$1;
-  var x$166 = gs.turnsToSpawn$1;
-  var x$167 = gs.conf$1;
-  return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$156, x$157, x$158, x$159, x$160, x$161, x$155, x$162, x$163, x$164, x$165, x$166, x$167)
+  var x$165 = gs.frameCount$1;
+  var x$166 = gs.field$1;
+  var x$167 = gs.currTet$1;
+  var x$168 = gs.nextTile$1;
+  var x$169 = gs.nextRotation$1;
+  var x$170 = gs.tetSpawnBag$1;
+  var x$171 = gs.points$1;
+  var x$172 = gs.numConsecutiveDrops$1;
+  var x$173 = gs.lastMove$1;
+  var x$174 = gs.lastClears$1;
+  var x$175 = gs.lastMoveTimes$1;
+  var x$176 = gs.turnsToSpawn$1;
+  var x$177 = gs.conf$1;
+  return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$165, x$166, x$167, x$168, x$169, x$170, x$171, x$164, x$172, x$173, x$174, x$175, x$176, x$177)
+});
+$c_Lorg_dractec_ftetris_logic_Game$.prototype.initGS__Lorg_dractec_ftetris_logic_Game$Config__Lcats_effect_IO = (function(conf) {
+  var this$13 = this.pickRandom__p1__sci_Set__s_util_Random__Lcats_effect_IO($m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1, conf.random$1);
+  var f = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this, conf$1) {
+    return (function(nextTile$2) {
+      var nextTile = $as_Lorg_dractec_ftetris_logic_Tiles$Tile(nextTile$2);
+      return $m_Lorg_dractec_ftetris_logic_Game$().pickRandom__p1__sci_Set__s_util_Random__Lcats_effect_IO($m_Lorg_dractec_ftetris_logic_Tiles$().allRotations$1, conf$1.random$1).map__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this$1, conf$1$1, nextTile$1) {
+        return (function(nextRotation$2) {
+          var nextRotation = $as_Lorg_dractec_ftetris_logic_Tiles$Rotation(nextRotation$2);
+          var field = $m_Lorg_dractec_ftetris_logic_Game$().initField__p1__Lorg_dractec_ftetris_logic_Game$Config__sci_Map(conf$1$1);
+          var currTet = $m_s_None$();
+          var array = [nextTile$1];
+          if (($uI(array.length) === 0)) {
+            var jsx$1 = $m_sci_Set$EmptySet$()
+          } else {
+            var b = new $c_scm_SetBuilder().init___sc_Set($m_sci_Set$EmptySet$());
+            var i = 0;
+            var len = $uI(array.length);
+            while ((i < len)) {
+              var index = i;
+              var arg1 = array[index];
+              b.$$plus$eq__O__scm_SetBuilder(arg1);
+              i = ((1 + i) | 0)
+            };
+            var jsx$1 = b.elems$1
+          };
+          var tetSpawnBag = $as_sci_Set(jsx$1);
+          var level = conf$1$1.startLevel$1;
+          var lastMove = $m_Lorg_dractec_ftetris_logic_Game$Nothing$();
+          var lastClears = $m_sci_Nil$();
+          var self = $m_Lorg_dractec_ftetris_logic_Game$LeftM$();
+          var jsx$4 = new $c_T2().init___O__O(self, 0);
+          var self$1 = $m_Lorg_dractec_ftetris_logic_Game$RightM$();
+          var jsx$3 = new $c_T2().init___O__O(self$1, 0);
+          var self$2 = $m_Lorg_dractec_ftetris_logic_Game$Rotate$();
+          var jsx$2 = new $c_T2().init___O__O(self$2, 0);
+          var self$3 = $m_Lorg_dractec_ftetris_logic_Game$Drop$();
+          var array$1 = [jsx$4, jsx$3, jsx$2, new $c_T2().init___O__O(self$3, 0)];
+          var this$11 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+          var i$1 = 0;
+          var len$1 = $uI(array$1.length);
+          while ((i$1 < len$1)) {
+            var index$1 = i$1;
+            var arg1$1 = array$1[index$1];
+            this$11.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$1));
+            i$1 = ((1 + i$1) | 0)
+          };
+          var lastMoveTimes = $as_sci_Map(this$11.elems$1);
+          var turnsToSpawn = new $c_s_Some().init___O(1);
+          return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(0, field, currTet, nextTile$1, nextRotation, tetSpawnBag, 0, level, 0, lastMove, lastClears, lastMoveTimes, turnsToSpawn, conf$1$1)
+        })
+      })($this, conf$1, nextTile)))
+    })
+  })(this, conf));
+  return new $c_Lcats_effect_IO$Bind().init___Lcats_effect_IO__F1(this$13, f)
 });
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryMoveRight$1__p1__Lorg_dractec_ftetris_logic_Game$Move__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Input__s_util_Either = (function(d, gs$2, inp$1) {
   return (inp$1.rightDown__Z() ? $m_Lorg_dractec_ftetris_logic_Game$().tryMoveSideways__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$Move__s_util_Either(gs$2, $m_Lorg_dractec_ftetris_logic_Game$RightM$()) : ($m_Lcats_implicits$(), $m_s_package$(), new $c_s_util_Right().init___O(d)))
@@ -6016,27 +6082,28 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.tryRotateWhenBtn$1__p1__Lorg_dract
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.wrapTurn__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$GS = (function(gs) {
   $m_Lorg_dractec_package$();
   $m_Lorg_dractec_package$();
-  var x$116 = ((1 + gs.frameCount$1) | 0);
+  var x$122 = ((1 + gs.frameCount$1) | 0);
   var this$1 = gs.turnsToSpawn$1;
   if (this$1.isEmpty__Z()) {
-    var x$117 = $m_s_None$()
+    var x$123 = $m_s_None$()
   } else {
     var arg1 = this$1.get__O();
     var x$24 = $uI(arg1);
-    var x$117 = new $c_s_Some().init___O((((-1) + x$24) | 0))
+    var x$123 = new $c_s_Some().init___O((((-1) + x$24) | 0))
   };
-  var x$118 = gs.field$1;
-  var x$119 = gs.currTet$1;
-  var x$120 = gs.nextTile$1;
-  var x$121 = gs.tetSpawnBag$1;
-  var x$122 = gs.points$1;
-  var x$123 = gs.level$1;
-  var x$124 = gs.numConsecutiveDrops$1;
-  var x$125 = gs.lastMove$1;
-  var x$126 = gs.lastClears$1;
-  var x$127 = gs.lastMoveTimes$1;
-  var x$128 = gs.conf$1;
-  var that = new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$116, x$118, x$119, x$120, x$121, x$122, x$123, x$124, x$125, x$126, x$127, x$117, x$128);
+  var x$124 = gs.field$1;
+  var x$125 = gs.currTet$1;
+  var x$126 = gs.nextTile$1;
+  var x$127 = gs.nextRotation$1;
+  var x$128 = gs.tetSpawnBag$1;
+  var x$129 = gs.points$1;
+  var x$130 = gs.level$1;
+  var x$131 = gs.numConsecutiveDrops$1;
+  var x$132 = gs.lastMove$1;
+  var x$133 = gs.lastClears$1;
+  var x$134 = gs.lastMoveTimes$1;
+  var x$135 = gs.conf$1;
+  var that = new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$122, x$124, x$125, x$126, x$127, x$128, x$129, x$130, x$131, x$132, x$133, x$134, x$123, x$135);
   var that$1 = $m_Lorg_dractec_ftetris_logic_Game$().handleLineClear__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$GS(that);
   return $m_Lorg_dractec_ftetris_logic_Game$().optValidate__p1__Lorg_dractec_ftetris_logic_Game$GS__Lorg_dractec_ftetris_logic_Game$GS(that$1)
 });
@@ -6049,42 +6116,54 @@ $c_Lorg_dractec_ftetris_logic_Game$.prototype.globalTetCoverage$default$2__F1 = 
   })(this))
 });
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.handleSpawn__p1__Lorg_dractec_ftetris_logic_Game$GS__Lcats_effect_IO = (function(gs) {
-  return this.pickRandom__p1__sci_Set__s_util_Random__Lcats_effect_IO($as_sci_Set($m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1.diff__sc_GenSet__sc_Set(gs.tetSpawnBag$1)), gs.conf$1.random$1).map__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this, gs$1) {
-    return (function(toSpawn$2) {
-      var toSpawn = $as_Lorg_dractec_ftetris_logic_Tiles$Tile(toSpawn$2);
-      $m_Lcats_implicits$();
-      var jsx$2 = gs$1.nextTile$1;
-      var jsx$1 = $m_Lorg_dractec_package$F1Wrapper$();
-      $m_Lorg_dractec_package$();
-      var v = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this$1) {
-        return (function(rotation$2) {
-          var rotation = $as_Lorg_dractec_ftetris_logic_Tiles$Rotation(rotation$2);
-          return $m_Lorg_dractec_ftetris_logic_Tiles$().nextRotation__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Rotation(rotation)
+  var this$7 = this.pickRandom__p1__sci_Set__s_util_Random__Lcats_effect_IO($as_sci_Set($m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1.diff__sc_GenSet__sc_Set(gs.tetSpawnBag$1)), gs.conf$1.random$1);
+  var f = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this, gs$1) {
+    return (function(nextTile$2) {
+      var nextTile = $as_Lorg_dractec_ftetris_logic_Tiles$Tile(nextTile$2);
+      $m_Lcats_effect_IO$();
+      var body = new $c_sjsr_AnonFunction0().init___sjs_js_Function0((function($this$1, gs$3) {
+        return (function() {
+          var jsx$1 = $m_Lorg_dractec_package$F1Wrapper$();
+          $m_Lorg_dractec_package$();
+          var v = new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this$2) {
+            return (function(rotation$2) {
+              var rotation = $as_Lorg_dractec_ftetris_logic_Tiles$Rotation(rotation$2);
+              return $m_Lorg_dractec_ftetris_logic_Tiles$().nextRotation__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Rotation(rotation)
+            })
+          })($this$1));
+          var this$2 = gs$3.conf$1.random$1;
+          return $as_Lorg_dractec_ftetris_logic_Tiles$Rotation(jsx$1.$$times$extension__F1__I__F1(v, this$2.self$1.nextInt__I__I(4)).apply__O__O(($m_Lorg_dractec_ftetris_logic_Tiles$(), $m_Lorg_dractec_ftetris_logic_Tiles$HorizDown$())))
         })
-      })($this));
-      var this$2 = gs$1.conf$1.random$1;
-      var a = new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(jsx$2, $as_Lorg_dractec_ftetris_logic_Tiles$Rotation(jsx$1.$$times$extension__F1__I__F1(v, this$2.self$1.nextInt__I__I(4)).apply__O__O(($m_Lorg_dractec_ftetris_logic_Tiles$(), $m_Lorg_dractec_ftetris_logic_Tiles$HorizDown$()))), new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(3, (-2)));
-      var x$27 = new $c_s_Some().init___O(a);
-      var newBag = $as_sci_Set(gs$1.tetSpawnBag$1.$$plus__O__sc_Set(toSpawn));
-      var x$2 = $m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1;
-      if (((newBag === null) ? (x$2 === null) : $f_sc_GenSetLike__equals__O__Z(newBag, x$2))) {
-        var x$28 = $as_sci_Set($m_s_Predef$().Set$2.apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()))
-      } else {
-        var x$28 = newBag
-      };
-      var x$29 = $m_s_None$();
-      var x$31 = gs$1.frameCount$1;
-      var x$32 = gs$1.field$1;
-      var x$33 = gs$1.points$1;
-      var x$34 = gs$1.level$1;
-      var x$35 = gs$1.numConsecutiveDrops$1;
-      var x$36 = gs$1.lastMove$1;
-      var x$37 = gs$1.lastClears$1;
-      var x$38 = gs$1.lastMoveTimes$1;
-      var x$39 = gs$1.conf$1;
-      return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$31, x$32, x$27, toSpawn, x$28, x$33, x$34, x$35, x$36, x$37, x$38, x$29, x$39)
+      })($this, gs$1));
+      return new $c_Lcats_effect_IO$Delay().init___F0(body).map__F1__Lcats_effect_IO(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function(this$2$1, gs$3$1, nextTile$1) {
+        return (function(nextRotation$2) {
+          var nextRotation = $as_Lorg_dractec_ftetris_logic_Tiles$Rotation(nextRotation$2);
+          $m_Lcats_implicits$();
+          var a = new $c_Lorg_dractec_ftetris_logic_Game$Tetromino().init___Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__Lorg_dractec_ftetris_logic_Tiles$Coord(gs$3$1.nextTile$1, gs$3$1.nextRotation$1, new $c_Lorg_dractec_ftetris_logic_Tiles$Coord().init___I__I(3, (-2)));
+          var x$27 = new $c_s_Some().init___O(a);
+          var newBag = $as_sci_Set(gs$3$1.tetSpawnBag$1.$$plus__O__sc_Set(nextTile$1));
+          var x$2 = $m_Lorg_dractec_ftetris_logic_Tiles$().allTiles$1;
+          if (((newBag === null) ? (x$2 === null) : $f_sc_GenSetLike__equals__O__Z(newBag, x$2))) {
+            var x$28 = $as_sci_Set($m_s_Predef$().Set$2.apply__sc_Seq__sc_GenTraversable($m_sci_Nil$()))
+          } else {
+            var x$28 = newBag
+          };
+          var x$29 = $m_s_None$();
+          var x$32 = gs$3$1.frameCount$1;
+          var x$33 = gs$3$1.field$1;
+          var x$34 = gs$3$1.points$1;
+          var x$35 = gs$3$1.level$1;
+          var x$36 = gs$3$1.numConsecutiveDrops$1;
+          var x$37 = gs$3$1.lastMove$1;
+          var x$38 = gs$3$1.lastClears$1;
+          var x$39 = gs$3$1.lastMoveTimes$1;
+          var x$40 = gs$3$1.conf$1;
+          return new $c_Lorg_dractec_ftetris_logic_Game$GS().init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config(x$32, x$33, x$27, nextTile$1, nextRotation, x$28, x$34, x$35, x$36, x$37, x$38, x$39, x$29, x$40)
+        })
+      })($this, gs$1, nextTile)))
     })
-  })(this, gs)))
+  })(this, gs));
+  return new $c_Lcats_effect_IO$Bind().init___Lcats_effect_IO__F1(this$7, f)
 });
 $c_Lorg_dractec_ftetris_logic_Game$.prototype.scoring__I__I__I = (function(lvl, lines) {
   return $imul($uI(this.lvl0scoring$1.apply__O__O(lines)), ((1 + lvl) | 0))
@@ -6118,6 +6197,7 @@ function $c_Lorg_dractec_ftetris_logic_Tiles$() {
   this.coordMonoid$1 = null;
   this.cbShow$1 = null;
   this.allTiles$1 = null;
+  this.allRotations$1 = null;
   this.numRotations$1 = null;
   this.initBox$1 = null
 }
@@ -6225,62 +6305,78 @@ $c_Lorg_dractec_ftetris_logic_Tiles$.prototype.init___ = (function() {
     var jsx$1 = b.elems$1
   };
   this.allTiles$1 = $as_sci_Set(jsx$1);
-  var self = $m_Lorg_dractec_ftetris_logic_Tiles$HorizDown$();
-  var jsx$4 = new $c_T2().init___O__O(self, 0);
-  var self$1 = $m_Lorg_dractec_ftetris_logic_Tiles$VertLeft$();
-  var jsx$3 = new $c_T2().init___O__O(self$1, 1);
-  var self$2 = $m_Lorg_dractec_ftetris_logic_Tiles$HorizUp$();
-  var jsx$2 = new $c_T2().init___O__O(self$2, 2);
-  var self$3 = $m_Lorg_dractec_ftetris_logic_Tiles$VertRight$();
-  var array$1 = [jsx$4, jsx$3, jsx$2, new $c_T2().init___O__O(self$3, 3)];
-  var this$11 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
-  var i$1 = 0;
-  var len$1 = $uI(array$1.length);
-  while ((i$1 < len$1)) {
-    var index$1 = i$1;
-    var arg1$1 = array$1[index$1];
-    this$11.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$1));
-    i$1 = ((1 + i$1) | 0)
+  var array$1 = [$m_Lorg_dractec_ftetris_logic_Tiles$HorizDown$(), $m_Lorg_dractec_ftetris_logic_Tiles$VertLeft$(), $m_Lorg_dractec_ftetris_logic_Tiles$HorizUp$(), $m_Lorg_dractec_ftetris_logic_Tiles$VertRight$()];
+  if (($uI(array$1.length) === 0)) {
+    var jsx$2 = $m_sci_Set$EmptySet$()
+  } else {
+    var b$1 = new $c_scm_SetBuilder().init___sc_Set($m_sci_Set$EmptySet$());
+    var i$1 = 0;
+    var len$1 = $uI(array$1.length);
+    while ((i$1 < len$1)) {
+      var index$1 = i$1;
+      var arg1$1 = array$1[index$1];
+      b$1.$$plus$eq__O__scm_SetBuilder(arg1$1);
+      i$1 = ((1 + i$1) | 0)
+    };
+    var jsx$2 = b$1.elems$1
   };
-  this.numRotations$1 = $as_sci_Map(this$11.elems$1);
-  var self$4 = $m_Lorg_dractec_ftetris_logic_Tiles$Straight$();
-  var this$14 = new $c_sci_StringOps().init___T("0000\r\n      |0000\r\n      |XXXX\r\n      |0000");
-  var y = $f_sci_StringLike__stripMargin__C__T(this$14, 124);
-  var jsx$10 = new $c_T2().init___O__O(self$4, y);
-  var self$5 = $m_Lorg_dractec_ftetris_logic_Tiles$Box$();
-  var this$18 = new $c_sci_StringOps().init___T("0000\r\n      |0XX0\r\n      |0XX0\r\n      |0000");
-  var y$1 = $f_sci_StringLike__stripMargin__C__T(this$18, 124);
-  var jsx$9 = new $c_T2().init___O__O(self$5, y$1);
-  var self$6 = $m_Lorg_dractec_ftetris_logic_Tiles$LeftL$();
-  var this$22 = new $c_sci_StringOps().init___T("000\r\n      |XXX\r\n      |00X");
-  var y$2 = $f_sci_StringLike__stripMargin__C__T(this$22, 124);
-  var jsx$8 = new $c_T2().init___O__O(self$6, y$2);
-  var self$7 = $m_Lorg_dractec_ftetris_logic_Tiles$RightL$();
-  var this$26 = new $c_sci_StringOps().init___T("000\r\n      |XXX\r\n      |X00");
-  var y$3 = $f_sci_StringLike__stripMargin__C__T(this$26, 124);
-  var jsx$7 = new $c_T2().init___O__O(self$7, y$3);
-  var self$8 = $m_Lorg_dractec_ftetris_logic_Tiles$Tee$();
-  var this$30 = new $c_sci_StringOps().init___T("000\r\n      |XXX\r\n      |0X0");
-  var y$4 = $f_sci_StringLike__stripMargin__C__T(this$30, 124);
-  var jsx$6 = new $c_T2().init___O__O(self$8, y$4);
-  var self$9 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeR$();
-  var this$34 = new $c_sci_StringOps().init___T("000\r\n      |0XX\r\n      |XX0");
-  var y$5 = $f_sci_StringLike__stripMargin__C__T(this$34, 124);
-  var jsx$5 = new $c_T2().init___O__O(self$9, y$5);
-  var self$10 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeL$();
-  var this$38 = new $c_sci_StringOps().init___T("000\r\n      |XX0\r\n      |0XX");
-  var y$6 = $f_sci_StringLike__stripMargin__C__T(this$38, 124);
-  var array$2 = [jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, jsx$5, new $c_T2().init___O__O(self$10, y$6)];
-  var this$41 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  this.allRotations$1 = $as_sci_Set(jsx$2);
+  var self = $m_Lorg_dractec_ftetris_logic_Tiles$HorizDown$();
+  var jsx$5 = new $c_T2().init___O__O(self, 0);
+  var self$1 = $m_Lorg_dractec_ftetris_logic_Tiles$VertLeft$();
+  var jsx$4 = new $c_T2().init___O__O(self$1, 1);
+  var self$2 = $m_Lorg_dractec_ftetris_logic_Tiles$HorizUp$();
+  var jsx$3 = new $c_T2().init___O__O(self$2, 2);
+  var self$3 = $m_Lorg_dractec_ftetris_logic_Tiles$VertRight$();
+  var array$2 = [jsx$5, jsx$4, jsx$3, new $c_T2().init___O__O(self$3, 3)];
+  var this$12 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
   var i$2 = 0;
   var len$2 = $uI(array$2.length);
   while ((i$2 < len$2)) {
     var index$2 = i$2;
     var arg1$2 = array$2[index$2];
-    this$41.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$2));
+    this$12.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$2));
     i$2 = ((1 + i$2) | 0)
   };
-  this.initBox$1 = $as_sci_Map(this$41.elems$1);
+  this.numRotations$1 = $as_sci_Map(this$12.elems$1);
+  var self$4 = $m_Lorg_dractec_ftetris_logic_Tiles$Straight$();
+  var this$15 = new $c_sci_StringOps().init___T("0000\r\n      |0000\r\n      |XXXX\r\n      |0000");
+  var y = $f_sci_StringLike__stripMargin__C__T(this$15, 124);
+  var jsx$11 = new $c_T2().init___O__O(self$4, y);
+  var self$5 = $m_Lorg_dractec_ftetris_logic_Tiles$Box$();
+  var this$19 = new $c_sci_StringOps().init___T("0000\r\n      |0XX0\r\n      |0XX0\r\n      |0000");
+  var y$1 = $f_sci_StringLike__stripMargin__C__T(this$19, 124);
+  var jsx$10 = new $c_T2().init___O__O(self$5, y$1);
+  var self$6 = $m_Lorg_dractec_ftetris_logic_Tiles$LeftL$();
+  var this$23 = new $c_sci_StringOps().init___T("000\r\n      |XXX\r\n      |00X");
+  var y$2 = $f_sci_StringLike__stripMargin__C__T(this$23, 124);
+  var jsx$9 = new $c_T2().init___O__O(self$6, y$2);
+  var self$7 = $m_Lorg_dractec_ftetris_logic_Tiles$RightL$();
+  var this$27 = new $c_sci_StringOps().init___T("000\r\n      |XXX\r\n      |X00");
+  var y$3 = $f_sci_StringLike__stripMargin__C__T(this$27, 124);
+  var jsx$8 = new $c_T2().init___O__O(self$7, y$3);
+  var self$8 = $m_Lorg_dractec_ftetris_logic_Tiles$Tee$();
+  var this$31 = new $c_sci_StringOps().init___T("000\r\n      |XXX\r\n      |0X0");
+  var y$4 = $f_sci_StringLike__stripMargin__C__T(this$31, 124);
+  var jsx$7 = new $c_T2().init___O__O(self$8, y$4);
+  var self$9 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeR$();
+  var this$35 = new $c_sci_StringOps().init___T("000\r\n      |0XX\r\n      |XX0");
+  var y$5 = $f_sci_StringLike__stripMargin__C__T(this$35, 124);
+  var jsx$6 = new $c_T2().init___O__O(self$9, y$5);
+  var self$10 = $m_Lorg_dractec_ftetris_logic_Tiles$SnakeL$();
+  var this$39 = new $c_sci_StringOps().init___T("000\r\n      |XX0\r\n      |0XX");
+  var y$6 = $f_sci_StringLike__stripMargin__C__T(this$39, 124);
+  var array$3 = [jsx$11, jsx$10, jsx$9, jsx$8, jsx$7, jsx$6, new $c_T2().init___O__O(self$10, y$6)];
+  var this$42 = new $c_scm_MapBuilder().init___sc_GenMap($m_sci_Map$EmptyMap$());
+  var i$3 = 0;
+  var len$3 = $uI(array$3.length);
+  while ((i$3 < len$3)) {
+    var index$3 = i$3;
+    var arg1$3 = array$3[index$3];
+    this$42.$$plus$eq__T2__scm_MapBuilder($as_T2(arg1$3));
+    i$3 = ((1 + i$3) | 0)
+  };
+  this.initBox$1 = $as_sci_Map(this$42.elems$1);
   return this
 });
 $c_Lorg_dractec_ftetris_logic_Tiles$.prototype.rotate3x3BoxTimes__sci_Map__I__sci_Map = (function(box, n) {
@@ -9506,7 +9602,7 @@ $c_Lorg_dractec_ftetris_js_FTetris$$anon$1.prototype.softDropDown__Z = (function
   }
 });
 $c_Lorg_dractec_ftetris_js_FTetris$$anon$1.prototype.rotateDown__Z = (function() {
-  if ($as_sci_Set(this.keysDown$1$1.elem$1).contains__O__Z(32)) {
+  if (($as_sci_Set(this.keysDown$1$1.elem$1).contains__O__Z(38) || $as_sci_Set(this.keysDown$1$1.elem$1).contains__O__Z(32))) {
     return true
   } else {
     var x = $as_Lorg_dractec_ftetris_logic_Game$Move(this.lastTouchMove$1$1.elem$1);
@@ -16834,6 +16930,7 @@ function $c_Lorg_dractec_ftetris_logic_Game$GS() {
   this.field$1 = null;
   this.currTet$1 = null;
   this.nextTile$1 = null;
+  this.nextRotation$1 = null;
   this.tetSpawnBag$1 = null;
   this.points$1 = 0;
   this.level$1 = 0;
@@ -16855,7 +16952,7 @@ $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.productPrefix__T = (function() {
   return "GS"
 });
 $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.productArity__I = (function() {
-  return 13
+  return 14
 });
 $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.equals__O__Z = (function(x$1) {
   if ((this === x$1)) {
@@ -16865,63 +16962,70 @@ $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.equals__O__Z = (function(x$1) {
     if ((this.frameCount$1 === GS$1.frameCount$1)) {
       var x = this.field$1;
       var x$2 = GS$1.field$1;
-      var jsx$8 = ((x === null) ? (x$2 === null) : $f_sc_GenMapLike__equals__O__Z(x, x$2))
+      var jsx$9 = ((x === null) ? (x$2 === null) : $f_sc_GenMapLike__equals__O__Z(x, x$2))
+    } else {
+      var jsx$9 = false
+    };
+    if (jsx$9) {
+      var x$3 = this.currTet$1;
+      var x$4 = GS$1.currTet$1;
+      var jsx$8 = ((x$3 === null) ? (x$4 === null) : x$3.equals__O__Z(x$4))
     } else {
       var jsx$8 = false
     };
     if (jsx$8) {
-      var x$3 = this.currTet$1;
-      var x$4 = GS$1.currTet$1;
-      var jsx$7 = ((x$3 === null) ? (x$4 === null) : x$3.equals__O__Z(x$4))
+      var x$5 = this.nextTile$1;
+      var x$6 = GS$1.nextTile$1;
+      var jsx$7 = (x$5 === x$6)
     } else {
       var jsx$7 = false
     };
     if (jsx$7) {
-      var x$5 = this.nextTile$1;
-      var x$6 = GS$1.nextTile$1;
-      var jsx$6 = (x$5 === x$6)
+      var x$7 = this.nextRotation$1;
+      var x$8 = GS$1.nextRotation$1;
+      var jsx$6 = (x$7 === x$8)
     } else {
       var jsx$6 = false
     };
     if (jsx$6) {
-      var x$7 = this.tetSpawnBag$1;
-      var x$8 = GS$1.tetSpawnBag$1;
-      var jsx$5 = ((x$7 === null) ? (x$8 === null) : $f_sc_GenSetLike__equals__O__Z(x$7, x$8))
+      var x$9 = this.tetSpawnBag$1;
+      var x$10 = GS$1.tetSpawnBag$1;
+      var jsx$5 = ((x$9 === null) ? (x$10 === null) : $f_sc_GenSetLike__equals__O__Z(x$9, x$10))
     } else {
       var jsx$5 = false
     };
     if ((((jsx$5 && (this.points$1 === GS$1.points$1)) && (this.level$1 === GS$1.level$1)) && (this.numConsecutiveDrops$1 === GS$1.numConsecutiveDrops$1))) {
-      var x$9 = this.lastMove$1;
-      var x$10 = GS$1.lastMove$1;
-      var jsx$4 = (x$9 === x$10)
+      var x$11 = this.lastMove$1;
+      var x$12 = GS$1.lastMove$1;
+      var jsx$4 = (x$11 === x$12)
     } else {
       var jsx$4 = false
     };
     if (jsx$4) {
-      var x$11 = this.lastClears$1;
-      var x$12 = GS$1.lastClears$1;
-      var jsx$3 = ((x$11 === null) ? (x$12 === null) : x$11.equals__O__Z(x$12))
+      var x$13 = this.lastClears$1;
+      var x$14 = GS$1.lastClears$1;
+      var jsx$3 = ((x$13 === null) ? (x$14 === null) : x$13.equals__O__Z(x$14))
     } else {
       var jsx$3 = false
     };
     if (jsx$3) {
-      var x$13 = this.lastMoveTimes$1;
-      var x$14 = GS$1.lastMoveTimes$1;
-      var jsx$2 = ((x$13 === null) ? (x$14 === null) : $f_sc_GenMapLike__equals__O__Z(x$13, x$14))
+      var x$15 = this.lastMoveTimes$1;
+      var x$16 = GS$1.lastMoveTimes$1;
+      var jsx$2 = ((x$15 === null) ? (x$16 === null) : $f_sc_GenMapLike__equals__O__Z(x$15, x$16))
     } else {
       var jsx$2 = false
     };
     if (jsx$2) {
-      var x$15 = this.turnsToSpawn$1;
-      var x$16 = GS$1.turnsToSpawn$1;
-      var jsx$1 = ((x$15 === null) ? (x$16 === null) : x$15.equals__O__Z(x$16))
+      var x$17 = this.turnsToSpawn$1;
+      var x$18 = GS$1.turnsToSpawn$1;
+      var jsx$1 = ((x$17 === null) ? (x$18 === null) : x$17.equals__O__Z(x$18))
     } else {
       var jsx$1 = false
     };
     if (jsx$1) {
-      var x$17 = this.conf$1;
-      var x$18 = GS$1.conf$1;
-      return ((x$17 === null) ? (x$18 === null) : x$17.equals__O__Z(x$18))
+      var x$19 = this.conf$1;
+      var x$20 = GS$1.conf$1;
+      return ((x$19 === null) ? (x$20 === null) : x$19.equals__O__Z(x$20))
     } else {
       return false
     }
@@ -16948,38 +17052,42 @@ $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.productElement__I__O = (function
       break
     }
     case 4: {
-      return this.tetSpawnBag$1;
+      return this.nextRotation$1;
       break
     }
     case 5: {
-      return this.points$1;
+      return this.tetSpawnBag$1;
       break
     }
     case 6: {
-      return this.level$1;
+      return this.points$1;
       break
     }
     case 7: {
-      return this.numConsecutiveDrops$1;
+      return this.level$1;
       break
     }
     case 8: {
-      return this.lastMove$1;
+      return this.numConsecutiveDrops$1;
       break
     }
     case 9: {
-      return this.lastClears$1;
+      return this.lastMove$1;
       break
     }
     case 10: {
-      return this.lastMoveTimes$1;
+      return this.lastClears$1;
       break
     }
     case 11: {
-      return this.turnsToSpawn$1;
+      return this.lastMoveTimes$1;
       break
     }
     case 12: {
+      return this.turnsToSpawn$1;
+      break
+    }
+    case 13: {
       return this.conf$1;
       break
     }
@@ -16988,34 +17096,12 @@ $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.productElement__I__O = (function
     }
   }
 });
-$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.toString__T = (function() {
-  return $m_sr_ScalaRunTime$().$$undtoString__s_Product__T(this)
-});
-$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.hashCode__I = (function() {
-  var acc = (-889275714);
-  acc = $m_sr_Statics$().mix__I__I__I(acc, this.frameCount$1);
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.field$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.currTet$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.nextTile$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.tetSpawnBag$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, this.points$1);
-  acc = $m_sr_Statics$().mix__I__I__I(acc, this.level$1);
-  acc = $m_sr_Statics$().mix__I__I__I(acc, this.numConsecutiveDrops$1);
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.lastMove$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.lastClears$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.lastMoveTimes$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.turnsToSpawn$1));
-  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.conf$1));
-  return $m_sr_Statics$().finalizeHash__I__I__I(acc, 13)
-});
-$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.productIterator__sc_Iterator = (function() {
-  return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
-});
-$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config = (function(frameCount, field, currTet, nextTile, tetSpawnBag, points, level, numConsecutiveDrops, lastMove, lastClears, lastMoveTimes, turnsToSpawn, conf) {
+$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.init___I__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Tiles$Tile__Lorg_dractec_ftetris_logic_Tiles$Rotation__sci_Set__I__I__I__Lorg_dractec_ftetris_logic_Game$Move__sci_List__sci_Map__s_Option__Lorg_dractec_ftetris_logic_Game$Config = (function(frameCount, field, currTet, nextTile, nextRotation, tetSpawnBag, points, level, numConsecutiveDrops, lastMove, lastClears, lastMoveTimes, turnsToSpawn, conf) {
   this.frameCount$1 = frameCount;
   this.field$1 = field;
   this.currTet$1 = currTet;
   this.nextTile$1 = nextTile;
+  this.nextRotation$1 = nextRotation;
   this.tetSpawnBag$1 = tetSpawnBag;
   this.points$1 = points;
   this.level$1 = level;
@@ -17026,6 +17112,30 @@ $c_Lorg_dractec_ftetris_logic_Game$GS.prototype.init___I__sci_Map__s_Option__Lor
   this.turnsToSpawn$1 = turnsToSpawn;
   this.conf$1 = conf;
   return this
+});
+$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.toString__T = (function() {
+  return $m_sr_ScalaRunTime$().$$undtoString__s_Product__T(this)
+});
+$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.hashCode__I = (function() {
+  var acc = (-889275714);
+  acc = $m_sr_Statics$().mix__I__I__I(acc, this.frameCount$1);
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.field$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.currTet$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.nextTile$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.nextRotation$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.tetSpawnBag$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, this.points$1);
+  acc = $m_sr_Statics$().mix__I__I__I(acc, this.level$1);
+  acc = $m_sr_Statics$().mix__I__I__I(acc, this.numConsecutiveDrops$1);
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.lastMove$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.lastClears$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.lastMoveTimes$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.turnsToSpawn$1));
+  acc = $m_sr_Statics$().mix__I__I__I(acc, $m_sr_Statics$().anyHash__O__I(this.conf$1));
+  return $m_sr_Statics$().finalizeHash__I__I__I(acc, 14)
+});
+$c_Lorg_dractec_ftetris_logic_Game$GS.prototype.productIterator__sc_Iterator = (function() {
+  return new $c_sr_ScalaRunTime$$anon$1().init___s_Product(this)
 });
 function $is_Lorg_dractec_ftetris_logic_Game$GS(obj) {
   return (!(!((obj && obj.$classData) && obj.$classData.ancestors.Lorg_dractec_ftetris_logic_Game$GS)))
@@ -27943,21 +28053,6 @@ function $asArrayOf_sc_LinearSeqOptimized(obj, depth) {
 function $f_sc_SetLike__isEmpty__Z($thiz) {
   return ($thiz.size__I() === 0)
 }
-function $f_sc_SetLike__toSeq__sc_Seq($thiz) {
-  if ($thiz.isEmpty__Z()) {
-    var this$1 = $m_s_package$().Vector$1;
-    return this$1.NIL$6
-  } else {
-    $m_s_package$();
-    var vb = new $c_sci_VectorBuilder().init___();
-    $thiz.foreach__F1__V(new $c_sjsr_AnonFunction1().init___sjs_js_Function1((function($this, vb$1) {
-      return (function(x$1$2) {
-        return vb$1.$$plus$eq__O__scm_Builder(x$1$2)
-      })
-    })($thiz, vb)));
-    return vb.result__sci_Vector()
-  }
-}
 function $f_sc_MapLike__apply__O__O($thiz, key) {
   var x1 = $thiz.get__O__s_Option(key);
   var x = $m_s_None$();
@@ -34463,9 +34558,6 @@ $h_sci_Stream.prototype = $c_sci_Stream.prototype;
 $c_sci_Stream.prototype.seq__sc_TraversableOnce = (function() {
   return this
 });
-$c_sci_Stream.prototype.apply__I__O = (function(n) {
-  return $f_sc_LinearSeqOptimized__apply__I__O(this, n)
-});
 $c_sci_Stream.prototype.lengthCompare__I__I = (function(len) {
   return $f_sc_LinearSeqOptimized__lengthCompare__I__I(this, len)
 });
@@ -35111,13 +35203,13 @@ $c_sci_HashMap$HashMapCollision1.prototype.removed0__O__I__I__sci_HashMap = (fun
     return this
   }
 });
+$c_sci_HashMap$HashMapCollision1.prototype.size__I = (function() {
+  return this.kvs$6.size__I()
+});
 $c_sci_HashMap$HashMapCollision1.prototype.iterator__sc_Iterator = (function() {
   var this$1 = this.kvs$6;
   var this$2 = this$1.reverseList$1__p5__sci_List();
   return new $c_sc_LinearSeqLike$$anon$1().init___sc_LinearSeqLike(this$2)
-});
-$c_sci_HashMap$HashMapCollision1.prototype.size__I = (function() {
-  return this.kvs$6.size__I()
 });
 $c_sci_HashMap$HashMapCollision1.prototype.init___I__sci_ListMap = (function(hash, kvs) {
   this.hash$6 = hash;
@@ -35261,11 +35353,11 @@ $c_sci_HashMap$HashTrieMap.prototype.removed0__O__I__I__sci_HashMap = (function(
     return this
   }
 });
-$c_sci_HashMap$HashTrieMap.prototype.iterator__sc_Iterator = (function() {
-  return new $c_sci_HashMap$HashTrieMap$$anon$1().init___sci_HashMap$HashTrieMap(this)
-});
 $c_sci_HashMap$HashTrieMap.prototype.size__I = (function() {
   return this.size0$6
+});
+$c_sci_HashMap$HashTrieMap.prototype.iterator__sc_Iterator = (function() {
+  return new $c_sci_HashMap$HashTrieMap$$anon$1().init___sci_HashMap$HashTrieMap(this)
 });
 $c_sci_HashMap$HashTrieMap.prototype.init___I__Asci_HashMap__I = (function(bitmap, elems, size0) {
   this.bitmap$6 = bitmap;
@@ -35354,9 +35446,6 @@ function $h_sci_List() {
 $h_sci_List.prototype = $c_sci_List.prototype;
 $c_sci_List.prototype.seq__sc_TraversableOnce = (function() {
   return this
-});
-$c_sci_List.prototype.apply__I__O = (function(n) {
-  return $f_sc_LinearSeqOptimized__apply__I__O(this, n)
 });
 $c_sci_List.prototype.lengthCompare__I__I = (function(len) {
   return $f_sc_LinearSeqOptimized__lengthCompare__I__I(this, len)
@@ -36505,10 +36594,6 @@ function $h_scm_Stack() {
   /*<skip>*/
 }
 $h_scm_Stack.prototype = $c_scm_Stack.prototype;
-$c_scm_Stack.prototype.apply__I__O = (function(index) {
-  var this$1 = this.elems$5;
-  return $f_sc_LinearSeqOptimized__apply__I__O(this$1, index)
-});
 $c_scm_Stack.prototype.apply__O__O = (function(v1) {
   var index = $uI(v1);
   var this$1 = this.elems$5;

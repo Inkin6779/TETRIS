@@ -11,7 +11,7 @@ object Main extends App {
     override def rightDown = false
     override def softDropDown = true
     override def rotateDown = true
-  }}))
+  }})).unsafeRunSync()
   var isOver = false
   do {
     val (_gs: Game.GS, _isOver: Boolean) = nextFrame(gs).unsafeRunSync()

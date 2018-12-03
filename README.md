@@ -52,7 +52,8 @@ can use the JS 'API' by passing a proper config object:
         ongameend: [OPT] () => Void,
         onpausestart: [OPT] () => Void,
         onpauseend: [OPT] () => Void,
-        simpleRenderingMode: [OPT] () => Boolean
+        simpleRenderingMode: [OPT] () => Boolean,
+        guidelineColors: [OPT] () => Boolean,
     }); 
     
 Where `mainCanvas` is a reference to the canvas you want the game 
@@ -74,6 +75,10 @@ which allows touch input, but not the `<body>` tag itself.
 order to enable a less beautiful but far more efficient
 rendering mode suitable for poor hardware or alternative 
 browsers. It's a function to allow changes during runtime.
+
+`guidelineColors` specifies whether the official guideline
+colors should be used instead of my beloved shades of green.
+It's a function to allow changes during runtime.
 
 The others are callbacks that either take an `int` - the
 updated value - or no arguments and they all return nothing.

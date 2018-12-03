@@ -30,32 +30,11 @@ object FTetris {
     val onpausestart: js.Function0[Unit] = js.native
     val onpauseend: js.Function0[Unit] = js.native
     val simpleRenderingMode: js.Function0[Boolean] = js.native
+    val guidelineColors: js.Function0[Boolean] = js.native
   }
 
   var canStart: Boolean = true
   var paused: Boolean = false
-
-  /* // TODO: guideline colors
-        Cyan I
-        Yellow O
-        Purple T
-        Green S
-        Red Z
-        Blue J
-        Orange L
-  */
-
-  val tileColors = Map[Option[Tile], String](
-    Straight.some -> "#4AC948",
-    Box.some      -> "#83F52C",
-    LeftL.some    -> "#76EE00",
-    RightL.some   -> "#66CD00",
-    Tee.some      -> "#49E20E",
-    SnakeL.some   -> "#83F52C",
-    SnakeR.some   -> "#4DBD33",
-    // for simple rendering mode
-    None          -> "#303030",
-  )
 
   implicit class DOMListWrapper[A](val v: DOMList[A]) extends AnyVal {
     def toList = (for (i <- 0 to v.length) yield v(i)).toList
@@ -68,10 +47,38 @@ object FTetris {
     canStart = false
 
     var lastRenderingMode = false
-    def simpleRenderingMode = {
+    def simpleRenderingMode: Boolean = {
       val res = if (js.isUndefined(gc.simpleRenderingMode)) false else gc.simpleRenderingMode()
       lastRenderingMode = res
       res
+    }
+
+    def useGuidelineColors: Boolean = if (js.isUndefined(gc.guidelineColors)) false else gc.guidelineColors()
+
+    def tileColors = if (useGuidelineColors) {
+      Map[Option[Tile], String](
+        Straight.some -> "cyan",
+        Box.some -> "yellow",
+        LeftL.some -> "blue",
+        RightL.some -> "orange",
+        Tee.some -> "purple",
+        SnakeL.some -> "red",
+        SnakeR.some -> "green",
+        // for simple rendering mode
+        None -> "#303030"
+      )
+    } else {
+      Map[Option[Tile], String](
+        Straight.some -> "#4AC948",
+        Box.some -> "#83F52C",
+        LeftL.some -> "#76EE00",
+        RightL.some -> "#66CD00",
+        Tee.some -> "#49E20E",
+        SnakeL.some -> "#83F52C",
+        SnakeR.some -> "#4DBD33",
+        // for simple rendering mode
+        None -> "#303030"
+      )
     }
 
     val touchRoot: dom.Node = if (js.isUndefined(gc.touchRootNode)) gc.mainCanvas else gc.touchRootNode
@@ -88,7 +95,7 @@ object FTetris {
 
     var keysDown = Set[Int]()
     var lastTouchMove: Move = Nothing
-    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80)
+    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80, 38)
 
     val initialGs = initGS(Config(
       input = IO { new Input{
@@ -98,8 +105,8 @@ object FTetris {
 
         override def softDropDown = keysDown.contains(40) || keysDown.contains(83) || lastTouchMove == Drop
 
-        override def rotateDown = keysDown.contains(32) || lastTouchMove == Rotate
-    }}))
+        override def rotateDown = keysDown.contains(38) || keysDown.contains(32) || lastTouchMove == Rotate
+    }})).unsafeRunSync()
 
     var lastState = initialGs
     var lastField: Option[GameField] = None
@@ -128,8 +135,13 @@ object FTetris {
 
     def gradientStyle(implicit canv: html.Canvas): CanvasGradient = {
       val grd = ctx.createLinearGradient(0, 0, 0, gc.mainCanvas.height)
-      grd.addColorStop(0, "black")
-      grd.addColorStop(1, "grey")
+//      if (useGuidelineColors) {
+//        grd.addColorStop(0, "grey")
+//        grd.addColorStop(1, "white")
+//      } else {
+        grd.addColorStop(0, "black")
+        grd.addColorStop(1, "grey")
+//      }
       grd
     }
 
@@ -158,10 +170,10 @@ object FTetris {
       ctx.globalAlpha = 1
     }
 
-    def drawPreview(tile: Tile, renderingMode: Boolean): Unit = {
+    def drawPreview(tile: Tile, rotation: Rotation, renderingMode: Boolean): Unit = {
       implicit val canv = gc.nextTileCanvas
       val dims = Coord(4, 4)
-      val tiles = coverage(tile)(HorizDown)
+      val tiles = coverage(tile)(rotation)
       val border = ((0 until 4).map(Coord(3, _) -> None) ++ (0 until 4).map(Coord(_, 3) -> None)).toMap[Coord, Option[Tile]]
       drawGradient()
       (border ++ tiles).foreach{case (c, t) => drawTile(t, c, renderingMode, dims)}
@@ -179,8 +191,8 @@ object FTetris {
         ctx.strokeStyle = "#696969"
         ctx.lineWidth = 1
       } else {
-        ctx.globalAlpha = 0.1
-        ctx.strokeStyle = gradientStyle
+        ctx.globalAlpha = if (useGuidelineColors) 1 else 0.1
+        ctx.strokeStyle = if (useGuidelineColors) "#696969" else gradientStyle
         ctx.lineWidth = 2
       }
       ctx.strokeRect(coord.x * widthPerTile, coord.y * heightPerTile, widthPerTile, heightPerTile)
@@ -310,6 +322,7 @@ object FTetris {
 
     def endGame(): Unit = {
       mainLoop.foreach(clearInterval)
+      canStart = true
       ctx(gc.mainCanvas).drawImage(img, 0, gc.mainCanvas.height/2 - img.height/2)
     }
 
@@ -317,11 +330,10 @@ object FTetris {
 
     clearAll()(gc.mainCanvas)
     drawGradient()(gc.mainCanvas)
-    drawPreview(lastNextTile, simpleRenderingMode)
+    drawPreview(initialGs.nextTile, initialGs.nextRotation, simpleRenderingMode)
     gc.onpointchange(0)
     gc.onlevelchange(initialGs.level)
 
-    canStart = true
     callIfDef(gc.ongameend)
 
     var frameIsRunning = false
@@ -340,7 +352,7 @@ object FTetris {
 
         if (lastNextTile != newState.nextTile) {
           lastNextTile = newState.nextTile
-          drawPreview(lastNextTile, simpleRenderingMode)
+          drawPreview(newState.nextTile, newState.nextRotation, simpleRenderingMode)
         }
 
         if (lastTouchMove == Rotate && (newState.lastMoveTimes(Rotate) - newState.frameCount) < initialGs.conf.rotateDelay)

@@ -62,6 +62,7 @@ object Tiles {
   case object HorizUp extends Rotation
   case object VertRight extends Rotation
   def initRotation: Rotation = HorizDown
+  val allRotations = Set[Rotation](HorizDown, VertLeft, HorizUp, VertRight)
 
   def nextRotation(rotation: Rotation): Rotation = rotation match {
     case HorizDown => VertLeft

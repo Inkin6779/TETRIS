@@ -102,14 +102,13 @@ object Game {
       validateGS: Boolean = true
   )
 
-  private def randomTile(rand: Random) = Tiles.allTiles.toSeq.apply(rand.nextInt(Tiles.allTiles.size))
-
   case class LineClear(row: Int, clearTime: Frame)
   case class Tetromino(tile: Tile, rotation: Rotation, pos: Coord)
   case class GS private (frameCount: Frame,
                          field: GameField,
                          currTet: Option[Tetromino],
                          nextTile: Tile,
+                         nextRotation: Rotation,
                          tetSpawnBag: Set[Tile],
                          points: Int,
                          level: Level,
@@ -119,12 +118,15 @@ object Game {
                          lastMoveTimes: Map[Move, Frame],
                          turnsToSpawn: Option[FramesToGo],
                          conf: Config)
-  def initGS(conf: Config) = {
-    val nextTile = randomTile(conf.random)
-    GS(frameCount = 0,
+  def initGS(conf: Config): IO[Game.GS] = for {
+    nextTile <- pickRandom(allTiles)(conf.random)
+    nextRotation <- pickRandom(allRotations)(conf.random)
+  } yield GS(
+      frameCount = 0,
       field = initField(conf),
       currTet = None,
       nextTile = nextTile,
+      nextRotation = nextRotation,
       tetSpawnBag = Set(nextTile),
       points = 0,
       level = conf.startLevel,
@@ -133,8 +135,8 @@ object Game {
       lastClears = List(),
       lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0, Drop -> 0),
       turnsToSpawn = Some(1),
-      conf)
-  }
+      conf
+  )
 
   type GameField = Map[Coord, Option[Tile]]
 
@@ -147,20 +149,22 @@ object Game {
     }) map wrapTurn map checkIfOver
   }
 
-  private def handleSpawn(gs: GS): IO[GS] = pickRandom(allTiles diff gs.tetSpawnBag)(gs.conf.random) map { toSpawn =>
-    gs.copy(currTet = Tetromino(
-        gs.nextTile,
-        (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
-        pos = Coord(3, -2)
-      ).some,
-      tetSpawnBag = {
-        val newBag = gs.tetSpawnBag + toSpawn
-        if (newBag == allTiles) Set() else newBag
-      },
-      turnsToSpawn = None,
-      nextTile = toSpawn
-    )
-  }
+  private def handleSpawn(gs: GS): IO[GS] = for {
+    nextTile <- pickRandom(allTiles diff gs.tetSpawnBag)(gs.conf.random)
+    nextRotation <- IO{(nextRotation _ * gs.conf.random.nextInt(4))(initRotation)}
+  } yield gs.copy(currTet = Tetromino(
+    gs.nextTile,
+    gs.nextRotation,
+    pos = Coord(3, -2)
+  ).some,
+    tetSpawnBag = {
+      val newBag = gs.tetSpawnBag + nextTile
+      if (newBag == allTiles) Set() else newBag
+    },
+    turnsToSpawn = None,
+    nextTile = nextTile,
+    nextRotation = nextRotation
+  )
 
   private def checkIfOver(gs: GS): (GS, Boolean) =
     gs -> (tetHasBlock(gs, _.y < 0) && hasFieldCollision(gs, mapTetYPos(_, _ + 1)))
@@ -296,7 +300,7 @@ object Game {
     }) gs.level + 1 else gs.level
   )
 
-  private def pickRandom[T](s: Set[T])(rand: Random = util.Random): IO[T] = IO {
+  private def pickRandom[T](s: Set[T])(rand: Random): IO[T] = IO {
     val n = rand.nextInt(s.size)
     s.iterator.drop(n).next
   }
