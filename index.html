@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <!--<meta name="viewport" content="height=800, initial-scale=1">-->
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <meta name="format-detection" content="telephone=yes" />
+    <meta name="viewport" content="width=device-width, height=device-height">
     <meta name="description" content="Simple browser-based Tetris implementation">
     <meta name="keywords" content="Tetris, FTetris, ScalaJS">
     <meta name="author" content="Cameron Reuschel">
@@ -78,11 +77,12 @@
 <div class="container-fluid">
     <div class="pb-2 mt-4 mb-2 border-bottom"><h1>TETRIS</h1></div>
     <div class="row"> <!-- justify-content-center -->
-        <div class="col-auto">
+        <div class="col-12">
         <table style="border-collapse: separate; border-spacing: 1em;"><tbody><tr><td>
             <canvas width="300px" height="600px" id="mainCanv" style="margin:auto; border:2px solid #000000;">
                 Your browser must support the html5 canvas. Sorry, bro.
             </canvas>
+            <p>Made by <a href="https://github.com/XDracam">XDracam</a> with Love</p>
         </td><td id="touchroot">
             <canvas width="120px" height="120px" id="prevCanv" style="margin:auto; border:1px solid #000000;"></canvas>
             <hr/>
@@ -109,14 +109,7 @@
         </td></tr>
         </tbody></table>
         </div>
-        <!--<div class="col-auto pull-left" id="touchroot">-->
-            <!---->
-        <!--</div>-->
-        <!--<div class="col-auto pull-right">-->
-            <!---->
-        <!--</div>-->
     </div>
-    <p>Made by <a href="https://github.com/XDracam">XDracam</a> with Love</p>
 </div>
 
 <script>document.getElementById("highscore").innerText = "Highscore: " + getHighscore().toString();</script>
