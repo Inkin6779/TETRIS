@@ -25,7 +25,8 @@
         function startGame() {
         gameConf = {
             // the canvas
-            canv: document.getElementById("mainCanv"),
+            mainCanvas: document.getElementById("mainCanv"),
+            nextTileCanvas: document.getElementById("prevCanv"),
             // the point callback
             onpointchange: function (pts) {
                 if (pts > getHighscore()) {
@@ -56,13 +57,17 @@
 <div id="body" style="width:100%;">
 <div style="margin: auto; width: 300px; text-align: center;">
     <div style="display:flex; justify-content:space-around;">
+        <div><button onclick="startGame()" style="margin: auto;">START GAME</button></div>
+        <div><p id="level" style="font-size: 20px; margin: auto;"><b>Level: 0</b></p></div>
+        <!--<div><span style="font-size:20px; color: red;" id="status">&nbsp;&nbsp;&nbsp;</span></div>-->
+    </div>
+    <hr/>
+    <div style="display:flex; justify-content:space-around;">
         <div>
             <input type="checkbox" onclick="setSimpleMode(this)" id="simpleModeCheck"/>
             <label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Mode</label>
         </div>
-        <div><button onclick="startGame()" style="margin: auto;">START GAME</button></div>
-        <div><p id="level" style="font-size: 20px; margin: auto;"><b>Level: 0</b></p></div>
-        <!--<div><span style="font-size:20px; color: red;" id="status">&nbsp;&nbsp;&nbsp;</span></div>-->
+        <div><canvas width="120px" height="120px" id="prevCanv" style="margin:auto; border:1px solid #000000;"></canvas></div>
     </div>
     <hr/>
     <div style="display:flex; justify-content:space-around;">

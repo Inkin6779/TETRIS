@@ -43,7 +43,8 @@ release folders inside of a `<script>` tag. Then you
 can use the JS 'API' by passing a proper config object:
 
     FTetris.startGame({
-        canv: html.Canvas,
+        mainCanvas: html.Canvas,
+        nextTileCanvas: html.Canvas,
         onpointchange: Int => Void,
         onlevelchange: Int => Void,
         onlineclear: Int => Void,
@@ -54,11 +55,15 @@ can use the JS 'API' by passing a proper config object:
         simpleRenderingMode: [OPT] () => Boolean
     }); 
     
-Where `canv` is a reference to the canvas you want the game 
+Where `mainCanvas` is a reference to the canvas you want the game 
 to render in, e.g. `document.getElementByID('myCanvas')`.
 The game fits itself into the canvas dimensions, but it 
 assumes that the equation `height = 2 * width` holds, for
 aesthetic reasons.
+
+The same goes for `nextTileCanvas`, which should provide 
+`height = width` in order to properly show the next
+spawning tile. 
 
 `touchRootNode` enables the user to specify the dom node 
 which receives all touch event handlers. If not specified,

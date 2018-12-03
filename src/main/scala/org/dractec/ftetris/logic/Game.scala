@@ -87,7 +87,7 @@ object Game {
     17 -> 3,
     18 -> 3
     // else 2 for convenience
-  )
+  ).withDefaultValue(2)
 
   type FramesPerDrop = Int
   case class DASDelay(hard: Int, soft: Int)
@@ -102,11 +102,14 @@ object Game {
       validateGS: Boolean = true
   )
 
+  private def randomTile(rand: Random) = Tiles.allTiles.toSeq.apply(rand.nextInt(Tiles.allTiles.size))
+
   case class LineClear(row: Int, clearTime: Frame)
   case class Tetromino(tile: Tile, rotation: Rotation, pos: Coord)
   case class GS private (frameCount: Frame,
                          field: GameField,
                          currTet: Option[Tetromino],
+                         nextTile: Tile,
                          tetSpawnBag: Set[Tile],
                          points: Int,
                          level: Level,
@@ -116,19 +119,22 @@ object Game {
                          lastMoveTimes: Map[Move, Frame],
                          turnsToSpawn: Option[FramesToGo],
                          conf: Config)
-  def initGS(conf: Config) =
+  def initGS(conf: Config) = {
+    val nextTile = randomTile(conf.random)
     GS(frameCount = 0,
-       field = initField(conf),
-       currTet = None,
-       tetSpawnBag = Set(),
-       points = 0,
-       level = conf.startLevel,
-       numConsecutiveDrops = 0,
-       lastMove = Nothing, // irrelevant but easier this way
-       lastClears = List(),
-       lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0, Drop -> 0),
-       turnsToSpawn = Some(1),
-       conf)
+      field = initField(conf),
+      currTet = None,
+      nextTile = nextTile,
+      tetSpawnBag = Set(nextTile),
+      points = 0,
+      level = conf.startLevel,
+      numConsecutiveDrops = 0,
+      lastMove = Nothing, // irrelevant but easier this way
+      lastClears = List(),
+      lastMoveTimes = Map(LeftM -> 0, RightM -> 0, Rotate -> 0, Drop -> 0),
+      turnsToSpawn = Some(1),
+      conf)
+  }
 
   type GameField = Map[Coord, Option[Tile]]
 
@@ -137,13 +143,13 @@ object Game {
       def noChange = IO.pure(gs)
       if (gs.turnsToSpawn.contains(0)) handleSpawn(gs)
       else if (gs.currTet.isEmpty) noChange // waiting for tet, do nothing
-      else if (gs.frameCount % dropSpeed.getOrElse(gs.level, 2) == 0) moveDown(gs) else noChange
+      else if (gs.frameCount % dropSpeed(gs.level) == 0) moveDown(gs) else noChange
     }) map wrapTurn map checkIfOver
   }
 
   private def handleSpawn(gs: GS): IO[GS] = pickRandom(allTiles diff gs.tetSpawnBag)(gs.conf.random) map { toSpawn =>
     gs.copy(currTet = Tetromino(
-        toSpawn,
+        gs.nextTile,
         (nextRotation _ * gs.conf.random.nextInt(4))(initRotation),
         pos = Coord(3, -2)
       ).some,
@@ -151,7 +157,8 @@ object Game {
         val newBag = gs.tetSpawnBag + toSpawn
         if (newBag == allTiles) Set() else newBag
       },
-      turnsToSpawn = None
+      turnsToSpawn = None,
+      nextTile = toSpawn
     )
   }
 
