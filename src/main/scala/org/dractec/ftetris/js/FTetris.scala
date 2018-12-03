@@ -135,20 +135,20 @@ object FTetris {
 
     def gradientStyle(implicit canv: html.Canvas): CanvasGradient = {
       val grd = ctx.createLinearGradient(0, 0, 0, gc.mainCanvas.height)
-//      if (useGuidelineColors) {
-//        grd.addColorStop(0, "grey")
-//        grd.addColorStop(1, "white")
-//      } else {
+      if (useGuidelineColors) {
+        grd.addColorStop(0, "grey")
+        grd.addColorStop(1, "white")
+      } else {
         grd.addColorStop(0, "black")
         grd.addColorStop(1, "grey")
-//      }
+      }
       grd
     }
 
     def drawGradient()(implicit canv: html.Canvas): Unit = {
       ctx.fillStyle = gradientStyle
       ctx.fillRect(0, 0, canv.width, canv.height)
-      drawSneakyGrid()
+      //if (!useGuidelineColors) drawSneakyGrid()
     }
 
     def clearAll()(implicit canv: html.Canvas): Unit = {
@@ -191,7 +191,7 @@ object FTetris {
         ctx.strokeStyle = "#696969"
         ctx.lineWidth = 1
       } else {
-        ctx.globalAlpha = if (useGuidelineColors) 1 else 0.1
+        ctx.globalAlpha = 0.1 //if (useGuidelineColors) 1 else 0.1
         ctx.strokeStyle = if (useGuidelineColors) "#696969" else gradientStyle
         ctx.lineWidth = 2
       }
