@@ -57,7 +57,7 @@
                         document.cookie = document.cookie.replace(/mostlines=(.*?);/, "mostlines="+lcs+";");
                         setHTML("mostlines", "Most lines: " + lcs.toString());
                     }
-                    setHTML("linescleared", "Lines Cleared: " + lcs);
+                    setHTML("linescleared", "Lines: " + lcs);
                 },
                 // the touch root if not the canvas
                 touchRootNode: document.getElementById("touchroot"),
@@ -74,16 +74,18 @@
     }</script>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="pb-2 mt-4 mb-2 border-bottom"><h1>TETRIS</h1></div>
-    <div class="row"> <!-- justify-content-center -->
-        <div class="col-12">
-        <table style="border-collapse: separate; border-spacing: 1em;"><tbody><tr><td>
+<div class="container">
+    <div class="pb-2 mt-4 mb-2 border-bottom"></div>
+    <div class="row justify-content-center"> <!-- justify-content-center -->
+        <div class="col-4">
+        <table style="border-collapse: separate; border-spacing: 1em;"><tbody><tr><td id="touchroot">
             <canvas width="300px" height="600px" id="mainCanv" style="margin:auto; border:2px solid #000000;">
                 Your browser must support the html5 canvas. Sorry, bro.
             </canvas>
-            <p>Made by <a href="https://github.com/XDracam">XDracam</a> with Love</p>
-        </td><td id="touchroot">
+            <p align="center">Made by <a href="https://github.com/XDracam">XDracam</a> with Love ❤️</p>
+        </td><td valign="top">
+            <h1 align="center">TETRIS</h1>
+            <hr/>
             <canvas width="120px" height="120px" id="prevCanv" style="margin:auto; border:1px solid #000000;"></canvas>
             <hr/>
             <table><tbody><tr><td>
@@ -94,13 +96,21 @@
                 <p id="score" style="font-size: 18px; margin: auto;">Score: 0</p>
             </td></tr></tbody></table>
             <hr/>
-            <table><tbody><tr><td>
-                <input type="checkbox" onclick="setSimpleMode(this)" id="simpleModeCheck"/>
-                <label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Mode</label>
-            </td></tr><tr><td>
-                <input type="checkbox" onclick="setGuidelineColors(this)" id="guidelineColorCheck"/>
+            <!--<table><tbody><tr><td>-->
+                <!--<input type="checkbox" onclick="setSimpleMode(this)" id="simpleModeCheck" data-toggle="toggle"/>-->
+                <!--<label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Mode</label>-->
+            <!--</td></tr><tr><td>-->
+                <!--<input type="checkbox" onclick="setGuidelineColors(this)" id="guidelineColorCheck" data-toggle="toggle"/>-->
+                <!--<label style="font-size: 14px; margin: auto;" for="guidelineColorCheck">Standard Colors</label>-->
+            <!--</td></tr></tbody></table>-->
+            <span class="switch">
+              <input type="checkbox" class="switch switch-sm" onclick="setSimpleMode(this)" id="simpleModeCheck"/>
+              <label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Graphics</label>
+            </span>
+            <span class="switch">
+                <input type="checkbox" class = "switch switch-sm" onclick="setGuidelineColors(this)" id="guidelineColorCheck"/>
                 <label style="font-size: 14px; margin: auto;" for="guidelineColorCheck">Standard Colors</label>
-            </td></tr></tbody></table>
+            </span>
             <hr/>
             <div><button onclick="startGame()" style="margin: auto;">START GAME</button></div>
             <hr/>
