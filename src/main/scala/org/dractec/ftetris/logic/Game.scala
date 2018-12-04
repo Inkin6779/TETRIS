@@ -223,7 +223,7 @@ object Game {
   private def tryRotate(gs: GS): Either[GS, Move] = {
     if (!tetHasBlock(gs,
       // if coord taken or outside of field, fail check
-      b => gs.field.get(b).forall(_.isDefined),
+      b => b.y >= 0 && gs.field.get(b).forall(_.isDefined),
       tet => tet.copy(rotation = nextRotation(tet.rotation))
     ) && gs.frameCount - gs.lastMoveTimes(Rotate) >= gs.conf.rotateDelay) {
       saveMove(gs.copy(currTet = gs.currTet.map(ct =>

@@ -1,5 +1,7 @@
 # Functional Tetris
 
+[You can play the newest version from this repo right here on GitHub.](https://xdracam.github.io/functional-tetris/)
+
 The original NES Tetris written in a style that adheres 
 to haskell's paradigms as much as possible.
 
@@ -12,21 +14,19 @@ I wrote this as an exercise to get more used to functional
 programming with the cats framework in particular and
 with the whole style in general. 
 
+It further helped me get acquainted with frontend web
+programming techniques since the UI slightly escalated in v2.0.
+
 ### Usage
 
 Just download the html and compiled JS files from one of the 
 release folders and open with your browser. There are no ads
 and I do not collect any data. In fact, you can just play offline.
-The highscore is stored using cookies. 
+The highscore is stored using the browser's local storage. 
 
 From 1.5 onwards, the code uses `img/gameover.png` to signal the
 default game over. While it might work without, having the image
 available does grant you a slight style bonus.
-
-
-*Local file cookies do not work in Google Chrome.* 
-
-[You can play the newest version from this repo right here on GitHub.](https://xdracam.github.io/functional-tetris/)
 
 ### Building yourself
 
@@ -36,9 +36,15 @@ Clone the project and treat as a usual ScalaJS project:
     sbt "~fastOptJS" # recompiles on every source change
     sbt fullOptJS    # for a compressed release version
     
+You might have to change the import in the html from `...fastOpt.js` to `...opt.js`.
+    
 ### Can I include this in my webpage?
 
-Sure. Just include one of the JS files found inside the 
+Sure. The easiest way would be to just embed the 
+[live version](https://xdracam.github.io/functional-tetris/)
+inside of an `iframe` to use my nice HTML UI.  
+
+If you just want the logic, include one of the JS files found inside the 
 release folders inside of a `<script>` tag. Then you 
 can use the JS 'API' by passing a proper config object:
 
