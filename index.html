@@ -59,12 +59,14 @@
                     }
                     setHTML("linescleared", "Lines: " + lcs);
                 },
+                ongameend: function () { $("#startbtn").prop("disabled",false); },
                 // the touch root if not the canvas
                 touchRootNode: document.getElementById("touchroot"),
                 simpleRenderingMode: () => simpleRenderingMode || false,
                 guidelineColors: () => guidelineColors || false
             };
             FTetris.startGame(gameConf);
+            $("#startbtn").prop("disabled",true);
     }</script>
     <script> function setSimpleMode(cb) {
         simpleRenderingMode = cb.checked;
@@ -96,13 +98,6 @@
                 <p id="score" style="font-size: 18px; margin: auto;">Score: 0</p>
             </td></tr></tbody></table>
             <hr/>
-            <!--<table><tbody><tr><td>-->
-                <!--<input type="checkbox" onclick="setSimpleMode(this)" id="simpleModeCheck" data-toggle="toggle"/>-->
-                <!--<label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Mode</label>-->
-            <!--</td></tr><tr><td>-->
-                <!--<input type="checkbox" onclick="setGuidelineColors(this)" id="guidelineColorCheck" data-toggle="toggle"/>-->
-                <!--<label style="font-size: 14px; margin: auto;" for="guidelineColorCheck">Standard Colors</label>-->
-            <!--</td></tr></tbody></table>-->
             <span class="switch">
               <input type="checkbox" class="switch switch-sm" onclick="setSimpleMode(this)" id="simpleModeCheck"/>
               <label style="font-size: 14px; margin: auto;" for="simpleModeCheck">Simple Graphics</label>
@@ -112,7 +107,7 @@
                 <label style="font-size: 14px; margin: auto;" for="guidelineColorCheck">Standard Colors</label>
             </span>
             <hr/>
-            <div><button onclick="startGame()" style="margin: auto;">START GAME</button></div>
+            <div><button onclick="startGame()" style="margin: auto;" id="startbtn">START GAME</button></div>
             <hr/>
             <div><p id="highscore" style="font-size: 14px; margin: auto;">Highscore: 0</p></div>
             <div><p id="mostlines" style="font-size: 14px; margin: auto;">Most lines: 0</p></div>

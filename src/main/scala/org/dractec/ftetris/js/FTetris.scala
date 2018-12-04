@@ -65,7 +65,7 @@ object FTetris {
         SnakeL.some -> "red",
         SnakeR.some -> "green",
         // for simple rendering mode
-        None -> "#303030"
+        None -> "#DFDFDF"//"#303030"
       )
     } else {
       Map[Option[Tile], String](
@@ -95,7 +95,7 @@ object FTetris {
 
     var keysDown = Set[Int]()
     var lastTouchMove: Move = Nothing
-    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80, 38)
+    val validInput = Set(37, 65, 39, 68, 40, 83, 32, 27, 80, 38, 87)
 
     val initialGs = initGS(Config(
       input = IO { new Input{
@@ -105,7 +105,7 @@ object FTetris {
 
         override def softDropDown = keysDown.contains(40) || keysDown.contains(83) || lastTouchMove == Drop
 
-        override def rotateDown = keysDown.contains(38) || keysDown.contains(32) || lastTouchMove == Rotate
+        override def rotateDown = Set(38, 32, 87).exists(keysDown.contains) || lastTouchMove == Rotate
     }})).unsafeRunSync()
 
     var lastState = initialGs
@@ -322,8 +322,9 @@ object FTetris {
 
     def endGame(): Unit = {
       mainLoop.foreach(clearInterval)
-      canStart = true
       ctx(gc.mainCanvas).drawImage(img, 0, gc.mainCanvas.height/2 - img.height/2)
+      canStart = true
+      callIfDef(gc.ongameend)
     }
 
     // __________ MAIN GAME LOOP __________
@@ -333,8 +334,6 @@ object FTetris {
     drawPreview(initialGs.nextTile, initialGs.nextRotation, simpleRenderingMode)
     gc.onpointchange(0)
     gc.onlevelchange(initialGs.level)
-
-    callIfDef(gc.ongameend)
 
     var frameIsRunning = false
 
