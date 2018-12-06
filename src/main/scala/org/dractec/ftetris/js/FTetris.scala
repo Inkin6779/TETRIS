@@ -334,6 +334,7 @@ object FTetris {
     drawPreview(initialGs.nextTile, initialGs.nextRotation, simpleRenderingMode)
     gc.onpointchange(0)
     gc.onlevelchange(initialGs.level)
+    gc.onlineclear(0)
 
     var frameIsRunning = false
 
