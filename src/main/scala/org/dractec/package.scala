@@ -4,17 +4,6 @@ import scala.util.{Random, Try}
 
 package object dractec {
 
-//  object Demo {
-//    def main(args: Array[String]): Unit = {
-//      implicit val rand: Random = new Random(0xDEADBEEF)
-//      val x = ~5
-//      val f = (x: Int) => x * x
-//      f(x)
-//      x |> f
-//      ~(1,2) == ~(2,1)
-//    }
-//  }
-
   implicit class RandomInverter[T: Numeric](f: T)(implicit rand: Random = new Random(System.currentTimeMillis())) {
     import Numeric.Implicits._
     /** Randomly negates the appended number based on an implicit `scala.util.Random` object.

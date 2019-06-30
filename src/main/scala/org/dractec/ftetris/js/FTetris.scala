@@ -201,7 +201,14 @@ object FTetris {
 
   // __________ PAUSE HANDLING __________
 
+    def togglePause(): Unit = {
+      paused = !paused
+      if (paused) pause()
+      else resume()
+    }
+
     def pause(): Unit = {
+      echo! "Pausing"
       implicit val canv = gc.mainCanvas
       drawGradient()
       val center = Coord(gc.mainCanvas.width / 2, gc.mainCanvas.height / 2)
@@ -213,6 +220,7 @@ object FTetris {
     } andFinally callIfDef(gc.onpausestart)
 
     def resume(): Unit = {
+      echo! "Resuming"
       implicit val canv = gc.mainCanvas
       drawGradient()
       val field = globalTetCoverage(lastState)
@@ -227,11 +235,7 @@ object FTetris {
       if (validInput(e.keyCode)) {
         e.preventDefault()
         e.stopPropagation()
-        if (e.keyCode == 27 || e.keyCode == 80) {
-          paused = !paused
-          if (paused) pause()
-          else resume()
-        }
+        if (e.keyCode == 27 || e.keyCode == 80) togglePause()
         else keysDown += e.keyCode
       }}, useCapture = false)
 
@@ -286,14 +290,13 @@ object FTetris {
       val cp1opt = pos(e, 1)
       val lp1opt = pos(last, 1)
       //noinspection UnitInMap
-      cp1opt.flatMap(cp1 => lp1opt.map(lp1 =>
-        if ((cp.y - lp.y) > thresh && (cp1.y - lp1.y) > thresh && (currTime - lastPause) > 500) {
+      cp1opt.flatMap(cp1 => lp1opt.map { lp1 =>
+        val bothMovedDown = (cp.y - lp.y) > thresh && (cp1.y - lp1.y) > thresh
+        if (bothMovedDown && (currTime - lastPause) > 500) {
           lastPause = currTime
-          paused = !paused
-          if (paused) pause()
-          else resume()
+          togglePause()
         }
-      )).getOrElse{
+      }).getOrElse{
         if (moveIsDrop.getOrElse(true)) {
           if ((cp.y - lp.y) > (lp.x - cp.x).abs && (cp.y - lp.y) > thresh) { // soft drop
             lastTouchMove = Drop

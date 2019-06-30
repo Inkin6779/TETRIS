@@ -153,10 +153,10 @@ object Game {
     nextTile <- pickRandom(allTiles diff gs.tetSpawnBag)(gs.conf.random)
     nextRotation <- IO{(nextRotation _ * gs.conf.random.nextInt(4))(initRotation)}
   } yield gs.copy(currTet = Tetromino(
-    gs.nextTile,
-    gs.nextRotation,
-    pos = Coord(3, -2)
-  ).some,
+      gs.nextTile,
+      gs.nextRotation,
+      pos = Coord(3, -2)
+    ).some,
     tetSpawnBag = {
       val newBag = gs.tetSpawnBag + nextTile
       if (newBag == allTiles) Set() else newBag
@@ -331,7 +331,6 @@ object Game {
   private def Failure = Nothing.asRight
 
   def validateRules(gs: GS): GS = {
-    // TODO: change to Validated somehow, accumulating errors
     // current tile cant overlap with static field
 //    globalTetCoverage(gs).foreach(tc =>
 //      if (gs.field.exists { case (c, v) => tc.getOrElse(c, None).isDefined && v.isDefined })
