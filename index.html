@@ -1,3 +1,4 @@
+<audio id="gameAudio" src="audiofile.mp3"></audio>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +34,7 @@
         var simpleRenderingMode;
         var guidelineColors;
         function startGame() {
+            document.getElementById('gameAudio').play();
             gameConf = {
                 // the canvas
                 mainCanvas: document.getElementById("mainCanv"),
